@@ -17,6 +17,7 @@
     "hotbar.ClientPlayerEntityMixin",
     "hotbar.ClientPlayerInteractionManagerMixin",
     "hotbar.ClientPlayNetworkHandlerMixin",
+    "hotbar.MinecraftClientMixin",
     "hotbar.MouseMixin",
     "inventory.CreativeInventoryScreenMixin",
     "inventory.LoomScreenMixin",
