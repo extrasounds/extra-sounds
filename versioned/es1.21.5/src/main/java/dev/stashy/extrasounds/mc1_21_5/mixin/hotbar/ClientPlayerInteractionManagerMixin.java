@@ -7,7 +7,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
@@ -41,7 +40,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
         final boolean bCreative = player.isInCreativeMode() && includeData;
 
-        this.extrasounds$storePickingItem(world.getBlockState(blockPos).getPickStack(world, blockPos, bCreative).getItem());
+        this.extrasounds$storePickingItem(world.getBlockState(blockPos).getPickStack(world, blockPos, bCreative).copy());
     }
 
     @Inject(method = "pickItemFromEntity", at = @At("HEAD"))
@@ -60,18 +59,18 @@ public abstract class ClientPlayerInteractionManagerMixin {
             return;
         }
 
-        this.extrasounds$storePickingItem(pickBlockStack.getItem());
+        this.extrasounds$storePickingItem(pickBlockStack.copy());
     }
 
     @Unique
-    private void extrasounds$storePickingItem(Item item) {
+    private void extrasounds$storePickingItem(ItemStack target) {
         final ClientPlayerEntity player = this.client.player;
-        if (player == null || item == Items.AIR) {
+        if (player == null || target.getItem() == Items.AIR) {
             return;
         }
 
-        if (player.isCreative() || player.getInventory().contains(itemStack -> itemStack.getItem() == item)) {
-            this.soundHandler.storePickingItem(item);
+        if (player.isCreative() || player.getInventory().contains(stack -> ExtraSounds.canItemsCombine(stack, target)) && !ExtraSounds.canItemsCombine(player.getOffHandStack(), target)) {
+            this.soundHandler.storePickingItem(target.getItem());
         }
     }
 }
