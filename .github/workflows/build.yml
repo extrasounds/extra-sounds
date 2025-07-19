@@ -17,13 +17,22 @@ jobs:
     strategy:
       matrix:
         java: [ 21 ]
-        os: [ ubuntu-latest, windows-latest ]
+        os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      - name: Get Commit hash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            COMMIT_SHA=${{ github.event.pull_request.head.sha }}
+          else
+            COMMIT_SHA=${GITHUB_SHA}
+          fi
+          echo "SHORT_SHA=$(echo $COMMIT_SHA | cut -c1-8)" >> $GITHUB_ENV
 
       - name: Java ${{ matrix.java }} setup
         uses: actions/setup-java@v4
@@ -46,5 +55,5 @@ jobs:
         if: ${{ runner.os == 'Linux' }} # Only upload artifacts built from LTS java on one OS
         uses: actions/upload-artifact@v4
         with:
-          name: Artifacts
+          name: "extrasounds-dev+${{env.SHORT_SHA}}"
           path: build/libs/
