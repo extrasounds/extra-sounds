@@ -198,10 +198,10 @@ public final class SoundManager {
     }
 
     public void playSound(VersionedSoundEventWrapper snd, float pitch, SoundCategory category, SoundCategory... optionalVolumes) {
-        float volume = this.getSoundVolume(Mixers.MASTER);
+        float volume = ExtraSounds.MAIN.getSoundVolume(Mixers.MASTER);
         if (optionalVolumes != null) {
             for (SoundCategory cat : optionalVolumes) {
-                volume = Math.min(this.getSoundVolume(cat), volume);
+                volume = Math.min(ExtraSounds.MAIN.getSoundVolume(cat), volume);
             }
         }
         if (volume == 0 || this.isMuted(category)) {
@@ -219,7 +219,7 @@ public final class SoundManager {
     }
 
     public void playSound(VersionedSoundEventWrapper snd, SoundType type, float volume, float pitch, BlockPos position) {
-        volume *= this.getSoundVolume(Mixers.MASTER);
+        volume *= ExtraSounds.MAIN.getSoundVolume(Mixers.MASTER);
         if (volume == 0 || this.isMuted(type.category)) {
             // skip reflection when volume is zero.
             if (DebugUtils.DEBUG) {
@@ -238,7 +238,7 @@ public final class SoundManager {
     }
 
     private boolean isMuted(SoundCategory category) {
-        return this.getSoundVolume(category) == 0;
+        return ExtraSounds.MAIN.getSoundVolume(category) == 0;
     }
 
     private void logZeroVolume(VersionedSoundEventWrapper snd) {
@@ -291,10 +291,6 @@ public final class SoundManager {
 
     public void stopSound(VersionedSoundEventWrapper e, SoundType type) {
         MinecraftClient.getInstance().getSoundManager().stopSounds(e.getId(), type.category);
-    }
-
-    private float getSoundVolume(SoundCategory category) {
-        return MinecraftClient.getInstance().options.getSoundVolume(category);
     }
 
     public VersionedSoundEventWrapper getSoundByItem(Item item, SoundType type) {

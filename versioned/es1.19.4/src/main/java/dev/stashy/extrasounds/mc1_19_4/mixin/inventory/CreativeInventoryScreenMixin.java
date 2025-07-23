@@ -35,6 +35,8 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
     @Unique
     private final ScreenScrollHandler soundHandler = new ScreenScrollHandler();
     @Unique
+    private ItemGroup currentTab = selectedTab;
+    @Unique
     private final AbstractCreativeInventoryHandler inventoryHandler = new AbstractCreativeInventoryHandler() {
         @Override
         protected InventoryTabType getTabType() {
@@ -82,9 +84,10 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
 
     @Inject(method = "setSelectedTab", at = @At("HEAD"))
     private void extrasounds$tabChange(ItemGroup group, CallbackInfo ci) {
-        if (selectedTab != group) {
+        if (this.currentTab != group) {
             ExtraSounds.MANAGER.playSound(group.getIcon().getItem(), SoundType.PICKUP);
             this.soundHandler.resetScrollPos();
+            this.currentTab = group;
         }
     }
 

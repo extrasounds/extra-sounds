@@ -1315,8 +1315,8 @@
     "replace": true,
     "sounds": [
       {
-        "name": "extrasounds:item.category.wet",
-        "pitch": 0.8,
+        "name": "extrasounds:item.category.gear.generic",
+        "pitch": 1.6,
         "type": "event"
       }
     ]
@@ -2020,6 +2020,17 @@
     "sounds": [
       {
         "name": "extrasounds:item.category.gear.iron",
+        "type": "event"
+      }
+    ]
+  },
+  "item.pickup.minecraft.dried_ghast": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "block.dried_ghast.place",
+        "volume": 0.5,
+        "pitch": 1.7,
         "type": "event"
       }
     ]

@@ -25,6 +25,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -78,7 +79,7 @@ public final class SoundPackLoader {
             try {
                 namespace = container.getProvider().getMetadata().getId();
                 if (namespace == null || namespace.isBlank()) {
-                    throw new Exception("namespace is invalid: %s".formatted(namespace));
+                    throw new Exception("namespace is invalid: null or blank");
                 }
             } catch (Exception ex) {
                 LOGGER.error("Failed to read mod metadata, ignoring.", ex);
@@ -267,6 +268,7 @@ public final class SoundPackLoader {
         }
 
         @Override
+        @NotNull
         public String toString() {
             final CharSequence[] data = new CharSequence[]{
                     String.valueOf(version), String.valueOf(itemCount), String.join(DELIMITER_MOD_INFO, modInfo)

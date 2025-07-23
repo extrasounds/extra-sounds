@@ -21,21 +21,21 @@ public final class SoundGenerator {
      * <hr/>
      * <p>✔ This will work:</p>
      * <ul>
-     *     <li><code>fabric.mod.json</code><br>
-     *     <pre>id: "extrasounds"</pre></li>
-     *     <li>Item registration<br>
+     *     <li><code>fabric.mod.json</code>
+     *     <pre>{<br />  id: "extrasounds"<br />}</pre></li>
+     *     <li>Item registration
      *     <pre>Registry.register(Registries.ITEM, Identifier.of("extrasounds", "newitem"), new Item(...));</pre></li>
-     *     <li>Sound generator<br>
+     *     <li>Sound generator
      *     <pre>public static final SoundGenerator GENERATOR = SoundGenerator.of(item -> {...});</pre></li>
      * </ul>
      * <h5>✘ This will not work:</h5>
      * <ul>
-     *     <li><code>fabric.mod.json</code><br>
-     *     <pre>id: "extrasounds"</pre></li>
-     *     <li>Item registration<br>
+     *     <li><code>fabric.mod.json</code>
+     *     <pre>{<br />  id: "extrasounds"<br />}</pre></li>
+     *     <li>Item registration
      *     <pre>Registry.register(Registries.ITEM, Identifier.of("extra-sounds", "newitem"), new Item(...));</pre>
      *     -> Reason: namespace of Identifier does not match your mod id. ("extrasounds" vs. "extra-sounds")</li>
-     *     <li>Sound generator<br>
+     *     <li>Sound generator
      *     <pre>public static final SoundGenerator GENERATOR = SoundGenerator.of(item -> {...});</pre></li>
      * </ul>
      *

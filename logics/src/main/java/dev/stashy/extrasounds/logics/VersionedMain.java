@@ -10,6 +10,7 @@ import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IndexedIterable;
 
@@ -51,4 +52,6 @@ public abstract class VersionedMain {
     public abstract void playSound(SoundInstance instance);
 
     public abstract boolean shouldIgnoreItemSound(Item cursorItem, Item slotItem, InventoryClickState state);
+
+    public abstract float getSoundVolume(SoundCategory soundCategory);
 }

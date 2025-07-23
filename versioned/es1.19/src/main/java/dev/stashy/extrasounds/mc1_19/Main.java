@@ -7,6 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IndexedIterable;
 import net.minecraft.util.registry.Registry;
@@ -49,5 +50,10 @@ public final class Main extends VersionedMain {
         var predicateSlot = IGNORE_SOUND_PREDICATE_MAP.getOrDefault(slotItem, null);
 
         return (predicateCursor != null && predicateCursor.test(state)) || (predicateSlot != null && predicateSlot.test(state));
+    }
+
+    @Override
+    public float getSoundVolume(SoundCategory soundCategory) {
+        return MinecraftClient.getInstance().options.getSoundVolume(soundCategory);
     }
 }

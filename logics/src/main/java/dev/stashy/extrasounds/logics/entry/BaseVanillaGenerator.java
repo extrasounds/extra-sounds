@@ -44,7 +44,8 @@ public abstract class BaseVanillaGenerator {
 
     private boolean isGearGoldenItem(Item item) {
         return item instanceof CompassItem ||
-                item instanceof SpyglassItem || item instanceof ShearsItem;
+                item instanceof SpyglassItem || item instanceof ShearsItem ||
+                this.getItemIdPath(item).endsWith("_harness");
     }
 
     private boolean isGearLeatherItem(Item item) {
