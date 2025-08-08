@@ -9,6 +9,12 @@
 
 <small>_Caught bugs and known issues are written._</small>
 
+## [3.0.0+1.21.8-build.4] - 2025-08-09
+### 🔧 Fixed
+
+* Crash on startup with RoughlyEnoughItems 20.0.811.
+* Louder volume for almost all sounds. (suggested by [#25](https://github.com/lonefelidae16/extra-sounds/issues/25))
+
 ## [3.0.0+1.21.8-build.2] - 2025-07-24
 ### ✨ Added
 
