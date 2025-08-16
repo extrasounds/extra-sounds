@@ -1,9 +1,62 @@
 {
   "muted": {
-    "sounds": [ "extrasounds:muted" ]
+    "sounds": [ "extrasounds:misc/muted" ]
   },
   "screenshot": {
-    "sounds": [ "extrasounds:screenshot" ]
+    "sounds": [ "extrasounds:misc/screenshot" ]
+  },
+  "entity.poof": {
+    "sounds": [ "extrasounds:entity/generic/poof" ]
+  },
+  "item.integrated.stick": {
+    "sounds": [
+      "extrasounds:item/stick/pickup1",
+      "extrasounds:item/stick/pickup2",
+      "extrasounds:item/stick/pickup3",
+      "extrasounds:item/stick/pickup4",
+      "extrasounds:item/stick/pickup5",
+      "extrasounds:item/stick/pickup6"
+    ]
+  },
+  "item.integrated.dust": {
+    "sounds": [
+      "extrasounds:item/dust/pickup1",
+      "extrasounds:item/dust/pickup2",
+      "extrasounds:item/dust/pickup3",
+      "extrasounds:item/dust/pickup4",
+      "extrasounds:item/dust/pickup5",
+      "extrasounds:item/dust/pickup6"
+    ]
+  },
+  "item.integrated.bowl": {
+    "sounds": [
+      "extrasounds:item/bowl/pickup1",
+      "extrasounds:item/bowl/pickup2",
+      "extrasounds:item/bowl/pickup3",
+      "extrasounds:item/bowl/pickup4",
+      "extrasounds:item/bowl/pickup5",
+      "extrasounds:item/bowl/pickup6"
+    ]
+  },
+  "item.integrated.boat": {
+    "sounds": [
+      "extrasounds:item/boat/pickup1",
+      "extrasounds:item/boat/pickup2",
+      "extrasounds:item/boat/pickup3",
+      "extrasounds:item/boat/pickup4",
+      "extrasounds:item/boat/pickup5",
+      "extrasounds:item/boat/pickup6"
+    ]
+  },
+  "item.integrated.arrow": {
+    "sounds": [
+      "extrasounds:item/arrow/pickup1",
+      "extrasounds:item/arrow/pickup2",
+      "extrasounds:item/arrow/pickup3",
+      "extrasounds:item/arrow/pickup4",
+      "extrasounds:item/arrow/pickup5",
+      "extrasounds:item/arrow/pickup6"
+    ]
   },
   "item.pickup.minecraft.air": {
     "replace": true,
@@ -88,9 +141,9 @@
   "item.category.arrow": {
     "sounds": [
       {
-        "name": "minecraft:item.axe.strip",
-        "volume": 0.8,
-        "pitch": 2,
+        "name": "extrasounds:item.integrated.arrow",
+        "volume": 0.4,
+        "pitch": 1.6,
         "type": "event"
       }
     ]
@@ -108,8 +161,8 @@
   "item.category.boat": {
     "sounds": [
       {
-        "name": "minecraft:entity.boat.paddle_land",
-        "volume": 1.4,
+        "name": "extrasounds:item.integrated.boat",
+        "volume": 1,
         "pitch": 1.5,
         "type": "event"
       }
@@ -118,8 +171,8 @@
   "item.category.bowl": {
     "sounds": [
       {
-        "name": "minecraft:block.pointed_dripstone.drip_lava",
-        "volume": 2,
+        "name": "extrasounds:item.integrated.bowl",
+        "volume": 1,
         "pitch": 1.6,
         "type": "event"
       }
@@ -138,8 +191,8 @@
   "item.category.dust": {
     "sounds": [
       {
-        "name": "minecraft:block.azalea.hit",
-        "volume": 2,
+        "name": "extrasounds:item.integrated.dust",
+        "volume": 0.9,
         "pitch": 1.7,
         "type": "event"
       }
@@ -269,7 +322,7 @@
     "sounds": [
       {
         "name": "minecraft:item.axe.strip",
-        "volume": 0.7,
+        "volume": 1,
         "pitch": 1.4,
         "type": "event"
       }
@@ -278,8 +331,8 @@
   "item.category.hay": {
     "sounds": [
       {
-        "name": "minecraft:block.azalea.hit",
-        "volume": 0.95,
+        "name": "extrasounds:item.integrated.dust",
+        "volume": 0.8,
         "pitch": 1.2,
         "type": "event"
       }
@@ -288,8 +341,8 @@
   "item.category.leaves": {
     "sounds": [
       {
-        "name": "minecraft:block.azalea.hit",
-        "volume": 0.95,
+        "name": "extrasounds:item.integrated.dust",
+        "volume": 0.8,
         "pitch": 1.1,
         "type": "event"
       }
@@ -452,16 +505,6 @@
       }
     ]
   },
-  "item.integrated.stick": {
-    "sounds": [
-      "extrasounds:item/stick/pickup1",
-      "extrasounds:item/stick/pickup2",
-      "extrasounds:item/stick/pickup3",
-      "extrasounds:item/stick/pickup4",
-      "extrasounds:item/stick/pickup5",
-      "extrasounds:item/stick/pickup6"
-    ]
-  },
   "action.bow": {
     "sounds": [
       {
@@ -619,14 +662,11 @@
       }
     ]
   },
-  "entity.poof": {
-    "sounds": [ "extrasounds:entity/poof" ]
-  },
   "keyboard.type": {
     "sounds": [
       {
         "name": "minecraft:block.bamboo.hit",
-        "volume": 0.6,
+        "volume": 0.9,
         "pitch": 2,
         "type": "event"
       }
@@ -646,7 +686,7 @@
     "sounds": [
       {
         "name": "extrasounds:generic.click",
-        "volume": 0.85,
+        "volume": 0.9,
         "pitch": 2.4,
         "type": "event"
       }
@@ -1592,7 +1632,7 @@
         "name": "minecraft:item.bucket.empty_powder_snow",
         "pitch": 1.7,
         "type": "event",
-        "volume": 1.2
+        "volume": 2
       }
     ]
   },
@@ -1829,7 +1869,7 @@
         "name": "extrasounds:item.integrated.stick",
         "pitch": 2,
         "type": "event",
-        "volume": 0.7
+        "volume": 1
       }
     ]
   },
@@ -1840,7 +1880,7 @@
         "name": "extrasounds:item.integrated.stick",
         "pitch": 2,
         "type": "event",
-        "volume": 0.7
+        "volume": 1
       }
     ]
   },
@@ -1947,7 +1987,7 @@
       {
         "name": "minecraft:block.deepslate_bricks.place",
         "pitch": 2,
-        "volume": 0.6,
+        "volume": 0.75,
         "type": "event"
       }
     ]
@@ -1995,7 +2035,7 @@
     "sounds": [
       {
         "name": "minecraft:block.resin.place",
-        "volume": 1.3,
+        "volume": 2,
         "pitch": 1.6,
         "type": "event"
       }
@@ -2014,9 +2054,20 @@
     "replace": true,
     "sounds": [
       {
-        "name": "block.dried_ghast.place",
-        "volume": 0.8,
+        "name": "minecraft:block.dried_ghast.place",
+        "volume": 1.5,
         "pitch": 1.7,
+        "type": "event"
+      }
+    ]
+  },
+  "item.pickup.minecraft.resin_clump": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "minecraft:block.resin.place",
+        "volume": 2,
+        "pitch": 1.6,
         "type": "event"
       }
     ]
