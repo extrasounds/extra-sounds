@@ -272,7 +272,7 @@
     "sounds": [
       {
         "name": "minecraft:item.armor.equip_leather",
-        "volume": 0.7,
+        "volume": 0.9,
         "pitch": 1.4,
         "type": "event"
       }
@@ -869,7 +869,7 @@
         "name": "minecraft:block.wool.place",
         "pitch": 1.8,
         "type": "event",
-        "volume": 0.6
+        "volume": 0.7
       }
     ]
   },
@@ -1432,7 +1432,7 @@
         "name": "minecraft:item.armor.equip_leather",
         "pitch": 1.7,
         "type": "event",
-        "volume": 0.45
+        "volume": 0.7
       }
     ]
   },
@@ -1705,7 +1705,7 @@
     "sounds": [
       {
         "name": "extrasounds:item.pickup.minecraft.rabbit_hide",
-        "pitch": 1.2,
+        "pitch": 1.5,
         "type": "event"
       }
     ]
@@ -1715,6 +1715,7 @@
     "sounds": [
       {
         "name": "extrasounds:item.pickup.minecraft.leather",
+        "pitch": 1.15,
         "type": "event"
       }
     ]
@@ -1929,7 +1930,7 @@
         "name": "minecraft:item.armor.equip_diamond",
         "pitch": 1.7,
         "type": "event",
-        "volume": 0.7
+        "volume": 0.8
       }
     ]
   },
@@ -1940,7 +1941,7 @@
         "name": "minecraft:item.armor.equip_diamond",
         "pitch": 0.95,
         "type": "event",
-        "volume": 0.7
+        "volume": 0.8
       }
     ]
   },
@@ -1987,7 +1988,7 @@
       {
         "name": "minecraft:block.deepslate_bricks.place",
         "pitch": 2,
-        "volume": 0.75,
+        "volume": 0.8,
         "type": "event"
       }
     ]
