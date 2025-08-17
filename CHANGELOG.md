@@ -1,18 +1,24 @@
 # Changelog
 
-## [Unreleased]
-### ⌛ Coming
+## [3.0.0+1.21.8-build.5] - 2025-08-17
+### 🗘 Updated
 
-<small>_Exciting new features may be coming here._</small>
+* Some sounds are integrated into ExtraSounds’ assets.
+* Adjusts volumes and rearranges sounds.json entries.
 
-### 💭 Bugs / Issues
+### 👷 Technical
 
-<small>_Caught bugs and known issues are written._</small>
+* Dependency updates:
+  - SoundCategories
+  - Gradle 9.0.0
+  - Gradle Plugins
 
 ## [3.0.0+1.21.8-build.4] - 2025-08-09
 ### 🔧 Fixed
 
 * Crash on startup with RoughlyEnoughItems 20.0.811.
+
+### 🗘 Updated
 * Louder volume for almost all sounds. (suggested by [#25](https://github.com/lonefelidae16/extra-sounds/issues/25))
 
 ## [3.0.0+1.21.8-build.2] - 2025-07-24
@@ -104,8 +110,8 @@
 
 ### 🔧 Fixed
 
-* Play Chat sound when Chat Mention is muted.
-* Prevent sound when placing an item in a slot that doesn’t accept it.
+* Plays Chat sound when Chat Mention is muted.
+* Prevents sound when placing an item in a slot that doesn’t accept it.
 
 ### 👷 Technical
 
@@ -299,7 +305,7 @@
 * Port to 1.20.
 * Supports Pottery _Sherds_ sound (name has changed).
 
-### 🔧 Fixed
+### 🗘 Updated
 
 * Typing sound turns on by default. (suggested by [#3](https://github.com/lonefelidae16/extra-sounds/issues/3))
 * Supports Keyboard’s Cut action sound on edit screen:
@@ -355,9 +361,12 @@
 ### 🔧 Fixed
 
 * Keyboard’s Cursor sound when moving rows.
-* Changes working directory of the cache.
-* Item delete sound when moving a stack from HotBar to creative slot
+* Item deletion sound when moving a stack from HotBar to creative slot
   on CreativeInventory screen.
+
+### 🗘 Updated
+
+* Changes working directory of the cache.
 
 ### 👷 Technical
 
