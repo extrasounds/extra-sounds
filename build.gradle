@@ -11,6 +11,15 @@ var targetJavaLang = Integer.parseInt(project.java_lang_version)
 
 tasks.runClient.dependsOn(build)
 
+var verStr = (project.findProperty('verStr') ?: versionDetails().gitHash[0..7]).toString()
+var buildNum = ''
+if (verStr.contains('-')) {
+    var spl = verStr.split('-')
+    verStr = spl[0]
+    buildNum = "-${spl[1]}"
+}
+version = "${project.mod_version}+${verStr}~lonefelidae16${buildNum}"
+
 allprojects {
     version = "${project.mod_version}+${versionDetails().gitHash[0..7]}~lonefelidae16"
     group = project.maven_group
@@ -95,9 +104,9 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.minecraft_version}${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    modImplementation include("me.lonefelidae16:groominglib:${project.groom_version}")
+
+    implementation include("me.lonefelidae16:groominglib:${project.groom_version}")
 
     // <editor-fold desc="Extra Sounds modules">
     compileOnly include(project(path: 'logics'))

@@ -12,8 +12,8 @@ dependencies {
     minecraft "com.mojang:minecraft:${extraSounds.minecraft_version}"
     mappings "net.fabricmc:yarn:${extraSounds.minecraft_version}${extraSounds.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${extraSounds.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${extraSounds.fabric_api_version}"
-    modImplementation "me.lonefelidae16:groominglib:${extraSounds.groom_version}"
+
+    implementation "me.lonefelidae16:groominglib:${extraSounds.groom_version}"
 
     compileOnly project(path: ':sound-categories:shared')
 
