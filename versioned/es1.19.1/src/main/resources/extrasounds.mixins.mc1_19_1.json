@@ -9,7 +9,6 @@
   "client": [
     "action.block.ClientPlayerInteractionManagerMixin",
     "action.entity.ClientPlayerInteractionManagerMixin",
-    "action.item.ClientPlayerEntityMixin",
     "chat.ChatHudMixin",
     "effect.ClientPlayerEntityMixin",
     "effect.ExtendLivingEntityMixin",

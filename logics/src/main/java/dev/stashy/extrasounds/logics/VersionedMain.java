@@ -1,6 +1,5 @@
 package dev.stashy.extrasounds.logics;
 
-import com.google.common.collect.Maps;
 import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import me.lonefelidae16.groominglib.Util;
@@ -14,6 +13,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IndexedIterable;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -33,7 +33,7 @@ public abstract class VersionedMain {
      * Predicate in this value will be passed an instance of an {@link InventoryClickState}.<br>
      * Item -&gt; Predicate&lt;InventoryClickStatus&gt;
      */
-    protected static final Map<Item, Predicate<InventoryClickState>> IGNORE_SOUND_PREDICATE_MAP = Util.make(Maps.newHashMap(), map -> {
+    protected static final Map<Item, Predicate<InventoryClickState>> IGNORE_SOUND_PREDICATE_MAP = Util.make(new HashMap<>(), map -> {
         map.put(Items.BUNDLE, status -> {
             return status.isRMB && !(status.slot instanceof CreativeInventoryScreen.LockableSlot);
         });

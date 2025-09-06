@@ -76,6 +76,6 @@ public final class Main extends VersionedMain {
 
     @Override
     public float getSoundVolume(SoundCategory soundCategory) {
-        return MinecraftClient.getInstance().options.getSoundVolume(soundCategory);
+        return MinecraftClient.getInstance().options.getCategorySoundVolume(soundCategory);
     }
 }

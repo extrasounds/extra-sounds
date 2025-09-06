@@ -2,6 +2,7 @@ package dev.stashy.extrasounds.logics.impl;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.state.ActionResultState;
+import dev.stashy.extrasounds.logics.mixin.access.FlowerPotBlockInvoker;
 import dev.stashy.extrasounds.sounds.Sounds;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -100,7 +101,7 @@ public abstract class AbstractInteractionHandler {
                 (this.block instanceof FlowerPotBlock potBlock) &&
                 actionResult == ActionResultState.SUCCESS
         ) {
-            if (!potBlock.isEmpty()) {
+            if (!((FlowerPotBlockInvoker) potBlock).invokeIsEmpty()) {
                 // Take from pot
                 ExtraSounds.MANAGER.blockInteract(potBlock.getContent().asItem(), blockPos);
             } else {

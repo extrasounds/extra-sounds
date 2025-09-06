@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc1_21_4.mixin.action.item;
+package dev.stashy.extrasounds.logics.mixin.action.item;
 
 import com.mojang.authlib.GameProfile;
 import dev.stashy.extrasounds.logics.ExtraSounds;

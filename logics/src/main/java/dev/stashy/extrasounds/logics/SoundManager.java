@@ -1,6 +1,5 @@
 package dev.stashy.extrasounds.logics;
 
-import com.google.common.collect.Sets;
 import dev.stashy.extrasounds.logics.debug.DebugUtils;
 import dev.stashy.extrasounds.logics.entry.SoundPackLoader;
 import dev.stashy.extrasounds.logics.impl.VersionedHotbarSoundHandler;
@@ -27,6 +26,7 @@ import net.minecraft.util.math.MathHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -48,7 +48,7 @@ public final class SoundManager {
 
     public SoundManager() {
         this.hotbarSoundHandler = VersionedHotbarSoundHandler.newInstance();
-        this.missingSoundId = Sets.newHashSet();
+        this.missingSoundId = new HashSet<>();
         this.lastPlayed = 0;
         this.quickMovingItem = Items.AIR;
     }
