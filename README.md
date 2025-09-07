@@ -8,13 +8,14 @@
 [![Requires Fabric API]][Fabric API]
 [![Requires QFAPI]][QSL]
 
-[![Latest build on GitHub]][GitHubTags]
+[![Latest build on GitHub]](https://github.com/lonefelidae16/extra-sounds/releases)
 
 **[~~Modrinth~~](https://modrinth.com/mod/extrasounds)
 | [~~CurseForge~~](https://www.curseforge.com/minecraft/mc-mods/extrasounds)**
 
 This port is not published on Modrinth and CurseForge.
-Please check [GitHub Tags][GitHubTags]’ commit messages;
+Please check [GitHub Releases](https://github.com/lonefelidae16/extra-sounds/releases),
+or [GitHub Tags](https://github.com/lonefelidae16/extra-sounds/tags)’ commit messages;
 press “…” <sup>(toggle message)</sup> button next to the version to show.
 
 Also, there may still be available the artifacts
@@ -118,4 +119,3 @@ To build this project yourself, [follow the guide on the Wiki](https://github.co
 [QSL]: https://www.curseforge.com/minecraft/mc-mods/qsl
 
 [Latest build on GitHub]: https://img.shields.io/github/v/tag/lonefelidae16/extra-sounds?logo=github&logoColor=black&label=latest&labelColor=whitesmoke&color=plum
-[GitHubTags]: https://github.com/lonefelidae16/extra-sounds/tags

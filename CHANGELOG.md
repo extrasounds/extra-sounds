@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0+1.21.8-build.6] - 2025-09-07
+### 🔧 Fixed
+
+* Volume does not follow the vanilla’s Master volume for MC1.21.6 or later.
+
+### 👷 Technical
+
+* Some files were refactored.
+* Revises build scripts and dependencies.
+* Now compiled artifacts will be released on [GitHub Releases](https://github.com/lonefelidae16/extra-sounds/releases).
+
 ## [3.0.0+1.21.8-build.5] - 2025-08-17
 ### 🗘 Updated
 
@@ -19,6 +30,7 @@
 * Crash on startup with RoughlyEnoughItems 20.0.811.
 
 ### 🗘 Updated
+
 * Louder volume for almost all sounds. (suggested by [#25](https://github.com/lonefelidae16/extra-sounds/issues/25))
 
 ## [3.0.0+1.21.8-build.2] - 2025-07-24
