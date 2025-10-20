@@ -1,15 +1,28 @@
 # Changelog
 
+## [3.0.0+1.21.8-build.7] - 2025-10-20
+### 🔧 Fixed
+
+* Compatibility problem with [Sound Controller](https://modrinth.com/mod/sound-controller).
+  (suggested by [#30](https://github.com/lonefelidae16/extra-sounds/issues/30))
+
+### 👷 Technical
+
+* Some files were refactored.
+
 ## [3.0.0+1.21.8-build.6] - 2025-09-07
 ### 🔧 Fixed
 
-* Volume does not follow the vanilla’s Master volume for MC1.21.6 or later.
+* ExtraSounds’ volume is too low when the vanilla’s Master volume is low
+  on MC1.21.6 or later.
 
 ### 👷 Technical
 
 * Some files were refactored.
 * Revises build scripts and dependencies.
 * Now compiled artifacts will be released on [GitHub Releases](https://github.com/lonefelidae16/extra-sounds/releases).
+* Dependency updates:
+  - SoundCategories
 
 ## [3.0.0+1.21.8-build.5] - 2025-08-17
 ### 🗘 Updated
@@ -58,7 +71,7 @@
 ### ✨ Added
 
 * Supports 1.21.5.
-* New sound
+* New sound:
   - Screenshot
 
 ### 🔧 Fixed
