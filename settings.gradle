@@ -16,7 +16,7 @@ pluginManagement {
 // SoundCategories modules
 include 'sound-categories', 'sound-categories:shared'
 // 1.21 family
-include 'sound-categories:versioned:sc1.21.6', 'sound-categories:versioned:sc1.21'
+include 'sound-categories:versioned:sc1.21'
 // 1.20 family
 include 'sound-categories:versioned:sc1.20.5', 'sound-categories:versioned:sc1.20.3', 'sound-categories:versioned:sc1.20.2', 'sound-categories:versioned:sc1.20'
 // 1.19 family
