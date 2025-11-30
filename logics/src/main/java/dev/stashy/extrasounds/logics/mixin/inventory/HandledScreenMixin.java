@@ -1,5 +1,6 @@
 package dev.stashy.extrasounds.logics.mixin.inventory;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
@@ -11,7 +12,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Set;
 
@@ -23,8 +23,16 @@ public abstract class HandledScreenMixin {
     @Shadow
     protected @Final Set<Slot> cursorDragSlots;
 
-    @Inject(method = "mouseDragged", at = @At(value = "INVOKE", target = "Ljava/util/Set;add(Ljava/lang/Object;)Z"), locals = LocalCapture.CAPTURE_FAILSOFT)
-    private void extrasounds$quickCraftSound(double mouseX, double mouseY, int button, double deltaX, double deltaY, CallbackInfoReturnable<Boolean> cir, Slot slot) {
+    @Inject(
+            method = {  // mouseDragged
+                    "method_25403(DDIDD)Z",
+//                    "method_25403(Lnet/minecraft/class_11909;DD)Z",  // >=MC1.21.9
+                    "mouseDragged(Lnet/minecraft/client/gui/Click;DD)Z"  // >=MC1.21.9
+            },
+            at = @At(value = "INVOKE", target = "Ljava/util/Set;add(Ljava/lang/Object;)Z"),
+            require = 1
+    )
+    private void extrasounds$quickCraftSound(CallbackInfoReturnable<Boolean> cir, @Local Slot slot) {
         if (!cursorDragSlots.contains(slot) && !cursorDragSlots.isEmpty()) {
             ExtraSounds.MANAGER.playSound(Sounds.ITEM_DRAG, SoundType.PLACE);
         }

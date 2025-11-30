@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.logics.compat.mixin.rei;
+package dev.stashy.extrasounds.mc1_18.compat.mixin.rei;
 
 import dev.stashy.extrasounds.logics.impl.TextFieldHandler;
 import me.shedaniel.rei.api.client.gui.widgets.TextField;
@@ -85,7 +85,7 @@ public abstract class TextFieldWidgetMixin implements TextField {
         this.soundHandler.onCursorChanged(this.cursorPos, this.cursorPos);
     }
 
-    @Inject(method = {"mouseClicked", "method_25402"}, at = @At(value = "INVOKE", target = "Lme/shedaniel/rei/impl/client/gui/widget/basewidgets/TextFieldWidget;moveCursorTo(I)V", shift = At.Shift.AFTER), require = 1)
+    @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lme/shedaniel/rei/impl/client/gui/widget/basewidgets/TextFieldWidget;moveCursorTo(I)V", shift = At.Shift.AFTER))
     private void extrasounds$clickEvent(CallbackInfoReturnable<Boolean> cir) {
         this.soundHandler.onCursorChanged(this.cursorPos, this.cursorPos);
     }

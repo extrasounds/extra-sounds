@@ -33,10 +33,10 @@ public class SoundDefinition {
 
     /**
      * Fills entry of this instance.
-     * If entry is null, parameter <code>filler</code> will be used.
+     * If entry is null, parameter {@code filler} will be used.
      *
-     * @param filler A {@link SoundEntry} to be used if <code>null</code> contains.
-     * @return The copy of <code>this</code> and not null-ize.
+     * @param filler A {@link SoundEntry} to be used if {@code null} contains.
+     * @return The copy of {@code this} and not null-ize.
      * @see #fill(SoundDefinition)
      */
     public SoundDefinition fill(@NotNull SoundEntry filler) {
@@ -50,7 +50,7 @@ public class SoundDefinition {
     /**
      * @param filler A {@link SoundDefinition} to be used if <code>null</code> contains,
      *               must be NotNull for all entries.
-     * @return The copy of <code>this</code> and not null-ize.
+     * @return The copy of {@code this} and not null-ize.
      * @see #fill(SoundEntry)
      */
     public SoundDefinition fill(@NotNull SoundDefinition filler) throws NullPointerException {

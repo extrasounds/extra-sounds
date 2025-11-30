@@ -49,5 +49,6 @@ public final class Categories {
         public static final VersionedSoundEventWrapper TURTLE = ExtraSounds.createEvent("item.category.gear.turtle");
         public static final VersionedSoundEventWrapper ARMADILLO = ExtraSounds.createEvent("item.category.gear.armadillo");
         public static final VersionedSoundEventWrapper WOOD = ExtraSounds.createEvent("item.category.gear.wood");
+        public static final VersionedSoundEventWrapper COPPER = ExtraSounds.createEvent("item.category.gear.copper");
     }
 }

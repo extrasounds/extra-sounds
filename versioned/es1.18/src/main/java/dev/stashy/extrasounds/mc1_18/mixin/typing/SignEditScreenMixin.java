@@ -20,7 +20,7 @@ public abstract class SignEditScreenMixin {
     private int currentRow;
 
     @Inject(method = "keyPressed", at = @At("RETURN"))
-    private void extrasounds$moveRow(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    private void extrasounds$moveRow(CallbackInfoReturnable<Boolean> cir) {
         if (this.currentRow != this.previousRow) {
             this.soundHandler.onKey(TextFieldHandler.KeyType.CURSOR);
             this.previousRow = this.currentRow;

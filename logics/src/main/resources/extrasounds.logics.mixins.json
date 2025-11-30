@@ -6,12 +6,12 @@
   "client": [
     "access.FlowerPotBlockInvoker",
 
-    "action.entity.LivingEntityMixin",
     "action.item.ClientPlayerEntityMixin",
     "hotbar.MinecraftClientMixin",
     "inventory.ClientPlayerInteractionManagerMixin",
     "inventory.HandledScreenMixin",
-    "inventory.MinecraftClientMixin"
+    "inventory.MinecraftClientMixin",
+    "keyboard.ScreenshotRecorderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

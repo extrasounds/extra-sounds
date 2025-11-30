@@ -9,7 +9,13 @@ plugins {
 
 var targetJavaLang = Integer.parseInt(project.java_lang_version)
 
-tasks.runClient.dependsOn(build)
+tasks.named('runClient').with {
+    if (isPresent()) {
+        configure {
+            dependsOn(build)
+        }
+    }
+}
 
 var verStr = (project.findProperty('verStr') ?: versionDetails().gitHash[0..7]).toString()
 var buildNum = ''
@@ -110,6 +116,7 @@ dependencies {
     // <editor-fold desc="Extra Sounds modules">
     compileOnly include(project(path: 'logics'))
     // 1.21 family
+    compileOnly include(project(path: 'versioned:es1.21.9'))
     compileOnly include(project(path: 'versioned:es1.21.6'))
     compileOnly include(project(path: 'versioned:es1.21.5'))
     compileOnly include(project(path: 'versioned:es1.21.4'))

@@ -5,7 +5,6 @@ import dev.stashy.extrasounds.logics.impl.AbstractCreativeInventoryHandler;
 import dev.stashy.extrasounds.logics.impl.ScreenScrollHandler;
 import dev.stashy.extrasounds.logics.impl.state.InventoryTabType;
 import dev.stashy.extrasounds.sounds.SoundType;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -34,7 +33,7 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
     private static final String METHOD_SIGN_SCROLL_ITEMS = "Lnet/minecraft/client/gui/screen/ingame/CreativeInventoryScreen$CreativeScreenHandler;scrollItems(F)V";
 
     @Unique
-    private final ScreenScrollHandler soundHandler = new ScreenScrollHandler();
+    private final ScreenScrollHandler screenScrollHandler = new ScreenScrollHandler();
     @Unique
     private int currentTab = selectedTab;
     @Unique
@@ -87,7 +86,7 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
     private void extrasounds$tabChange(ItemGroup group, CallbackInfo ci) {
         if (this.currentTab != group.getIndex()) {
             ExtraSounds.MANAGER.playSound(group.getIcon().getItem(), SoundType.PICKUP);
-            this.soundHandler.resetScrollPos();
+            this.screenScrollHandler.resetScrollPos();
             this.currentTab = group.getIndex();
         }
     }
@@ -103,23 +102,23 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
     }
 
     @Inject(method = "mouseDragged", at = @At(value = "INVOKE", target = METHOD_SIGN_SCROLL_ITEMS))
-    private void extrasounds$creativeScreenScroll(double mouseX, double mouseY, int button, double deltaX, double deltaY, CallbackInfoReturnable<Boolean> cir) {
+    private void extrasounds$creativeScreenScrollDrag(CallbackInfoReturnable<Boolean> cir) {
         var screenHandler = this.getScreenHandler();
-        this.soundHandler.onScroll(this.extrasounds$getScreenScrollRow());
+        this.screenScrollHandler.onScroll(this.extrasounds$getScreenScrollRow());
     }
 
     @Inject(method = "mouseScrolled", at = @At(value = "INVOKE", target = METHOD_SIGN_SCROLL_ITEMS))
-    private void extrasounds$creativeScreenScroll(double mouseX, double mouseY, double amount, CallbackInfoReturnable<Boolean> cir) {
-        this.soundHandler.onScroll(this.extrasounds$getScreenScrollRow());
+    private void extrasounds$creativeScreenScroll(CallbackInfoReturnable<Boolean> cir) {
+        this.screenScrollHandler.onScroll(this.extrasounds$getScreenScrollRow());
     }
 
     @Inject(method = "resize", at = @At("RETURN"))
-    private void extrasounds$creativeScreenScroll(MinecraftClient client, int width, int height, CallbackInfo ci) {
-        this.soundHandler.onScroll(this.extrasounds$getScreenScrollRow());
+    private void extrasounds$creativeScreenScrollOnResize(CallbackInfo ci) {
+        this.screenScrollHandler.onScroll(this.extrasounds$getScreenScrollRow());
     }
 
     @Inject(method = "search", at = @At("HEAD"))
     private void extrasounds$resetCreativeScrollPos(CallbackInfo ci) {
-        this.soundHandler.resetScrollPos();
+        this.screenScrollHandler.resetScrollPos();
     }
 }

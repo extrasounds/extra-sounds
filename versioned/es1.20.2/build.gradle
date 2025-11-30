@@ -17,6 +17,8 @@ dependencies {
 
     implementation "me.lonefelidae16:groominglib:${extraSounds.groom_version}"
 
+    modCompileOnly "maven.modrinth:rei:${project.rei_version}+fabric"
+
     implementation project(path: extraSounds.project('logics').path, configuration: 'namedElements')
 }
 

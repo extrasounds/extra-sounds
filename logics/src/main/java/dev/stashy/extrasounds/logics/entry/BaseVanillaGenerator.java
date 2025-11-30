@@ -38,19 +38,18 @@ public abstract class BaseVanillaGenerator {
     }
 
     private boolean isBrickItem(Item item) {
-        final String idPath = getItemIdPath(item);
+        final String idPath = this.getItemIdPath(item);
         return item == Items.BRICK || idPath.endsWith("pottery_sherd") || idPath.startsWith("pottery_shard");
     }
 
     private boolean isGearGoldenItem(Item item) {
-        return item instanceof CompassItem ||
-                item instanceof SpyglassItem || item instanceof ShearsItem ||
-                this.getItemIdPath(item).endsWith("_harness");
+        return item instanceof CompassItem || item instanceof ShearsItem;
     }
 
     private boolean isGearLeatherItem(Item item) {
-        return item instanceof LeadItem || getItemIdPath(item).equals("elytra") ||
-                getItemIdPath(item).equals("saddle");
+        return item instanceof LeadItem || this.getItemIdPath(item).equals("elytra") ||
+                this.getItemIdPath(item).equals("saddle") ||
+                this.getItemIdPath(item).endsWith("_harness");
     }
 
     private boolean isGearGenericItem(Item item) {
@@ -122,6 +121,8 @@ public abstract class BaseVanillaGenerator {
             return SoundDefinition.of(aliased(BUNDLES));
         } else if (item instanceof EggItem) {
             return SoundDefinition.of(aliased(EGG));
+        } else if (item instanceof SpyglassItem) {
+            return SoundDefinition.of(aliased(Gear.IRON));
         }
 
         return DEFAULT_SOUND;

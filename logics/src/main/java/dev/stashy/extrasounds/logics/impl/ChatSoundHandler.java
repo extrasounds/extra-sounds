@@ -22,9 +22,7 @@ public final class ChatSoundHandler {
 
         if (containsPlName && !ExtraSounds.MANAGER.isMuted(SoundType.CHAT_MENTION)) {
             ExtraSounds.MANAGER.playSound(Sounds.CHAT_MENTION, SoundType.CHAT_MENTION);
-        } else if (containsScreenshot && !ExtraSounds.MANAGER.isMuted(SoundType.SCREENSHOT)) {
-            ExtraSounds.MANAGER.playSound(Sounds.SCREENSHOT, SoundType.SCREENSHOT);
-        } else {
+        } else if (!containsScreenshot || ExtraSounds.MANAGER.isMuted(SoundType.SCREENSHOT)) {
             ExtraSounds.MANAGER.playSound(Sounds.CHAT, SoundType.CHAT);
         }
     }

@@ -16,7 +16,7 @@ pluginManagement {
 // SoundCategories modules
 include 'sound-categories', 'sound-categories:shared'
 // 1.21 family
-include 'sound-categories:versioned:sc1.21'
+include 'sound-categories:versioned:sc1.21.9', 'sound-categories:versioned:sc1.21'
 // 1.20 family
 include 'sound-categories:versioned:sc1.20.5', 'sound-categories:versioned:sc1.20.3', 'sound-categories:versioned:sc1.20.2', 'sound-categories:versioned:sc1.20'
 // 1.19 family
@@ -27,7 +27,7 @@ include 'sound-categories:versioned:sc1.18'
 // ExtraSounds modules
 include 'logics'
 // 1.21 family
-include /*'versioned:es1.21.9', */'versioned:es1.21.6', 'versioned:es1.21.5', 'versioned:es1.21.4', 'versioned:es1.21.2', 'versioned:es1.21'
+include 'versioned:es1.21.9', 'versioned:es1.21.6', 'versioned:es1.21.5', 'versioned:es1.21.4', 'versioned:es1.21.2', 'versioned:es1.21'
 // 1.20 family
 include 'versioned:es1.20.5', 'versioned:es1.20.2', 'versioned:es1.20'
 // 1.19 family

@@ -46,7 +46,7 @@ public abstract class TextFieldWidgetMixin {
     }
 
     @Inject(method = "erase", at = @At("RETURN"))
-    private void extrasounds$eraseStrReturn(int offset, CallbackInfo ci) {
+    private void extrasounds$eraseStrReturn(CallbackInfo ci) {
         this.soundHandler.setCursor(this.selectionEnd);
     }
 
@@ -67,7 +67,7 @@ public abstract class TextFieldWidgetMixin {
     }
 
     @Inject(method = "charTyped", at = @At("RETURN"))
-    private void extrasounds$appendChar(char chr, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    private void extrasounds$appendChar(CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValue() || !this.soundHandler.isPosUpdated(this.selectionStart, this.selectionEnd)) {
             return;
         }
@@ -99,17 +99,17 @@ public abstract class TextFieldWidgetMixin {
                     @At(value = "INVOKE", target = METHOD_SIGN_CURSOR_TO_END, shift = At.Shift.AFTER)
             }
     )
-    private void extrasounds$cursorMoveKeyTyped(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    private void extrasounds$cursorMoveKeyTyped(CallbackInfoReturnable<Boolean> cir) {
         this.soundHandler.onCursorChanged(this.selectionStart, this.selectionEnd);
     }
 
     @Inject(method = "onClick", at = @At(value = "INVOKE", target = METHOD_SIGN_SET_CURSOR, shift = At.Shift.AFTER))
-    private void extrasounds$clickEvent(double mouseX, double mouseY, CallbackInfo ci) {
+    private void extrasounds$clickEvent(CallbackInfo ci) {
         this.soundHandler.onCursorChanged(this.selectionStart, this.selectionEnd);
     }
 
     @Inject(method = "setText", at = @At(value = "INVOKE", target = METHOD_SIGN_CURSOR_TO_END))
-    private void extrasounds$autoComplete(String text, CallbackInfo ci) {
+    private void extrasounds$autoComplete(CallbackInfo ci) {
         this.soundHandler.setCursor(this.getText().length());
     }
 }

@@ -19,26 +19,24 @@ public abstract class MouseMixin {
     private final VersionedHotbarSoundHandler soundHandler = ExtraSounds.MANAGER.getHotbarSoundHandler();
 
     /**
-     * The lambda of {@code MinecraftClient#execute(() -> { ... })}
+     * The lambda in 3rd arg of {@code InputUtil#setMouseCallbacks()}
      */
     @Unique
-    private static final String METHOD_SIGN_SETUP_CALLBACK_LAMBDA = "method_22686";
-    @Unique
-    private static final String METHOD_SIGN_ON_MOUSE_BUTTON = "Lnet/minecraft/client/Mouse;onMouseButton(JIII)V";
+    private static final String METHOD_SIGN_SETUP_CALLBACK_LAMBDA = "method_22684";
 
-    @Inject(method = METHOD_SIGN_SETUP_CALLBACK_LAMBDA, at = @At(value = "INVOKE", target = METHOD_SIGN_ON_MOUSE_BUTTON), require = 0)
-    private void extrasounds$storeHotbarIndex_integrateMidnightControls(long windowx, int button, int action, int modifiers, CallbackInfo ci) {
+    @Inject(method = METHOD_SIGN_SETUP_CALLBACK_LAMBDA, at = @At("HEAD"))
+    private void extrasounds$storeHotbarIndex_integrateMidnightControls(CallbackInfo ci) {
         final ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player == null || button != 0) {
+        if (player == null) {
             return;
         }
         this.currentHotbarSlot = this.soundHandler.getPlayerInventorySlot(player);
     }
 
-    @Inject(method = METHOD_SIGN_SETUP_CALLBACK_LAMBDA, at = @At(value = "INVOKE", target = METHOD_SIGN_ON_MOUSE_BUTTON, shift = At.Shift.AFTER), require = 0)
-    private void extrasounds$touchHotbar_integrateMidnightControls(long windowx, int button, int action, int modifiers, CallbackInfo ci) {
+    @Inject(method = METHOD_SIGN_SETUP_CALLBACK_LAMBDA, at = @At("RETURN"))
+    private void extrasounds$touchHotbar_integrateMidnightControls(CallbackInfo ci) {
         final ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player == null || button != 0) {
+        if (player == null) {
             return;
         }
         final int selectedSlot = this.soundHandler.getPlayerInventorySlot(player);

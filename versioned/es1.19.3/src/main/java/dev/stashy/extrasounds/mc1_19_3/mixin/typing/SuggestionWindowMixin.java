@@ -21,7 +21,7 @@ public abstract class SuggestionWindowMixin {
     private int currentPos;
 
     @Inject(method = "select", at = @At("RETURN"))
-    private void extrasounds$suggestionSelect(int index, CallbackInfo ci) {
+    private void extrasounds$suggestionSelect(CallbackInfo ci) {
         if (this.selection != this.currentPos) {
             this.soundHandler.onKey(TextFieldHandler.KeyType.CURSOR);
             this.currentPos = this.selection;
@@ -34,7 +34,7 @@ public abstract class SuggestionWindowMixin {
     }
 
     @Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatInputSuggestor;clearWindow()V"))
-    private void extrasounds$closeWindow(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    private void extrasounds$closeWindow(CallbackInfoReturnable<Boolean> cir) {
         this.soundHandler.onKey(TextFieldHandler.KeyType.CURSOR);
     }
 }

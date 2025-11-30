@@ -328,6 +328,16 @@
       }
     ]
   },
+  "item.category.gear.copper": {
+    "sounds": [
+      {
+        "name": "minecraft:item.armor.equip_copper",
+        "volume": 0.7,
+        "pitch": 1.4,
+        "type": "event"
+      }
+    ]
+  },
   "item.category.hay": {
     "sounds": [
       {
@@ -1066,6 +1076,15 @@
       }
     ]
   },
+  "item.pickup.minecraft.copper_nugget": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "extrasounds:item.category.metal_bits",
+        "type": "event"
+      }
+    ]
+  },
   "item.pickup.minecraft.damaged_anvil": {
     "replace": true,
     "sounds": [
@@ -1089,6 +1108,46 @@
     "sounds": [
       {
         "name": "extrasounds:item.category.gear.diamond",
+        "pitch": 0.8,
+        "type": "event"
+      }
+    ]
+  },
+  "item.pickup.minecraft.golden_horse_armor": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "extrasounds:item.category.gear.golden",
+        "pitch": 0.8,
+        "type": "event"
+      }
+    ]
+  },
+  "item.pickup.minecraft.iron_horse_armor": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "extrasounds:item.category.gear.iron",
+        "pitch": 0.8,
+        "type": "event"
+      }
+    ]
+  },
+  "item.pickup.minecraft.copper_horse_armor": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "extrasounds:item.category.gear.copper",
+        "pitch": 0.8,
+        "type": "event"
+      }
+    ]
+  },
+  "item.pickup.minecraft.leather_horse_armor": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "extrasounds:item.category.gear.leather",
         "pitch": 0.8,
         "type": "event"
       }
@@ -1318,16 +1377,6 @@
       }
     ]
   },
-  "item.pickup.minecraft.golden_horse_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.golden",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
   "item.pickup.minecraft.gunpowder": {
     "replace": true,
     "sounds": [
@@ -1373,16 +1422,6 @@
     "sounds": [
       {
         "name": "extrasounds:item.category.wet_slippery",
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.iron_horse_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.iron",
-        "pitch": 0.8,
         "type": "event"
       }
     ]
@@ -1433,16 +1472,6 @@
         "pitch": 1.7,
         "type": "event",
         "volume": 0.7
-      }
-    ]
-  },
-  "item.pickup.minecraft.leather_horse_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.leather",
-        "pitch": 0.8,
-        "type": "event"
       }
     ]
   },

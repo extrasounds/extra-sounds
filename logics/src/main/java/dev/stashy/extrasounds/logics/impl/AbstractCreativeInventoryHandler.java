@@ -34,18 +34,13 @@ public abstract class AbstractCreativeInventoryHandler {
         if (actionType == SlotActionType.THROW) {
             // When CreativeInventory is opened, can drop items from any slots while holding an item on cursor.
             final ItemStack slotStack = state.getSlotStack();
-            if (bOnCreativeTab && (slotStack.getCount() == 1 || button == 1) && state.cursorStack.isEmpty() && bOnHotbar) {
-                // When stack is gone, will not be popped.
-                ExtraSounds.MANAGER.playSound(Sounds.ITEM_DELETE_PARTIAL, SoundType.PICKUP);
-            } else {
-                if (button == 0) {
-                    slotStack.setCount(1);
-                } else if (button == 1 && bOnCreativeTab) {
-                    // With holding the Ctrl key; (slotActionType == THROW && button == 1)
-                    slotStack.setCount(slotStack.getMaxCount());
-                }
-                ExtraSounds.MANAGER.playThrow(slotStack);
+            if (button == 0) {
+                slotStack.setCount(1);
+            } else if (button == 1) {
+                // With holding the Ctrl key; (slotActionType == THROW && button == 1)
+                slotStack.setCount(slotStack.getMaxCount());
             }
+            ExtraSounds.MANAGER.playThrow(slotStack);
             return;
         }
 

@@ -18,7 +18,8 @@
   "entrypoints": {
   },
   "mixins": [
-    "extrasounds.mixins.${moduleId}.json"
+    "extrasounds.mixins.${moduleId}.json",
+    "extrasounds.compat.mixins.${moduleId}.json"
   ],
   "depends": {
     "fabricloader": "*",
