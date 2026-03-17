@@ -1,0 +1,14 @@
+{
+  "soundCategory.extrasounds_logics$master": "ExtraSounds",
+  "soundCategory.extrasounds_logics$inventory": "インベントリ操作",
+  "soundCategory.extrasounds_logics$hotbar": "ホットバー操作",
+  "soundCategory.extrasounds_logics$chat": "チャット メッセージ",
+  "soundCategory.extrasounds_logics$chat_mention": "チャット @メンション",
+  "soundCategory.extrasounds_logics$screenshot": "スクリーンショット",
+  "soundCategory.extrasounds_logics$effects": "ステータス効果/ポーション",
+  "soundCategory.extrasounds_logics$typing": "タイピング",
+  "soundCategory.extrasounds_logics$item_intr": "アイテム操作",
+  "soundCategory.extrasounds_logics$block_intr": "ブロック操作",
+  "soundCategory.extrasounds_logics$entity": "エンティティ イベント",
+  "soundCategory.extrasounds_logics$item_drop": "アイテムドロップ"
+}
