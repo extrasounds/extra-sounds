@@ -17,11 +17,11 @@ import me.lonefelidae16.groominglib.api.PrefixableMessageFactory;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.sound.SoundEntry;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.resources.sounds.SoundEventRegistration;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.state.BlockState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +51,7 @@ public final class SoundPackLoader {
     );
 
     private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(SoundEntry.class, new SoundEntrySerializer())
+            .registerTypeAdapter(SoundEventRegistration.class, new SoundEntrySerializer())
             .registerTypeHierarchyAdapter(VersionedSoundWrapper.class, Objects.requireNonNull(VersionedSoundSerializer.newInstance()))
             .create();
 
@@ -122,7 +122,7 @@ public final class SoundPackLoader {
                 LOGGER.info("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
             }
             LOGGER.info("Regenerating cache...");
-            final Map<String, SoundEntry> resourceMapper = new HashMap<>();
+            final Map<String, SoundEventRegistration> resourceMapper = new HashMap<>();
             processSounds(soundGenMappers, resourceMapper);
             CacheData.create(currentCacheInfo, resourceMapper);
         }
@@ -144,14 +144,14 @@ public final class SoundPackLoader {
 
     /**
      * Processes for the all items.<br>
-     * This method is "Memory Sensitive" as creates 3x {@link SoundEntry}s per item,
+     * This method is "Memory Sensitive" as creates 3x {@link SoundEventRegistration}s per item,
      * and avoid using Stream APIs in non-debug mode as much as possible.
      *
      * @param soundGenerator The information of generator including namespace and {@link SoundGenerator}.
      * @param resource       The {@link Map} of resource that the SoundEntry will be stored.
      */
-    private static void processSounds(Map<String, SoundGenerator> soundGenerator, Map<String, SoundEntry> resource) {
-        final SoundEntry fallbackSoundEntry = Sounds.aliased(SoundManager.FALLBACK_SOUND_EVENT);
+    private static void processSounds(Map<String, SoundGenerator> soundGenerator, Map<String, SoundEventRegistration> resource) {
+        final SoundEventRegistration fallbackSoundEntry = Sounds.aliased(SoundManager.FALLBACK_SOUND_EVENT);
         final Set<String> inSoundsJsonIds = new HashSet<>();
         final String fallbackSoundJson = GSON.toJson(fallbackSoundEntry);
         if (DebugUtils.SEARCH_UNDEF_SOUND) {
@@ -173,7 +173,7 @@ public final class SoundPackLoader {
             } else if (item instanceof BlockItem blockItem) {
                 SoundDefinition blockSoundDef = SoundDefinition.of(fallbackSoundEntry);
                 try {
-                    final BlockState blockState = blockItem.getBlock().getDefaultState();
+                    final BlockState blockState = blockItem.getBlock().defaultBlockState();
                     final VersionedSoundEventWrapper blockSound = VersionedSoundEventWrapper.fromBlockState(blockState);
                     blockSoundDef = SoundDefinition.of(Sounds.aliased(blockSound));
                 } catch (Exception ignored) {
@@ -203,10 +203,10 @@ public final class SoundPackLoader {
      * Generates a resource.
      *
      * @param clickId  Target id.
-     * @param entry    Target {@link SoundEntry}.
+     * @param entry    Target {@link SoundEventRegistration}.
      * @param resource {@link Map} of resource that the SoundEntry will be stored.
      */
-    private static void generateSoundEntry(Identifier clickId, SoundEntry entry, Map<String, SoundEntry> resource) {
+    private static void generateSoundEntry(Identifier clickId, SoundEventRegistration entry, Map<String, SoundEventRegistration> resource) {
         resource.put(clickId.getPath(), entry);
         putSoundEvent(clickId);
     }
@@ -342,7 +342,7 @@ public final class SoundPackLoader {
          * @param info The current cache info.
          * @param map  The cache data that will be converted to json.
          */
-        static void create(CacheInfo info, Map<String, SoundEntry> map) {
+        static void create(CacheInfo info, Map<String, SoundEventRegistration> map) {
             try (BufferedWriter writer = Files.newBufferedWriter(CACHE_PATH)) {
                 writer.write(info.toString().trim());
                 writer.newLine();

@@ -2,7 +2,7 @@ import com.google.gson.JsonParser
 import com.google.gson.JsonPrimitive
 
 plugins {
-    id "fabric-loom"
+    id 'net.fabricmc.fabric-loom'
     id "maven-publish"
     id 'com.palantir.git-version'
 }
@@ -14,13 +14,7 @@ tasks.named('runClient').configure {
 }
 
 var verStr = (project.findProperty('verStr') ?: versionDetails().gitHash[0..7]).toString()
-var buildNum = ''
-if (verStr.contains('-')) {
-    var spl = verStr.split('-')
-    verStr = spl[0]
-    buildNum = "-${spl[1]}"
-}
-version = "${project.mod_version}+${verStr}~lonefelidae16${buildNum}"
+version = "${project.mod_version}+${verStr}"
 
 allprojects {
     group = project.maven_group
@@ -99,46 +93,28 @@ allprojects {
 }
 
 var devLibsPaths = '**/build/devlibs/*-dev.jar'
+var libsPaths = '**/build/libs/*.jar'
 var sourcesPaths = '**/*-sources.jar'
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.minecraft_version}${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
     implementation include("me.lonefelidae16:groominglib:${project.groom_version}")
 
     // <editor-fold desc="Extra Sounds modules">
     compileOnly include(project(path: 'logics'))
-    // 1.21 family
-    compileOnly include(project(path: 'versioned:es1.21.9'))
-    compileOnly include(project(path: 'versioned:es1.21.6'))
-    compileOnly include(project(path: 'versioned:es1.21.5'))
-    compileOnly include(project(path: 'versioned:es1.21.4'))
-    compileOnly include(project(path: 'versioned:es1.21.2'))
-    compileOnly include(project(path: 'versioned:es1.21'))
-    // 1.20 family
-    compileOnly include(project(path: 'versioned:es1.20.5'))
-    compileOnly include(project(path: 'versioned:es1.20.2'))
-    compileOnly include(project(path: 'versioned:es1.20'))
-    // 1.19 family
-    compileOnly include(project(path: 'versioned:es1.19.4'))
-    compileOnly include(project(path: 'versioned:es1.19.3'))
-    compileOnly include(project(path: 'versioned:es1.19.1'))
-    compileOnly include(project(path: 'versioned:es1.19'))
-    // 1.18 family
-    compileOnly include(project(path: 'versioned:es1.18.2'))
-    compileOnly include(project(path: 'versioned:es1.18'))
+    compileOnly include(project(path: 'versioned:es26.1'))
     // </editor-fold>
 
     // Sound Categories modules
     compileOnly include(project(path: 'sound-categories'))
 
     // DevLaunch
-    runtimeOnly fileTree(dir: 'logics', exclude: [sourcesPaths], include: [devLibsPaths])
-    runtimeOnly fileTree(dir: 'versioned', exclude: [sourcesPaths], include: [devLibsPaths])
-    runtimeOnly fileTree(dir: 'sound-categories', exclude: [sourcesPaths], include: [devLibsPaths])
+    runtimeOnly fileTree(dir: 'logics', exclude: [sourcesPaths], include: [devLibsPaths, libsPaths])
+    runtimeOnly fileTree(dir: 'versioned', exclude: [sourcesPaths], include: [devLibsPaths, libsPaths])
+    runtimeOnly fileTree(dir: 'sound-categories', exclude: [sourcesPaths], include: [devLibsPaths, libsPaths])
 }
 
 jar {
@@ -151,12 +127,6 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
         }
     }
 

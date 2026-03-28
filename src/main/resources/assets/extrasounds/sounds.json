@@ -1103,66 +1103,6 @@
       }
     ]
   },
-  "item.pickup.minecraft.netherite_horse_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.netherite",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.diamond_horse_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.diamond",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.golden_horse_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.golden",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.iron_horse_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.iron",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.copper_horse_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.copper",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.leather_horse_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.leather",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
   "item.pickup.minecraft.dragon_breath": {
     "replace": true,
     "sounds": [
@@ -2108,56 +2048,6 @@
         "name": "minecraft:block.resin.place",
         "volume": 2,
         "pitch": 1.6,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.netherite_nautilus_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.netherite",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.diamond_nautilus_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.diamond",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.golden_nautilus_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.golden",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.iron_nautilus_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.iron",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.copper_nautilus_armor": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.copper",
-        "pitch": 0.8,
         "type": "event"
       }
     ]

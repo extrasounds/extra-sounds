@@ -5,8 +5,8 @@ import com.google.gson.JsonObject;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
 import me.lonefelidae16.groominglib.api.PrefixableMessageFactory;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.PackType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,9 +22,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Version-compatible class for {@link net.minecraft.resource.ResourcePack}.<br>
+ * Version-compatible class for {@link net.minecraft.server.packs.PackResources}.<br>
  * Needs to append post-fix {@code *Impl} for each method as this class does not implement
- * {@link net.minecraft.resource.ResourcePack} directly and will not be re-mapped.
+ * {@link net.minecraft.server.packs.PackResources} directly and will not be re-mapped.
  */
 public abstract class VersionedClientResource {
     protected static final ExecutorService EXECUTOR_SERVICE;
@@ -57,6 +57,11 @@ public abstract class VersionedClientResource {
         return null;
     }
 
+    protected VersionedClientResource(String modId, String packName) {
+        this.packVersion = 5;
+        this.assets = new ConcurrentHashMap<>();
+    }
+
     public void addResourceAsync(Identifier location, Function<Identifier, byte[]> supplier) {
         var future = EXECUTOR_SERVICE.submit(() -> supplier.apply(location));
         this.assets.put(location, () -> {
@@ -68,13 +73,8 @@ public abstract class VersionedClientResource {
         });
     }
 
-    protected VersionedClientResource(String modId, String packName) {
-        this.packVersion = 5;
-        this.assets = new ConcurrentHashMap<>();
-    }
-
-    public Set<String> getNamespacesImpl(ResourceType type) {
-        if (type != ResourceType.CLIENT_RESOURCES) {
+    public Set<String> getNamespacesImpl(PackType type) {
+        if (type != PackType.CLIENT_RESOURCES) {
             return Set.of();
         }
 

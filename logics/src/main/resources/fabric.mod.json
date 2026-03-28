@@ -23,12 +23,5 @@
   "mixins": [
     "extrasounds.logics.mixins.json",
     "extrasounds.compat.mixins.json"
-  ],
-  "depends": {
-    "fabricloader": "*",
-    "fabric": "*",
-    "minecraft": "*",
-    "soundcategories": "*"
-  },
-  "accessWidener": "extrasounds.accesswidener"
+  ]
 }

@@ -1,37 +1,48 @@
 package dev.stashy.extrasounds.logics;
 
 import dev.stashy.soundcategories.CategoryLoader;
-import net.minecraft.sound.SoundCategory;
+import net.minecraft.sounds.SoundSource;
 
 public final class Mixers implements CategoryLoader {
     @Register(master = true, defaultLevel = 0.33f, preview = ExtraSounds.MODID + ":item.pickup_all")
-    public static SoundCategory MASTER;
+    public static SoundSource MASTER;
+
     @Register(preview = ExtraSounds.MODID + ":item.pickup_all")
-    public static SoundCategory INVENTORY;
+    public static SoundSource INVENTORY;
+
     @Register(preview = ExtraSounds.MODID + ":hotbar_scroll")
-    public static SoundCategory HOTBAR;
+    public static SoundSource HOTBAR;
+
     @Register(preview = ExtraSounds.MODID + ":chat.message")
-    public static SoundCategory CHAT;
+    public static SoundSource CHAT;
+
     @Register(preview = ExtraSounds.MODID + ":chat.mention")
-    public static SoundCategory CHAT_MENTION;
+    public static SoundSource CHAT_MENTION;
+
     @Register(toggle = true, preview = ExtraSounds.MODID + ":keyboard.screenshot")
-    public static SoundCategory SCREENSHOT;
+    public static SoundSource SCREENSHOT;
+
     @Register(preview = {
             ExtraSounds.MODID + ":effect.add.positive",
             ExtraSounds.MODID + ":effect.add.negative"
     })
-    public static SoundCategory EFFECTS;
+    public static SoundSource EFFECTS;
+
     @Register(preview = ExtraSounds.MODID + ":keyboard.type")
-    public static SoundCategory TYPING;
+    public static SoundSource TYPING;
+
     @Register(preview = ExtraSounds.MODID + ":action.bow")
-    public static SoundCategory ITEM_INTR;
+    public static SoundSource ITEM_INTR;
+
     @Register(preview = {
             ExtraSounds.MODID + ":action.redstone_component.on",
             ExtraSounds.MODID + ":action.redstone_component.off"
     })
-    public static SoundCategory BLOCK_INTR;
+    public static SoundSource BLOCK_INTR;
+
     @Register(defaultLevel = 0.f, preview = ExtraSounds.MODID + ":entity.poof")
-    public static SoundCategory ENTITY;
+    public static SoundSource ENTITY;
+
     @Register(toggle = true, preview = ExtraSounds.MODID + ":item.drop")
-    public static SoundCategory ITEM_DROP;
+    public static SoundSource ITEM_DROP;
 }

@@ -5,12 +5,12 @@ import dev.stashy.extrasounds.logics.Mixers;
 import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public abstract class VersionedHotbarSoundHandler {
     public static final int FORCE_HOTBAR_CHANGE = -1;
@@ -19,7 +19,7 @@ public abstract class VersionedHotbarSoundHandler {
 
     private Item pickingItem = ITEM_EMPTY;
 
-    public abstract int getPlayerInventorySlot(PlayerEntity player);
+    public abstract int getPlayerInventorySlot(Player player);
 
     public static VersionedHotbarSoundHandler newInstance() {
         try {
@@ -44,7 +44,7 @@ public abstract class VersionedHotbarSoundHandler {
     }
 
     public void onChange(int newSlot) {
-        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        final LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }
@@ -72,13 +72,13 @@ public abstract class VersionedHotbarSoundHandler {
     }
 
     public void onItemPick() {
-        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        final LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }
 
         final Item item = this.popPickingItem();
-        if (!player.getMainHandStack().isOf(item) && item != ITEM_EMPTY) {
+        if (!player.getMainHandItem().is(item) && item != ITEM_EMPTY) {
             ExtraSounds.MANAGER.playSound(item, SoundType.HOTBAR);
         }
     }

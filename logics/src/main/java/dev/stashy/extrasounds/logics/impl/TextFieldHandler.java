@@ -5,7 +5,7 @@ import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
 
 /**
- * Helper class for managing {@link net.minecraft.client.gui.widget.TextFieldWidget} and its inherited class.
+ * Helper class for managing {@link net.minecraft.client.gui.components.EditBox} and its inherited class.
  */
 public final class TextFieldHandler {
     public enum KeyType {
@@ -63,7 +63,7 @@ public final class TextFieldHandler {
      *
      * @param selectionStart Current position of the start of the selection.
      * @param selectionEnd   Current position of the end of the selection.
-     * @return <code>true</code> if the movement of the cursor position is detected.
+     * @return {@code true} if the movement of the cursor position is detected.
      */
     public boolean isPosUpdated(int selectionStart, int selectionEnd) {
         return this.cursorStart != selectionStart || this.cursorEnd != selectionEnd;

@@ -1,7 +1,7 @@
 package dev.stashy.extrasounds.sounds;
 
 import dev.stashy.extrasounds.logics.Mixers;
-import net.minecraft.sound.SoundCategory;
+import net.minecraft.sounds.SoundSource;
 
 public enum SoundType {
     PICKUP(1f, Mixers.INVENTORY, "item.pickup"),
@@ -17,10 +17,10 @@ public enum SoundType {
     ENTITY(1f, Mixers.ENTITY, "entity");
 
     public final float pitch;
-    public final SoundCategory category;
+    public final SoundSource category;
     public final String prefix;
 
-    SoundType(float pitch, SoundCategory category, String prefix) {
+    SoundType(float pitch, SoundSource category, String prefix) {
         this.pitch = pitch;
         this.category = category;
         this.prefix = prefix;

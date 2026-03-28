@@ -6,9 +6,10 @@ import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.mapping.SoundDefinition;
 import dev.stashy.extrasounds.mapping.SoundGenerator;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
-import net.minecraft.block.*;
-import net.minecraft.item.*;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
 
@@ -54,13 +55,13 @@ public abstract class BaseVanillaGenerator {
 
     private boolean isGearGenericItem(Item item) {
         return item instanceof BowItem || item instanceof CrossbowItem || item instanceof FishingRodItem ||
-                item instanceof OnAStickItem;
+                item instanceof FoodOnAStickItem<?>;
     }
 
     private boolean isPaperItem(Item item) {
         return getItemIdPath(item).endsWith("banner_pattern") || item instanceof WritableBookItem ||
                 item instanceof WrittenBookItem || item instanceof EmptyMapItem ||
-                item instanceof FilledMapItem || item instanceof NameTagItem || item instanceof KnowledgeBookItem ||
+                item instanceof MapItem || item instanceof NameTagItem || item instanceof KnowledgeBookItem ||
                 item == Items.BOOK || item == Items.ENCHANTED_BOOK;
     }
 
@@ -70,16 +71,16 @@ public abstract class BaseVanillaGenerator {
     }
 
     protected SoundDefinition generateFromBlock(Block block) {
-        final BlockState blockState = block.getDefaultState();
+        final BlockState blockState = block.defaultBlockState();
         final Identifier blockSoundId = Objects.requireNonNull(VersionedSoundEventWrapper.fromBlockState(blockState)).getId();
 
-        if (block instanceof AbstractRailBlock) {
+        if (block instanceof BaseRailBlock) {
             return SoundDefinition.of(aliased(RAIL));
         } else if (block instanceof BannerBlock) {
             return SoundDefinition.of(aliased(BANNER));
         } else if (block instanceof SeaPickleBlock) {
             return SoundDefinition.of(event(blockSoundId, 0.7f));
-        } else if (block instanceof LeavesBlock || block instanceof PlantBlock || block instanceof SugarCaneBlock) {
+        } else if (block instanceof LeavesBlock || block instanceof VegetationBlock || block instanceof SugarCaneBlock) {
             if (blockSoundId.getPath().equals("block.grass.place")) {
                 return SoundDefinition.of(aliased(LEAVES));
             } else {

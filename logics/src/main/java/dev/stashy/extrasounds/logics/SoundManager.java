@@ -4,25 +4,23 @@ import dev.stashy.extrasounds.logics.debug.DebugUtils;
 import dev.stashy.extrasounds.logics.entry.SoundPackLoader;
 import dev.stashy.extrasounds.logics.impl.VersionedHotbarSoundHandler;
 import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;
+import dev.stashy.extrasounds.logics.impl.state.SlotActionType;
 import dev.stashy.extrasounds.logics.runtime.VersionedPositionedSoundInstanceWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
-import dev.stashy.extrasounds.logics.throwable.SoundNotFoundException;
 import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
 import me.lonefelidae16.groominglib.api.PrefixableMessageFactory;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.sound.SoundInstance;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,7 +57,7 @@ public final class SoundManager {
      * @param player player instance
      * @param state  click state
      */
-    public void handleInventorySlot(PlayerEntity player, InventoryClickState state) {
+    public void handleInventorySlot(Player player, InventoryClickState state) {
         final SlotActionType actionType = state.actionType;
 
         if (state.isQuickCrafting()) {
@@ -143,17 +141,17 @@ public final class SoundManager {
     }
 
     public void hotbar(int i) {
-        PlayerEntity player = MinecraftClient.getInstance().player;
+        Player player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }
 
-        if (!PlayerInventory.isValidHotbarIndex(i)) {
+        if (!Inventory.isHotbarSlot(i)) {
             LOGGER.error("Invalid index '{}' was passed.", i, new IndexOutOfBoundsException(i));
             return;
         }
 
-        ItemStack stack = player.getInventory().getStack(i);
+        ItemStack stack = player.getInventory().getItem(i);
         if (stack.isEmpty()) {
             this.playSound(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
         } else {
@@ -182,8 +180,8 @@ public final class SoundManager {
      * SlotActionType.QUICK_MOVE is too many method calls
      *
      * @param item Target item to quickMove
-     * @see net.minecraft.client.network.ClientPlayerInteractionManager#clickSlot
-     * @see ScreenHandler#internalOnSlotClick
+     * @see net.minecraft.client.multiplayer.MultiPlayerGameMode#handleContainerInput
+     * @see net.minecraft.world.inventory.AbstractContainerMenu#doClick
      */
     private void handleQuickMoveSound(Item item) {
         if (item == Items.AIR) {
@@ -197,10 +195,10 @@ public final class SoundManager {
         }
     }
 
-    public void playSound(VersionedSoundEventWrapper snd, float pitch, SoundCategory category, SoundCategory... optionalVolumes) {
+    public void playSound(VersionedSoundEventWrapper snd, float pitch, SoundSource category, SoundSource... optionalVolumes) {
         float volume = ExtraSounds.MAIN.getSoundVolume(Mixers.MASTER);
         if (optionalVolumes != null) {
-            for (SoundCategory cat : optionalVolumes) {
+            for (SoundSource cat : optionalVolumes) {
                 volume = Math.min(ExtraSounds.MAIN.getSoundVolume(cat), volume);
             }
         }
@@ -212,7 +210,7 @@ public final class SoundManager {
             return;
         }
         final var soundInstance = VersionedPositionedSoundInstanceWrapper.newInstance(
-                snd.getId(), category, volume, pitch, false, 0, SoundInstance.AttenuationType.NONE,
+                snd.getId(), category, volume, pitch, false, 0, SoundInstance.Attenuation.NONE,
                 0.0D, 0.0D, 0.0D, true
         );
         this.playSound(Objects.requireNonNull(soundInstance));
@@ -237,7 +235,7 @@ public final class SoundManager {
         return this.isMuted(type.category);
     }
 
-    private boolean isMuted(SoundCategory category) {
+    private boolean isMuted(SoundSource category) {
         return ExtraSounds.MAIN.getSoundVolume(category) == 0;
     }
 
@@ -252,11 +250,11 @@ public final class SoundManager {
                 ExtraSounds.MAIN.playSound(instance);
                 this.lastPlayed = now;
                 if (DebugUtils.DEBUG) {
-                    LOGGER.info("Playing sound: {}", instance.getId());
+                    LOGGER.info("Playing sound: {}", instance.getIdentifier());
                 }
             } else {
                 if (DebugUtils.DEBUG) {
-                    LOGGER.warn("Sound suppressed due to the fast interval between method calls, was '{}'.", instance.getId());
+                    LOGGER.warn("Sound suppressed due to the fast interval between method calls, was '{}'.", instance.getIdentifier());
                 }
             }
         } catch (Exception e) {
@@ -274,33 +272,33 @@ public final class SoundManager {
      * If an ItemStack is not stackable, the pitch is maximum.
      *
      * @param itemStack Target stack to adjust the pitch.
-     * @param category  {@link SoundCategory} to adjust the volume.
-     * @see MathHelper#lerp
-     * @see net.minecraft.client.sound.SoundSystem#play
-     * @see net.minecraft.client.sound.SoundSystem#getAdjustedPitch
+     * @param category  {@link SoundSource} to adjust the volume.
+     * @see Mth#lerp
+     * @see net.minecraft.client.sounds.SoundEngine#play
+     * @see net.minecraft.client.sounds.SoundEngine#calculatePitch
      */
-    public void playThrow(ItemStack itemStack, SoundCategory category) {
+    public void playThrow(ItemStack itemStack, SoundSource category) {
         if (itemStack.isEmpty()) {
             return;
         }
         final float maxPitch = 2f;
         final float pitch = (!itemStack.isStackable()) ? maxPitch :
-                MathHelper.lerp((itemStack.getCount() - 1f) / (itemStack.getItem().getMaxCount() - 1f), maxPitch, 1.5f);
+                Mth.lerp((itemStack.getCount() - 1f) / (itemStack.getItem().getDefaultMaxStackSize() - 1f), maxPitch, 1.5f);
         this.playSound(Sounds.ITEM_DROP, pitch, category, Mixers.ITEM_DROP);
     }
 
     public void stopSound(VersionedSoundEventWrapper e, SoundType type) {
-        MinecraftClient.getInstance().getSoundManager().stopSounds(e.getId(), type.category);
+        ExtraSounds.MAIN.stopSound(e, type);
     }
 
     public VersionedSoundEventWrapper getSoundByItem(Item item, SoundType type) {
         var itemId = ExtraSounds.MAIN.getItemId(item);
-        Identifier id = ExtraSounds.getClickId(itemId, type);
+        var id = ExtraSounds.getClickId(itemId, type);
         VersionedSoundEventWrapper sound = SoundPackLoader.CUSTOM_SOUND_EVENT.getOrDefault(id, null);
         if (sound == null) {
             if (!this.missingSoundId.contains(id)) {
                 this.missingSoundId.add(id);
-                LOGGER.error("Sound '{}' cannot be found in packs.", id, new SoundNotFoundException());
+                LOGGER.error("Sound '{}' cannot be found in packs.", id);
             }
             return FALLBACK_SOUND_EVENT;
         }

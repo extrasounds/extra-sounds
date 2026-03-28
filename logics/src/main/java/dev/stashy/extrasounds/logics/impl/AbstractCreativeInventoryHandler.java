@@ -3,12 +3,12 @@ package dev.stashy.extrasounds.logics.impl;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;
 import dev.stashy.extrasounds.logics.impl.state.InventoryTabType;
+import dev.stashy.extrasounds.logics.impl.state.SlotActionType;
 import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractCreativeInventoryHandler {
@@ -19,7 +19,7 @@ public abstract class AbstractCreativeInventoryHandler {
 
     protected abstract Slot getDeleteItemSlot();
 
-    public void onClick(PlayerEntity player, @Nullable Slot slot, int slotId, int button, SlotActionType actionType, ItemStack cursor) {
+    public void onClick(Player player, @Nullable Slot slot, int slotId, int button, SlotActionType actionType, ItemStack cursor) {
         final boolean bOnHotbar = slot != null && !this.isCreativeInventorySlot(slot);
         final boolean bMatchDeleteSlot = slot != null && slot == this.getDeleteItemSlot();
         final InventoryClickState state = new InventoryClickState(slot, slotId, cursor, actionType, button, this.getTabType());
@@ -38,7 +38,7 @@ public abstract class AbstractCreativeInventoryHandler {
                 slotStack.setCount(1);
             } else if (button == 1) {
                 // With holding the Ctrl key; (slotActionType == THROW && button == 1)
-                slotStack.setCount(slotStack.getMaxCount());
+                slotStack.setCount(slotStack.getMaxStackSize());
             }
             ExtraSounds.MANAGER.playThrow(slotStack);
             return;
@@ -46,7 +46,7 @@ public abstract class AbstractCreativeInventoryHandler {
 
         if (actionType == SlotActionType.QUICK_MOVE) {
             // With holding the Shift key; (slotActionType == QUICK_MOVE)
-            if (bOnCreativeTab && bOnHotbar && slot.hasStack()) {
+            if (bOnCreativeTab && bOnHotbar && slot.hasItem()) {
                 // Quick move from Hotbar to Creative slots; stack will be deleted.
                 ExtraSounds.MANAGER.playSound(Sounds.ITEM_DELETE_PARTIAL, SoundType.PICKUP);
                 return;

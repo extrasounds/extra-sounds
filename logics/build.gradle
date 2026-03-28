@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom'
+    id 'net.fabricmc.fabric-loom'
 }
 
 var extraSounds = project.parent
@@ -12,17 +12,12 @@ base {
 
 dependencies {
     minecraft "com.mojang:minecraft:${extraSounds.minecraft_version}"
-    mappings "net.fabricmc:yarn:${extraSounds.minecraft_version}${extraSounds.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${extraSounds.loader_version}"
+    implementation "net.fabricmc:fabric-loader:${extraSounds.loader_version}"
 
     implementation "me.lonefelidae16:groominglib:${extraSounds.groom_version}"
 
-    compileOnly project(path: ':sound-categories:shared')
+    compileOnly project(path: ':sound-categories')
 
     // Integrations
-    modCompileOnly "maven.modrinth:midnightcontrols:${extraSounds.mn_ctrls_version}"
-}
-
-loom {
-    accessWidenerPath = file("src/main/resources/extrasounds.accesswidener")
+    compileOnly "maven.modrinth:midnightcontrols:${extraSounds.mn_ctrls_version}"
 }

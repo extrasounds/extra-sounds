@@ -6,7 +6,7 @@ import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
 import me.lonefelidae16.groominglib.api.PrefixableMessageFactory;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,7 +46,7 @@ public final class ExtraSounds {
                         )
                 );
             }
-            return Objects.requireNonNull(MAIN.generateIdentifier(ExtraSounds.MODID, "%s.%s.%s".formatted(prefix, namespace, path)));
+            return Identifier.fromNamespaceAndPath(ExtraSounds.MODID, "%s.%s.%s".formatted(prefix, namespace, path));
         } catch (Exception ex) {
             ExtraSounds.LOGGER.error("Failed to create Click Id.", ex);
         }
@@ -66,6 +66,6 @@ public final class ExtraSounds {
     }
 
     public static Identifier generateIdentifier(String namespace, String path) {
-        return MAIN.generateIdentifier(namespace, path);
+        return Identifier.fromNamespaceAndPath(namespace, path);
     }
 }

@@ -1,5 +1,6 @@
 pluginManagement {
     plugins {
+        id 'net.fabricmc.fabric-loom' version "${loom_version}" apply false
         id 'fabric-loom' version "${loom_version}" apply false
         id "maven-publish" apply false
         id 'com.palantir.git-version' version "${gradle_git_rev_version}" apply false
@@ -15,22 +16,8 @@ pluginManagement {
 
 // SoundCategories modules
 include 'sound-categories', 'sound-categories:shared'
-// 1.21 family
-include 'sound-categories:versioned:sc1.21.11', 'sound-categories:versioned:sc1.21.9', 'sound-categories:versioned:sc1.21'
-// 1.20 family
-include 'sound-categories:versioned:sc1.20.5', 'sound-categories:versioned:sc1.20.3', 'sound-categories:versioned:sc1.20.2', 'sound-categories:versioned:sc1.20'
-// 1.19 family
-include 'sound-categories:versioned:sc1.19.4', 'sound-categories:versioned:sc1.19.3', 'sound-categories:versioned:sc1.19'
-// 1.18 family
-include 'sound-categories:versioned:sc1.18'
+include 'sound-categories:versioned:sc26.1'
 
 // ExtraSounds modules
 include 'logics'
-// 1.21 family
-include 'versioned:es1.21.9', 'versioned:es1.21.6', 'versioned:es1.21.5', 'versioned:es1.21.4', 'versioned:es1.21.2', 'versioned:es1.21'
-// 1.20 family
-include 'versioned:es1.20.5', 'versioned:es1.20.2', 'versioned:es1.20'
-// 1.19 family
-include 'versioned:es1.19.4', 'versioned:es1.19.3', 'versioned:es1.19.1', 'versioned:es1.19'
-// 1.18 family
-include 'versioned:es1.18.2', 'versioned:es1.18'
+include 'versioned:es26.1'

@@ -4,14 +4,15 @@
   "package": "dev.stashy.extrasounds.logics.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "access.FlowerPotBlockInvoker",
+    "access.CustomCreativeSlotAccessor",
+    "access.FlowerPotBlockAccessor",
 
-    "action.item.ClientPlayerEntityMixin",
-    "hotbar.MinecraftClientMixin",
-    "inventory.ClientPlayerInteractionManagerMixin",
-    "inventory.HandledScreenMixin",
-    "inventory.MinecraftClientMixin",
-    "keyboard.ScreenshotRecorderMixin"
+    "action.item.LocalPlayerMixin",
+    "hotbar.MinecraftMixin",
+    "inventory.AbstractContainerScreenMixin",
+    "inventory.MinecraftMixin",
+    "inventory.MultiPlayerGameModeMixin",
+    "keyboard.ScreenshotMixin"
   ],
   "injectors": {
     "defaultRequire": 1

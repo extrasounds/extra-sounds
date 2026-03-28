@@ -3,9 +3,9 @@ package dev.stashy.extrasounds.sounds;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundWrapper;
-import net.minecraft.client.sound.Sound;
-import net.minecraft.client.sound.SoundEntry;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.resources.sounds.Sound;
+import net.minecraft.client.resources.sounds.SoundEventRegistration;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 import java.util.Objects;
@@ -58,24 +58,24 @@ public final class Sounds {
         public static final VersionedSoundEventWrapper POOF = ExtraSounds.createEvent("entity.poof");
     }
 
-    public static SoundEntry aliased(VersionedSoundEventWrapper e) {
+    public static SoundEventRegistration aliased(VersionedSoundEventWrapper e) {
         return aliased(e, 1f);
     }
 
-    public static SoundEntry aliased(VersionedSoundEventWrapper e, float volume) {
-        return single(e.getId(), volume, 1f, Sound.RegistrationType.SOUND_EVENT);
+    public static SoundEventRegistration aliased(VersionedSoundEventWrapper e, float volume) {
+        return single(e.getId(), volume, 1f, Sound.Type.SOUND_EVENT);
     }
 
-    public static SoundEntry event(Identifier id) {
+    public static SoundEventRegistration event(Identifier id) {
         return event(id, 0.6f);
     }
 
-    public static SoundEntry event(Identifier id, float volume) {
-        return single(id, volume, 1.7f, Sound.RegistrationType.SOUND_EVENT);
+    public static SoundEventRegistration event(Identifier id, float volume) {
+        return single(id, volume, 1.7f, Sound.Type.SOUND_EVENT);
     }
 
-    public static SoundEntry single(Identifier id, float volume, float pitch, Sound.RegistrationType type) {
-        return new SoundEntry(List.of(
+    public static SoundEventRegistration single(Identifier id, float volume, float pitch, Sound.Type type) {
+        return new SoundEventRegistration(List.of(
                 (Sound) Objects.requireNonNull(
                         VersionedSoundWrapper.newInstance(id, volume, pitch, 1,
                                 type, false, false, 16)

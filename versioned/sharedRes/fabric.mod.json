@@ -20,11 +20,5 @@
   "mixins": [
     "extrasounds.mixins.${moduleId}.json",
     "extrasounds.compat.mixins.${moduleId}.json"
-  ],
-  "depends": {
-    "fabricloader": "*",
-    "fabric": "*",
-    "minecraft": "*",
-    "soundcategories": "*"
-  }
+  ]
 }

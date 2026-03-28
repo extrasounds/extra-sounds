@@ -1,0 +1,42 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.stashy.extrasounds.mc26_1.mixin",
+  "plugin": "dev.stashy.extrasounds.mc26_1.VersionedMixinPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "client": [
+    "access.ArmorStandAccessor",
+    "access.BucketItemAccessor",
+    "access.ItemPickerMenuAccessor",
+
+    "action.block.MultiPlayerGameModeMixin",
+    "action.entity.LivingEntityMixin",
+    "action.entity.MultiPlayerGameModeMixin",
+    "chat.ChatComponentMixin",
+    "effect.ExtendLivingEntityMixin",
+    "effect.LocalPlayerMixin",
+    "hotbar.ClientPacketListenerMixin",
+    "hotbar.ConnectionMixin",
+    "hotbar.LocalPlayerMixin",
+    "hotbar.MinecraftMixin",
+    "hotbar.MouseHandlerMixin",
+    "hotbar.MultiPlayerGameModeMixin",
+    "inventory.CreativeModeInventoryScreenMixin",
+    "inventory.LoomScreenMixin",
+    "inventory.MerchantScreenMixin",
+    "inventory.StonecutterScreenMixin",
+    "typing.AbstractSignEditScreenMixin",
+    "typing.ChatScreenMixin",
+    "typing.EditBoxMixin",
+    "typing.MultilineTextFieldMixin",
+    "typing.SuggestionsListMixin",
+    "typing.TextFieldHelperMixin",
+
+    "resource.ReloadableResourceManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

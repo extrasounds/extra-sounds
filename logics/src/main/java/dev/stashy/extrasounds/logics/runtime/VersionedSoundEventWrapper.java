@@ -2,8 +2,8 @@ package dev.stashy.extrasounds.logics.runtime;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.lang.reflect.Constructor;
 import java.util.Objects;
@@ -30,7 +30,7 @@ public abstract class VersionedSoundEventWrapper {
         try {
             return CTOR_WITH_ID.newInstance(id);
         } catch (Exception ex) {
-            ExtraSounds.LOGGER.error("Cannot initialize 'SoundEvent' with class Identifier.", ex);
+            ExtraSounds.LOGGER.error("Cannot initialize 'SoundEvent' with class IdentifierWrapper.", ex);
         }
         return null;
     }

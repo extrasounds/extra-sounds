@@ -5,15 +5,15 @@ import dev.stashy.extrasounds.logics.debug.DebugUtils;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 /**
- * Helper class for managing {@link net.minecraft.entity.Entity} status.
+ * Helper class for managing {@link net.minecraft.world.entity.Entity} status.
  */
 public final class EntitySoundHandler {
     public enum EffectType {
@@ -21,9 +21,9 @@ public final class EntitySoundHandler {
         REMOVE
     }
 
-    public void onEffectChanged(StatusEffect effect, EffectType type) {
+    public void onEffectChanged(MobEffect effect, EffectType type) {
         if (DebugUtils.DEBUG) {
-            ExtraSounds.LOGGER.info("EffectType = {}, Effect = {}", type, effect.getName().getString());
+            ExtraSounds.LOGGER.info("EffectType = {}, Effect = {}", type, effect.getDisplayName().getString());
         }
 
         final VersionedSoundEventWrapper sound;
@@ -47,7 +47,7 @@ public final class EntitySoundHandler {
 
     public void onDeath(Entity entity, BlockPos blockPos) {
         final float flu = (float) ((Math.random() - 0.5f) * 0.333333f);
-        final float pitch = flu + (float) MathHelper.clampedLerp(2f, 0.5f, Math.sqrt(entity.getHeight() * entity.getWidth()) * 0.4f);
+        final float pitch = flu + (float) Mth.clampedLerp(Math.sqrt(entity.getBbHeight() * entity.getBbWidth()) * 0.4f, 2f, 0.65f);
         ExtraSounds.MANAGER.playSound(Sounds.Entities.POOF, SoundType.ENTITY, .7f, pitch, blockPos);
     }
 

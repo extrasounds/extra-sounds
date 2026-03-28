@@ -2,16 +2,16 @@ package dev.stashy.extrasounds.logics.compat.mixin.midnightcontrols;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.VersionedHotbarSoundHandler;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.Mouse;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.MouseHandler;
+import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(Mouse.class)
+@Mixin(MouseHandler.class)
 public abstract class MouseMixin {
     @Unique
     private int currentHotbarSlot = -1;
@@ -26,7 +26,7 @@ public abstract class MouseMixin {
 
     @Inject(method = METHOD_SIGN_SETUP_CALLBACK_LAMBDA, at = @At("HEAD"))
     private void extrasounds$storeHotbarIndex_integrateMidnightControls(CallbackInfo ci) {
-        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        final LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }
@@ -35,7 +35,7 @@ public abstract class MouseMixin {
 
     @Inject(method = METHOD_SIGN_SETUP_CALLBACK_LAMBDA, at = @At("RETURN"))
     private void extrasounds$touchHotbar_integrateMidnightControls(CallbackInfo ci) {
-        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        final LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }

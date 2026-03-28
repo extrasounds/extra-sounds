@@ -1,6 +1,6 @@
 package dev.stashy.extrasounds.mapping;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
@@ -21,7 +21,7 @@ public final class SoundGenerator {
      * <hr/>
      * <p>✔ This will work:</p>
      * <ul>
-     *     <li><code>fabric.mod.json</code>
+     *     <li>{@code fabric.mod.json}
      *     <pre>{<br />  id: "extrasounds"<br />}</pre></li>
      *     <li>Item registration
      *     <pre>Registry.register(Registries.ITEM, Identifier.of("extrasounds", "newitem"), new Item(...));</pre></li>
@@ -30,7 +30,7 @@ public final class SoundGenerator {
      * </ul>
      * <h5>✘ This will not work:</h5>
      * <ul>
-     *     <li><code>fabric.mod.json</code>
+     *     <li>{@code fabric.mod.json}
      *     <pre>{<br />  id: "extrasounds"<br />}</pre></li>
      *     <li>Item registration
      *     <pre>Registry.register(Registries.ITEM, Identifier.of("extra-sounds", "newitem"), new Item(...));</pre>

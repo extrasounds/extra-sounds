@@ -1,24 +1,27 @@
 package dev.stashy.extrasounds.logics.json;
 
 import com.google.gson.*;
-import net.minecraft.client.sound.Sound;
-import net.minecraft.client.sound.SoundEntry;
+import net.minecraft.client.resources.sounds.Sound;
+import net.minecraft.client.resources.sounds.SoundEventRegistration;
 
 import java.lang.reflect.Type;
 import java.util.Objects;
 
-public class SoundEntrySerializer implements JsonSerializer<SoundEntry> {
+public class SoundEntrySerializer implements JsonSerializer<SoundEventRegistration> {
     @Override
-    public JsonElement serialize(SoundEntry src, Type typeOfSrc, JsonSerializationContext context) {
-        JsonObject o = new JsonObject();
+    public JsonElement serialize(SoundEventRegistration src, Type typeOfSrc, JsonSerializationContext context) {
+        JsonObject element = new JsonObject();
         JsonArray sounds = new JsonArray();
-        for (Sound snd : src.getSounds())
+        for (Sound snd : src.getSounds()) {
             sounds.add(context.serialize(snd));
-        o.add("sounds", sounds);
-        if (src.canReplace())
-            o.addProperty("replace", src.canReplace());
-        if (!Objects.equals(src.getSubtitle(), ""))
-            o.addProperty("subtitle", src.getSubtitle());
-        return o;
+        }
+        element.add("sounds", sounds);
+        if (src.isReplace()) {
+            element.addProperty("replace", src.isReplace());
+        }
+        if (!Objects.equals(src.getSubtitle(), "")) {
+            element.addProperty("subtitle", src.getSubtitle());
+        }
+        return element;
     }
 }
