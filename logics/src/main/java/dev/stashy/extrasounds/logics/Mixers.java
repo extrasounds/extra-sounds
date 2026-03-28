@@ -7,10 +7,19 @@ public final class Mixers implements CategoryLoader {
     @Register(master = true, defaultLevel = 0.33f, preview = ExtraSounds.MODID + ":item.pickup_all")
     public static SoundSource MASTER;
 
-    @Register(preview = ExtraSounds.MODID + ":item.pickup_all")
-    public static SoundSource INVENTORY;
+    @Register(preview = ExtraSounds.MODID + ":generic.scroll")
+    public static SoundSource SCREENS;
 
-    @Register(preview = ExtraSounds.MODID + ":hotbar_scroll")
+    @Register(preview = {
+            ExtraSounds.MODID + ":item.category.gear.generic",
+            ExtraSounds.MODID + ":item.category.gear.leather",
+            ExtraSounds.MODID + ":item.category.gear.stone",
+            ExtraSounds.MODID + ":item.category.gear.iron",
+            ExtraSounds.MODID + ":item.category.gear.copper",
+            ExtraSounds.MODID + ":item.category.gear.golden",
+            ExtraSounds.MODID + ":item.category.gear.diamond",
+            ExtraSounds.MODID + ":item.category.gear.netherite"
+    })
     public static SoundSource HOTBAR;
 
     @Register(preview = ExtraSounds.MODID + ":chat.message")

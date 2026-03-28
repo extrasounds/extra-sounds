@@ -9,9 +9,9 @@
 
     "action.item.LocalPlayerMixin",
     "hotbar.MinecraftMixin",
-    "inventory.AbstractContainerScreenMixin",
-    "inventory.MinecraftMixin",
-    "inventory.MultiPlayerGameModeMixin",
+    "screens.AbstractContainerScreenMixin",
+    "screens.MinecraftMixin",
+    "screens.MultiPlayerGameModeMixin",
     "keyboard.ScreenshotMixin"
   ],
   "injectors": {

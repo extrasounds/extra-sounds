@@ -183,15 +183,15 @@ public final class SoundPackLoader {
                 definition = SoundDefinition.of(fallbackSoundEntry);
             }
 
-            final Identifier pickupClickId = ExtraSounds.getClickId(itemId, SoundType.PICKUP);
-            final SoundDefinition filled = definition.fill(Sounds.aliased(ExtraSounds.createEvent(pickupClickId)));
-            generateSoundEntry(pickupClickId, filled.pickup, resource);
+            final Identifier grabId = ExtraSounds.getClickId(itemId, SoundType.GRAB);
+            final SoundDefinition filled = definition.fill(Sounds.aliased(ExtraSounds.createEvent(grabId)));
+            generateSoundEntry(grabId, filled.pickup, resource);
             generateSoundEntry(ExtraSounds.getClickId(itemId, SoundType.PLACE), filled.place, resource);
             generateSoundEntry(ExtraSounds.getClickId(itemId, SoundType.HOTBAR), filled.hotbar, resource);
 
             if (DebugUtils.SEARCH_UNDEF_SOUND) {
                 final boolean isFallbackSoundEntry = Objects.equals(GSON.toJson(definition.pickup), fallbackSoundJson);
-                final boolean notIncludeSoundsJson = !inSoundsJsonIds.contains(pickupClickId.getPath());
+                final boolean notIncludeSoundsJson = !inSoundsJsonIds.contains(grabId.getPath());
                 if (isFallbackSoundEntry && notIncludeSoundsJson) {
                     LOGGER.warn("unregistered sound was found: '{}'", itemId);
                 }

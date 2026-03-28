@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.logics.mixin.inventory;
+package dev.stashy.extrasounds.logics.mixin.screens;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.Mixers;
@@ -26,9 +26,9 @@ public abstract class MinecraftMixin {
     @Inject(at = @At("HEAD"), method = "setScreen")
     private void extrasounds$screenChange(@Nullable Screen screen, CallbackInfo ci) {
         if (this.screen != screen && screen instanceof AbstractContainerScreen && !(screen instanceof CreativeModeInventoryScreen)) {
-            ExtraSounds.MANAGER.playSound(Sounds.INVENTORY_OPEN, 1f, Mixers.INVENTORY);
+            ExtraSounds.MANAGER.playSound2D(Sounds.INVENTORY_OPEN, Mixers.SCREENS);
         } else if (screen == null && this.screen instanceof AbstractContainerScreen) {
-            ExtraSounds.MANAGER.playSound(Sounds.INVENTORY_CLOSE, 1f, Mixers.INVENTORY);
+            ExtraSounds.MANAGER.playSound2D(Sounds.INVENTORY_CLOSE, Mixers.SCREENS);
         }
     }
 }

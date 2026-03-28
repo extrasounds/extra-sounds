@@ -3,7 +3,6 @@ package dev.stashy.extrasounds.logics.runtime;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 
@@ -33,9 +32,5 @@ public interface VersionedPositionedSoundInstanceWrapper extends SoundInstance {
         }
 
         return null;
-    }
-
-    static VersionedPositionedSoundInstanceWrapper newInstance(VersionedSoundEventWrapper soundEvent, SoundSource category, float volume, float pitch, BlockPos position) {
-        return newInstance(soundEvent.getId(), category, volume, pitch, false, 0, SoundInstance.Attenuation.LINEAR, position.getX() + 0.5, position.getY() + 0.5, position.getZ() + 0.5, false);
     }
 }

@@ -1,6 +1,6 @@
 {
   "soundCategory.extrasounds_logics$master": "ExtraSounds",
-  "soundCategory.extrasounds_logics$inventory": "목록",
+  "soundCategory.extrasounds_logics$screens": "목록",
   "soundCategory.extrasounds_logics$hotbar": "단축바",
   "soundCategory.extrasounds_logics$chat": "채팅 메시지",
   "soundCategory.extrasounds_logics$chat_mention": "채팅 언급",

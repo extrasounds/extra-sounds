@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc26_1.mixin.inventory;
+package dev.stashy.extrasounds.mc26_1.mixin.screens;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.AbstractCreativeInventoryHandler;
@@ -96,7 +96,7 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
     @Inject(method = "selectTab", at = @At("HEAD"))
     private void extrasounds$tabChange(CreativeModeTab group, CallbackInfo ci) {
         if (this.currentTab != group) {
-            ExtraSounds.MANAGER.playSound(group.getIconItem().getItem(), SoundType.PICKUP);
+            ExtraSounds.MANAGER.playSound2D(group.getIconItem().getItem(), SoundType.DEFAULT);
             this.screenScrollHandler.resetScrollPos();
             this.currentTab = group;
         }

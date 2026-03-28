@@ -1,6 +1,6 @@
 {
   "soundCategory.extrasounds_logics$master": "ExtraSounds",
-  "soundCategory.extrasounds_logics$inventory": "Inventaire",
+  "soundCategory.extrasounds_logics$screens": "Inventaire",
   "soundCategory.extrasounds_logics$hotbar": "Barre d’action",
   "soundCategory.extrasounds_logics$chat": "Messages du tchat",
   "soundCategory.extrasounds_logics$chat_mention": "Mention dans le tchat",

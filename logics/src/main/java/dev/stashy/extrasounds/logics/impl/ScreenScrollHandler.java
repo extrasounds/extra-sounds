@@ -38,10 +38,11 @@ public final class ScreenScrollHandler {
         final long now = System.currentTimeMillis();
         final long timeDiff = now - this.lastScrollTime;
         if (timeDiff > 20 && this.lastScrollPos != row) {
-            ExtraSounds.MANAGER.playSound(
+            ExtraSounds.MANAGER.playSound2D(
                     Sounds.INVENTORY_SCROLL,
-                    (1f - 0.1f + 0.1f * Math.min(1, 50f / timeDiff)),
-                    Mixers.INVENTORY);
+                    Mixers.SCREENS,
+                    (1f - 0.1f + 0.1f * Math.min(1, 50f / timeDiff))
+            );
             this.lastScrollTime = now;
             this.lastScrollPos = row;
         }

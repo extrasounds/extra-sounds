@@ -1,7 +1,7 @@
-package dev.stashy.extrasounds.mc26_1.mixin.inventory;
+package dev.stashy.extrasounds.mc26_1.mixin.screens;
 
 import dev.stashy.extrasounds.logics.impl.ScreenScrollHandler;
-import net.minecraft.client.gui.screens.inventory.MerchantScreen;
+import net.minecraft.client.gui.screens.inventory.LoomScreen;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -12,21 +12,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * For Merchant screen scroll sound.
+ * For Loom screen scroll sound.
  */
-@Mixin(MerchantScreen.class)
-public abstract class MerchantScreenMixin {
+@Mixin(LoomScreen.class)
+public abstract class LoomScreenMixin {
     @Unique
-    private static final String FIELD_ID_START_OFFSET = "Lnet/minecraft/client/gui/screens/inventory/MerchantScreen;scrollOff:I";
+    private static final String FIELD_ID_TOP_ROW = "Lnet/minecraft/client/gui/screens/inventory/LoomScreen;startRow:I";
 
     @Unique
     private final ScreenScrollHandler soundHandler = new ScreenScrollHandler();
 
     @Shadow
-    int scrollOff;
+    private int startRow;
 
-    @Inject(method = "init", at = @At("HEAD"))
-    private void extrasounds$merchantScreenInit(CallbackInfo ci) {
+    @Inject(
+            method = "containerChanged",
+            at = @At(
+                    value = "FIELD",
+                    target = FIELD_ID_TOP_ROW,
+                    opcode = Opcodes.PUTFIELD
+            )
+    )
+    private void extrasounds$loomScreenReset(CallbackInfo ci) {
         this.soundHandler.resetScrollPos();
     }
 
@@ -34,12 +41,12 @@ public abstract class MerchantScreenMixin {
             method = {"mouseScrolled", "mouseDragged"},
             at = @At(
                     value = "FIELD",
-                    target = FIELD_ID_START_OFFSET,
+                    target = FIELD_ID_TOP_ROW,
                     opcode = Opcodes.PUTFIELD,
                     shift = At.Shift.AFTER
             )
     )
-    private void extrasounds$merchantScreenScroll(CallbackInfoReturnable<Boolean> cir) {
-        this.soundHandler.onScroll(this.scrollOff);
+    private void extrasounds$loomScreenScroll(CallbackInfoReturnable<Boolean> cir) {
+        this.soundHandler.onScroll(this.startRow);
     }
 }

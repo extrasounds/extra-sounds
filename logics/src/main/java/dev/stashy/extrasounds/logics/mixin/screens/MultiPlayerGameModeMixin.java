@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.logics.mixin.inventory;
+package dev.stashy.extrasounds.logics.mixin.screens;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;

@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.logics.mixin.inventory;
+package dev.stashy.extrasounds.logics.mixin.screens;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.stashy.extrasounds.logics.ExtraSounds;
@@ -30,7 +30,7 @@ public abstract class AbstractContainerScreenMixin {
     )
     private void extrasounds$quickCraftSound(CallbackInfoReturnable<Boolean> cir, @Local Slot slot) {
         if (!quickCraftSlots.contains(slot) && !quickCraftSlots.isEmpty()) {
-            ExtraSounds.MANAGER.playSound(Sounds.ITEM_DRAG, SoundType.PLACE);
+            ExtraSounds.MANAGER.playSound2D(Sounds.ITEM_DRAG, SoundType.PLACE);
         }
     }
 }

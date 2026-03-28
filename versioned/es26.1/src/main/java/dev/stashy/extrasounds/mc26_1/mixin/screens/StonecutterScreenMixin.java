@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc26_1.mixin.inventory;
+package dev.stashy.extrasounds.mc26_1.mixin.screens;
 
 import dev.stashy.extrasounds.logics.impl.ScreenScrollHandler;
 import net.minecraft.client.gui.screens.inventory.StonecutterScreen;

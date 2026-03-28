@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -108,7 +109,7 @@ public final class SoundManager {
         switch (actionType) {
             case PICKUP_ALL -> {
                 if (hasCursor) {
-                    this.playSound(Sounds.ITEM_PICK_ALL, SoundType.PICKUP);
+                    this.playSound2D(Sounds.ITEM_PICK_ALL, SoundType.GRAB);
                 }
             }
             case THROW -> {
@@ -132,9 +133,9 @@ public final class SoundManager {
                  *  --> PICKUP
                  */
                 if (!hasSlot || hasCursor && ExtraSounds.MAIN.canItemsCombine(slotStack, cursorStack)) {
-                    this.playSound(cursorStack.getItem(), SoundType.PLACE);
+                    this.playSound2D(cursorStack.getItem(), SoundType.PLACE);
                 } else {
-                    this.playSound(slotStack.getItem(), SoundType.PICKUP);
+                    this.playSound2D(slotStack.getItem(), SoundType.GRAB);
                 }
             }
         }
@@ -153,27 +154,27 @@ public final class SoundManager {
 
         ItemStack stack = player.getInventory().getItem(i);
         if (stack.isEmpty()) {
-            this.playSound(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
+            this.playSound2D(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
         } else {
-            this.playSound(stack.getItem(), SoundType.HOTBAR);
+            this.playSound2D(stack.getItem(), SoundType.HOTBAR);
         }
     }
 
     public void blockInteract(VersionedSoundEventWrapper snd, BlockPos position) {
         SoundType blockIntr = SoundType.BLOCK_INTR;
-        this.playSound(snd, blockIntr, 1f, blockIntr.pitch, position);
+        this.playSound(snd, blockIntr.category, 1f, blockIntr.pitch, position);
     }
 
     public void blockInteract(Item item, BlockPos position) {
-        this.blockInteract(this.getSoundByItem(item, SoundType.PICKUP), position);
+        this.blockInteract(this.getSoundByItem(item, SoundType.DEFAULT), position);
     }
 
-    public void playSound(VersionedSoundEventWrapper snd, SoundType type) {
-        this.playSound(snd, type.pitch, type.category);
+    public void playSound2D(VersionedSoundEventWrapper snd, SoundType type) {
+        this.playSound2D(snd, type.category, type.pitch);
     }
 
-    public void playSound(Item item, SoundType type) {
-        this.playSound(this.getSoundByItem(item, type), type.pitch, type.category);
+    public void playSound2D(Item item, SoundType type) {
+        this.playSound2D(this.getSoundByItem(item, type), type.category, type.pitch);
     }
 
     /**
@@ -189,19 +190,28 @@ public final class SoundManager {
         }
         long now = System.currentTimeMillis();
         if (now - this.lastPlayed > 10 || item != this.quickMovingItem) {
-            this.playSound(item, SoundType.PICKUP);
+            this.playSound2D(item, SoundType.GRAB);
             this.lastPlayed = now;
             this.quickMovingItem = item;
         }
     }
 
-    public void playSound(VersionedSoundEventWrapper snd, float pitch, SoundSource category, SoundSource... optionalVolumes) {
-        float volume = ExtraSounds.MAIN.getSoundVolume(Mixers.MASTER);
+    public void playSound2D(VersionedSoundEventWrapper snd, SoundSource category) {
+        this.playSound2D(snd, category, 1);
+    }
+
+    public void playSound2D(VersionedSoundEventWrapper snd, SoundSource category, float pitch, SoundSource... optionalVolumes) {
+        float volume = 1;
         if (optionalVolumes != null) {
             for (SoundSource cat : optionalVolumes) {
                 volume = Math.min(ExtraSounds.MAIN.getSoundVolume(cat), volume);
             }
         }
+        this.playSound(snd, category, volume, pitch, null);
+    }
+
+    public void playSound(VersionedSoundEventWrapper snd, SoundSource category, float volume, float pitch, @Nullable BlockPos position) {
+        volume *= ExtraSounds.MAIN.getSoundVolume(Mixers.MASTER);
         if (volume == 0 || this.isMuted(category)) {
             // skip reflection when volume is zero.
             if (DebugUtils.DEBUG) {
@@ -209,25 +219,18 @@ public final class SoundManager {
             }
             return;
         }
-        final var soundInstance = VersionedPositionedSoundInstanceWrapper.newInstance(
-                snd.getId(), category, volume, pitch, false, 0, SoundInstance.Attenuation.NONE,
-                0.0D, 0.0D, 0.0D, true
-        );
-        this.playSound(Objects.requireNonNull(soundInstance));
-    }
-
-    public void playSound(VersionedSoundEventWrapper snd, SoundType type, float volume, float pitch, BlockPos position) {
-        volume *= ExtraSounds.MAIN.getSoundVolume(Mixers.MASTER);
-        if (volume == 0 || this.isMuted(type.category)) {
-            // skip reflection when volume is zero.
-            if (DebugUtils.DEBUG) {
-                this.logZeroVolume(snd);
-            }
-            return;
+        final VersionedPositionedSoundInstanceWrapper soundInstance;
+        if (position == null) {
+            soundInstance = VersionedPositionedSoundInstanceWrapper.newInstance(
+                    snd.getId(), category, volume, pitch, false, 0, SoundInstance.Attenuation.NONE,
+                    0.0D, 0.0D, 0.0D, true
+            );
+        } else {
+            soundInstance = VersionedPositionedSoundInstanceWrapper.newInstance(
+                    snd.getId(), category, volume, pitch, false, 0, SoundInstance.Attenuation.LINEAR,
+                    position.getX() + 0.5, position.getY() + 0.5, position.getZ() + 0.5, false
+            );
         }
-        final var soundInstance = VersionedPositionedSoundInstanceWrapper.newInstance(
-                snd, type.category, volume, pitch, position
-        );
         this.playSound(Objects.requireNonNull(soundInstance));
     }
 
@@ -263,7 +266,7 @@ public final class SoundManager {
     }
 
     public void playThrow(ItemStack itemStack) {
-        this.playThrow(itemStack, Mixers.INVENTORY);
+        this.playThrow(itemStack, Mixers.SCREENS);
     }
 
     /**
@@ -284,7 +287,7 @@ public final class SoundManager {
         final float maxPitch = 2f;
         final float pitch = (!itemStack.isStackable()) ? maxPitch :
                 Mth.lerp((itemStack.getCount() - 1f) / (itemStack.getItem().getDefaultMaxStackSize() - 1f), maxPitch, 1.5f);
-        this.playSound(Sounds.ITEM_DROP, pitch, category, Mixers.ITEM_DROP);
+        this.playSound2D(Sounds.ITEM_DROP, category, pitch, Mixers.ITEM_DROP);
     }
 
     public void stopSound(VersionedSoundEventWrapper e, SoundType type) {

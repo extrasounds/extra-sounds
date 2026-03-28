@@ -1,6 +1,6 @@
 {
   "soundCategory.extrasounds_logics$master": "ExtraSounds",
-  "soundCategory.extrasounds_logics$inventory": "インベントリ操作",
+  "soundCategory.extrasounds_logics$screens": "画面操作",
   "soundCategory.extrasounds_logics$hotbar": "ホットバー操作",
   "soundCategory.extrasounds_logics$chat": "チャット メッセージ",
   "soundCategory.extrasounds_logics$chat_mention": "チャット @メンション",

@@ -42,13 +42,13 @@ public final class EntitySoundHandler {
             return;
         }
 
-        ExtraSounds.MANAGER.playSound(sound, SoundType.EFFECTS);
+        ExtraSounds.MANAGER.playSound2D(sound, SoundType.EFFECTS);
     }
 
     public void onDeath(Entity entity, BlockPos blockPos) {
         final float flu = (float) ((Math.random() - 0.5f) * 0.333333f);
         final float pitch = flu + (float) Mth.clampedLerp(Math.sqrt(entity.getBbHeight() * entity.getBbWidth()) * 0.4f, 2f, 0.65f);
-        ExtraSounds.MANAGER.playSound(Sounds.Entities.POOF, SoundType.ENTITY, .7f, pitch, blockPos);
+        ExtraSounds.MANAGER.playSound(Sounds.Entities.POOF, SoundType.ENTITY.category, .7f, pitch, blockPos);
     }
 
     public void onItemUse(Item item) {
@@ -56,6 +56,6 @@ public final class EntitySoundHandler {
             return;
         }
 
-        ExtraSounds.MANAGER.playSound(ExtraSounds.MANAGER.getSoundByItem(item, SoundType.PICKUP), SoundType.ENTITY);
+        ExtraSounds.MANAGER.playSound2D(ExtraSounds.MANAGER.getSoundByItem(item, SoundType.DEFAULT), SoundType.ENTITY);
     }
 }
