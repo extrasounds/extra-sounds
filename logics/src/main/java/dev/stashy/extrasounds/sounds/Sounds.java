@@ -20,7 +20,7 @@ public final class Sounds {
     public static final VersionedSoundEventWrapper HOTBAR_SCROLL = ExtraSounds.createEvent("hotbar_scroll");
     public static final VersionedSoundEventWrapper INVENTORY_OPEN = ExtraSounds.createEvent("inventory.open");
     public static final VersionedSoundEventWrapper INVENTORY_CLOSE = ExtraSounds.createEvent("inventory.close");
-    public static final VersionedSoundEventWrapper INVENTORY_SCROLL = ExtraSounds.createEvent("inventory.scroll");
+    public static final VersionedSoundEventWrapper SCREEN_SCROLL = ExtraSounds.createEvent("generic.scroll");
     public static final VersionedSoundEventWrapper ITEM_DROP = ExtraSounds.createEvent("item.drop");
     public static final VersionedSoundEventWrapper ITEM_PICK = ExtraSounds.createEvent("item.pickup");
     public static final VersionedSoundEventWrapper ITEM_PICK_ALL = ExtraSounds.createEvent("item.pickup_all");

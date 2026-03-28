@@ -13,9 +13,13 @@ public final class ScreenScrollHandler {
      */
     private long lastScrollTime;
     /**
-     * Current scroll position.
+     * Current horizontal scroll position.
      */
-    private int lastScrollPos;
+    private int lastScrollPosX;
+    /**
+     * Current vertical scroll position.
+     */
+    private int lastScrollPosY;
 
     public ScreenScrollHandler() {
         this.resetScrollPos();
@@ -26,7 +30,8 @@ public final class ScreenScrollHandler {
      */
     public void resetScrollPos() {
         this.lastScrollTime = 0;
-        this.lastScrollPos = 0;
+        this.lastScrollPosX = 0;
+        this.lastScrollPosY = 0;
     }
 
     /**
@@ -35,20 +40,21 @@ public final class ScreenScrollHandler {
      * @param row Target screen Y offset.
      */
     public void onScroll(int row) {
+        this.onScroll(this.lastScrollPosX, row);
+    }
+
+    public void onScroll(int x, int y) {
         final long now = System.currentTimeMillis();
         final long timeDiff = now - this.lastScrollTime;
-        if (timeDiff > 20 && this.lastScrollPos != row) {
+        if (timeDiff > 20 && (this.lastScrollPosX != x || this.lastScrollPosY != y)) {
             ExtraSounds.MANAGER.playSound2D(
-                    Sounds.INVENTORY_SCROLL,
+                    Sounds.SCREEN_SCROLL,
                     Mixers.SCREENS,
                     (1f - 0.1f + 0.1f * Math.min(1, 50f / timeDiff))
             );
             this.lastScrollTime = now;
-            this.lastScrollPos = row;
+            this.lastScrollPosX = x;
+            this.lastScrollPosY = y;
         }
-    }
-
-    public void setScroll(int position) {
-        this.lastScrollPos = position;
     }
 }

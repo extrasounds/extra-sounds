@@ -29,7 +29,7 @@ public final class ChatSoundHandler {
 
     public void onScroll(int line) {
         if (line != this.currentLines) {
-            ExtraSounds.MANAGER.playSound2D(Sounds.INVENTORY_SCROLL, SoundType.CHAT);
+            ExtraSounds.MANAGER.playSound2D(Sounds.SCREEN_SCROLL, SoundType.CHAT);
             this.currentLines = line;
         }
     }

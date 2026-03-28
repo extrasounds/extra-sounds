@@ -6,10 +6,13 @@
   "client": [
     "access.CustomCreativeSlotAccessor",
     "access.FlowerPotBlockAccessor",
+    "access.AdvancementTabAccessor",
 
     "action.item.LocalPlayerMixin",
     "hotbar.MinecraftMixin",
     "screens.AbstractContainerScreenMixin",
+    "screens.AdvancementsScreenMixin",
+    "screens.AdvancementTabMixin",
     "screens.MinecraftMixin",
     "screens.MultiPlayerGameModeMixin",
     "keyboard.ScreenshotMixin"
