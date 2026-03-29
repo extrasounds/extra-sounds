@@ -22,9 +22,9 @@ public abstract class MouseMixin {
      * The lambda in 3rd arg of {@code InputUtil#setMouseCallbacks()}
      */
     @Unique
-    private static final String METHOD_SIGN_SETUP_CALLBACK_LAMBDA = "method_22684";
+    private static final String METHOD_SIGN_ON_BUTTON = "onButton";
 
-    @Inject(method = METHOD_SIGN_SETUP_CALLBACK_LAMBDA, at = @At("HEAD"))
+    @Inject(method = METHOD_SIGN_ON_BUTTON, at = @At("HEAD"))
     private void extrasounds$storeHotbarIndex_integrateMidnightControls(CallbackInfo ci) {
         final LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) {
@@ -33,7 +33,7 @@ public abstract class MouseMixin {
         this.currentHotbarSlot = this.soundHandler.getPlayerInventorySlot(player);
     }
 
-    @Inject(method = METHOD_SIGN_SETUP_CALLBACK_LAMBDA, at = @At("RETURN"))
+    @Inject(method = METHOD_SIGN_ON_BUTTON, at = @At("RETURN"))
     private void extrasounds$touchHotbar_integrateMidnightControls(CallbackInfo ci) {
         final LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) {
