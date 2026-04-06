@@ -31,10 +31,10 @@ public abstract class VersionedHotbarSoundHandler {
         return null;
     }
 
-    public void onSwap(Item mainHand, Item offHand) {
-        if (offHand != ITEM_EMPTY) {
+    public void onSwap(ItemStack mainHand, ItemStack offHand) {
+        if (offHand.getItem() != ITEM_EMPTY) {
             ExtraSounds.MANAGER.playSound2D(offHand, SoundType.HOTBAR);
-        } else if (mainHand != ITEM_EMPTY) {
+        } else if (mainHand.getItem() != ITEM_EMPTY) {
             ExtraSounds.MANAGER.playSound2D(mainHand, SoundType.HOTBAR);
         }
     }
@@ -79,7 +79,7 @@ public abstract class VersionedHotbarSoundHandler {
 
         final Item item = this.popPickingItem();
         if (!player.getMainHandItem().is(item) && item != ITEM_EMPTY) {
-            ExtraSounds.MANAGER.playSound2D(item, SoundType.HOTBAR);
+            ExtraSounds.MANAGER.playSound2D(item.getDefaultInstance(), SoundType.HOTBAR);
         }
     }
 

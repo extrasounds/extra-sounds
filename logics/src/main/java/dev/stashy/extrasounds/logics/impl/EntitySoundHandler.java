@@ -9,7 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 /**
@@ -51,8 +51,8 @@ public final class EntitySoundHandler {
         ExtraSounds.MANAGER.playSound(Sounds.Entities.POOF, SoundType.ENTITY.category, .7f, pitch, blockPos);
     }
 
-    public void onItemUse(Item item) {
-        if (item == Items.AIR) {
+    public void onItemUse(ItemStack item) {
+        if (item.getItem() == Items.AIR) {
             return;
         }
 

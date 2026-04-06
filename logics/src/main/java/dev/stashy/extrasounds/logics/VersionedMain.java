@@ -6,6 +6,8 @@ import dev.stashy.extrasounds.sounds.SoundType;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.IdMap;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Item;
@@ -37,4 +39,13 @@ public abstract class VersionedMain {
     public abstract float getSoundVolume(SoundSource soundCategory);
 
     public abstract void stopSound(VersionedSoundEventWrapper event, SoundType type);
+
+    public Identifier getItemIdWithComponents(ItemStack itemStack) {
+        DataComponentMap map = itemStack.getComponents();
+        if (map.has(DataComponents.ITEM_MODEL)) {
+            return map.get(DataComponents.ITEM_MODEL);
+        } else {
+            return this.getItemId(itemStack.getItem());
+        }
+    }
 }

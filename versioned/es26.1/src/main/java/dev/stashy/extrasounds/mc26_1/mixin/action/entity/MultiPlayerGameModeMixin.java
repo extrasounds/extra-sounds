@@ -35,7 +35,7 @@ public abstract class MultiPlayerGameModeMixin {
 
         final ItemStack stackInHand = player.getItemInHand(hand);
         if (stackInHand.is(Items.NAME_TAG) && stackInHand.getComponents().has(DataComponents.CUSTOM_NAME)) {
-            this.soundHandler.onItemUse(Items.NAME_TAG);
+            this.soundHandler.onItemUse(Items.NAME_TAG.getDefaultInstance());
         }
     }
 }

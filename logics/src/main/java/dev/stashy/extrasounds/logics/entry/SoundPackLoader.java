@@ -17,6 +17,7 @@ import me.lonefelidae16.groominglib.api.PrefixableMessageFactory;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
@@ -38,7 +39,8 @@ public final class SoundPackLoader {
     private static final String CACHE_FNAME = ExtraSounds.MODID + ".cache";
     private static final Path CACHE_PATH = Path.of(System.getProperty("java.io.tmpdir"), ".minecraft_fabric", CACHE_FNAME);
 
-    public static final Map<Identifier, VersionedSoundEventWrapper> CUSTOM_SOUND_EVENT = new HashMap<>();
+    private static final Map<Identifier, VersionedSoundEventWrapper> BUILT_IN_SOUND_EVENT = new HashMap<>();
+    private static final Map<Identifier, VersionedSoundEventWrapper> EXTERNAL_SOUND_EVENT = new HashMap<>();
     public static final VersionedClientResource EXTRA_SOUNDS_RESOURCE = Objects.requireNonNull(
             VersionedClientResource.newInstance(ExtraSounds.MODID, "%s Runtime Resources".formatted(ExtraSounds.class.getSimpleName()))
     );
@@ -50,7 +52,7 @@ public final class SoundPackLoader {
             ))
     );
 
-    private static final Gson GSON = new GsonBuilder()
+    public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(SoundEventRegistration.class, new SoundEntrySerializer())
             .registerTypeHierarchyAdapter(VersionedSoundWrapper.class, Objects.requireNonNull(VersionedSoundSerializer.newInstance()))
             .create();
@@ -139,7 +141,7 @@ public final class SoundPackLoader {
         } else if (DebugUtils.DEBUG) {
             LOGGER.info("init finished; took {}ms.", tookMillis);
         }
-        LOGGER.info("sound pack successfully loaded; {} entries.", CUSTOM_SOUND_EVENT.size());
+        LOGGER.info("Built-in sound pack successfully loaded; {} entries.", BUILT_IN_SOUND_EVENT.size());
     }
 
     /**
@@ -165,6 +167,7 @@ public final class SoundPackLoader {
             }
         }
 
+        // process for registered item.
         for (Item item : ExtraSounds.MAIN.getItemRegistry()) {
             final Identifier itemId = ExtraSounds.MAIN.getItemId(item);
             final SoundDefinition definition;
@@ -217,7 +220,43 @@ public final class SoundPackLoader {
      * @param clickId Target id.
      */
     private static void putSoundEvent(Identifier clickId) {
-        CUSTOM_SOUND_EVENT.put(clickId, ExtraSounds.createEvent(clickId));
+        BUILT_IN_SOUND_EVENT.put(clickId, ExtraSounds.createEvent(clickId));
+    }
+
+    private static void putExternalSoundEvent(Identifier identifier) {
+        EXTERNAL_SOUND_EVENT.put(identifier, ExtraSounds.createEvent(identifier));
+    }
+
+    public static Optional<VersionedSoundEventWrapper> getSoundEventById(Identifier... ids) {
+        for (Identifier target : ids) {
+            if (EXTERNAL_SOUND_EVENT.containsKey(target)) {
+                return Optional.of(EXTERNAL_SOUND_EVENT.get(target));
+            }
+            if (BUILT_IN_SOUND_EVENT.containsKey(target)) {
+                return Optional.of(BUILT_IN_SOUND_EVENT.get(target));
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static void reloadExternalSoundEvent() {
+        for (var pack : Minecraft.getInstance().getResourceManager().getResourceStack(SOUNDS_JSON_ID)) {
+            if (pack.sourcePackId().equals(ExtraSounds.MODID)) {
+                // Avoid built-in resource via SoundPackLoader.
+                continue;
+            }
+            try (InputStream stream = pack.open()) {
+                final BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(stream)));
+                final JsonObject jsonObject = JsonParser.parseString(reader.lines().collect(Collectors.joining())).getAsJsonObject();
+                for (String idStr : jsonObject.keySet()) {
+                    putExternalSoundEvent(Identifier.fromNamespaceAndPath(ExtraSounds.MODID, idStr));
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        if (!EXTERNAL_SOUND_EVENT.isEmpty()) {
+            LOGGER.info("External sound pack was found; {} entries.", EXTERNAL_SOUND_EVENT.size());
+        }
     }
 
     /**
