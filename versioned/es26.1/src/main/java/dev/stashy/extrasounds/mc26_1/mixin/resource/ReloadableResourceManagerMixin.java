@@ -35,7 +35,7 @@ public abstract class ReloadableResourceManagerMixin {
     }
 
     @Inject(method = "createReload", at = @At("RETURN"))
-    private void injected(CallbackInfoReturnable<ReloadInstance> cir) {
+    private void extrasounds$afterReload(CallbackInfoReturnable<ReloadInstance> cir) {
         SoundPackLoader.reloadExternalSoundEvent();
     }
 }

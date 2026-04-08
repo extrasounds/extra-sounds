@@ -296,13 +296,13 @@ public final class SoundManager {
     }
 
     public VersionedSoundEventWrapper getSoundByItem(ItemStack item, SoundType type) {
-        final var itemCompoId = ExtraSounds.getClickId(ExtraSounds.MAIN.getItemIdWithComponents(item), type);
+        final var itemModelId = ExtraSounds.getClickId(ExtraSounds.MAIN.getItemIdWithComponents(item), type);
         final var itemId = ExtraSounds.getClickId(ExtraSounds.MAIN.getItemId(item.getItem()), type);
-        final var sound = SoundPackLoader.getSoundEventById(itemCompoId, itemId);
+        final var sound = SoundPackLoader.getSoundEventById(itemModelId, itemId);
         if (sound.isEmpty()) {
             logMissingSoundId(itemId);
-            if (!itemCompoId.equals(itemId)) {
-                logMissingSoundId(itemCompoId);
+            if (!itemModelId.equals(itemId)) {
+                logMissingSoundId(itemModelId);
             }
             return FALLBACK_SOUND_EVENT;
         } else {

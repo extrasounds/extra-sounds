@@ -39,8 +39,9 @@ public final class SoundPackLoader {
     private static final String CACHE_FNAME = ExtraSounds.MODID + ".cache";
     private static final Path CACHE_PATH = Path.of(System.getProperty("java.io.tmpdir"), ".minecraft_fabric", CACHE_FNAME);
 
-    private static final Map<Identifier, VersionedSoundEventWrapper> BUILT_IN_SOUND_EVENT = new HashMap<>();
+    private static final Map<Identifier, VersionedSoundEventWrapper> AUTO_GEN_SOUND_EVENT = new HashMap<>();
     private static final Map<Identifier, VersionedSoundEventWrapper> EXTERNAL_SOUND_EVENT = new HashMap<>();
+    private static final Map<Identifier, VersionedSoundEventWrapper> CUSTOM_SOUND_EVENT = new HashMap<>();
     public static final VersionedClientResource EXTRA_SOUNDS_RESOURCE = Objects.requireNonNull(
             VersionedClientResource.newInstance(ExtraSounds.MODID, "%s Runtime Resources".formatted(ExtraSounds.class.getSimpleName()))
     );
@@ -141,7 +142,7 @@ public final class SoundPackLoader {
         } else if (DebugUtils.DEBUG) {
             LOGGER.info("init finished; took {}ms.", tookMillis);
         }
-        LOGGER.info("Built-in sound pack successfully loaded; {} entries.", BUILT_IN_SOUND_EVENT.size());
+        LOGGER.info("Generated sound pack successfully loaded; {} entries.", AUTO_GEN_SOUND_EVENT.size());
     }
 
     /**
@@ -220,7 +221,7 @@ public final class SoundPackLoader {
      * @param clickId Target id.
      */
     private static void putSoundEvent(Identifier clickId) {
-        BUILT_IN_SOUND_EVENT.put(clickId, ExtraSounds.createEvent(clickId));
+        AUTO_GEN_SOUND_EVENT.put(clickId, ExtraSounds.createEvent(clickId));
     }
 
     private static void putExternalSoundEvent(Identifier identifier) {
@@ -228,21 +229,25 @@ public final class SoundPackLoader {
     }
 
     public static Optional<VersionedSoundEventWrapper> getSoundEventById(Identifier... ids) {
+        if (ids == null) {
+            return Optional.empty();
+        }
+
         for (Identifier target : ids) {
-            if (EXTERNAL_SOUND_EVENT.containsKey(target)) {
-                return Optional.of(EXTERNAL_SOUND_EVENT.get(target));
-            }
-            if (BUILT_IN_SOUND_EVENT.containsKey(target)) {
-                return Optional.of(BUILT_IN_SOUND_EVENT.get(target));
+            if (CUSTOM_SOUND_EVENT.containsKey(target)) {
+                return Optional.of(CUSTOM_SOUND_EVENT.get(target));
             }
         }
         return Optional.empty();
     }
 
     public static void reloadExternalSoundEvent() {
+        EXTERNAL_SOUND_EVENT.clear();
+        CUSTOM_SOUND_EVENT.clear();
+
         for (var pack : Minecraft.getInstance().getResourceManager().getResourceStack(SOUNDS_JSON_ID)) {
             if (pack.sourcePackId().equals(ExtraSounds.MODID)) {
-                // Avoid built-in resource via SoundPackLoader.
+                // Avoid auto-gen resource via SoundPackLoader.
                 continue;
             }
             try (InputStream stream = pack.open()) {
@@ -254,8 +259,11 @@ public final class SoundPackLoader {
             } catch (Exception ignored) {
             }
         }
+
+        CUSTOM_SOUND_EVENT.putAll(AUTO_GEN_SOUND_EVENT);
         if (!EXTERNAL_SOUND_EVENT.isEmpty()) {
             LOGGER.info("External sound pack was found; {} entries.", EXTERNAL_SOUND_EVENT.size());
+            CUSTOM_SOUND_EVENT.putAll(EXTERNAL_SOUND_EVENT);
         }
     }
 
