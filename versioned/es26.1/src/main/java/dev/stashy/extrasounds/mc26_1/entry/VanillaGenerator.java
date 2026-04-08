@@ -3,7 +3,6 @@ package dev.stashy.extrasounds.mc26_1.entry;
 import dev.stashy.extrasounds.logics.entry.BaseVanillaGenerator;
 import dev.stashy.extrasounds.mapping.SoundDefinition;
 import dev.stashy.extrasounds.mapping.SoundGenerator;
-import dev.stashy.extrasounds.mc26_1.mixin.access.BucketItemAccessor;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.Identifier;
@@ -39,10 +38,8 @@ public final class VanillaGenerator extends BaseVanillaGenerator {
             } else if (item instanceof DiscFragmentItem) {
                 return SoundDefinition.of(single(METAL_BITS.getId(), 0.7f, 0.85f, Sound.Type.SOUND_EVENT));
             } else if (item instanceof BucketItem bucketItem) {
-                if (bucketItem instanceof BucketItemAccessor accessor) {
-                    final SoundEventRegistration soundEntry = accessor.getContent().getPickupSound().map(sound -> event(sound.location(), 0.4f)).orElse(aliased(METAL));
-                    return SoundDefinition.of(soundEntry);
-                }
+                final SoundEventRegistration soundEntry = bucketItem.getContent().getPickupSound().map(sound -> event(sound.location(), 0.4f)).orElse(aliased(METAL));
+                return SoundDefinition.of(soundEntry);
             } else if (item instanceof SpyglassItem) {
                 return SoundDefinition.of(aliased(Gear.COPPER));
             }

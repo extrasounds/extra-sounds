@@ -8,7 +8,6 @@
   ],
   "client": [
     "access.ArmorStandAccessor",
-    "access.BucketItemAccessor",
     "access.ItemPickerMenuAccessor",
 
     "action.block.MultiPlayerGameModeMixin",
