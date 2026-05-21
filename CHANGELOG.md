@@ -1,5 +1,35 @@
 # Changelog
 
+## [3.0.0+26.1.2-alpha.1] - 2026-05-19
+### ✨ Added
+
+* Ported to 26.1+.
+* New UI sounds:
+  - Advancement screen sounds
+* New features:
+  - Customized SoundEvent can be registered using Resource Pack
+* Translation:
+  - French (fr_fr), thanks to @ClairDePrince [#33](https://github.com/lonefelidae16/extra-sounds/pull/33)
+  - Japanese (ja_jp)
+
+### 🗘 Updated
+
+* Configuration name has changed: from `Inventory` to `Screen Interaction`
+* REI’s integration functionalities are in alpha and are disabled.
+
+### 👷 Technical
+
+* **Minecraft: Java Edition 1.x is no longer supported as of ExtraSounds 3.0.0+26.1.2-alpha.1.**
+* Some files were refactored.
+* yarn is no longer used; migrated to official named mapping.
+* Dependency updates:
+  - fabric api 0.145.4+26.1.2
+  - fabric loom 1.16
+  - fabric loader 0.19.2
+  - SoundCategories
+  - Java 25
+  - Gradle 9.4.0
+
 ## [3.0.0+1.21.11-build.1] - 2026-01-19
 ### ✨ Added
 
