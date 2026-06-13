@@ -4,10 +4,13 @@
   "package": "dev.stashy.extrasounds.logics.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "access.AdvancementTabAccessor",
     "access.FlowerPotBlockInvoker",
 
     "action.item.ClientPlayerEntityMixin",
     "hotbar.MinecraftClientMixin",
+    "screens.AdvancementsScreenMixin",
+    "screens.AdvancementTabMixin",
     "screens.ClientPlayerInteractionManagerMixin",
     "screens.HandledScreenMixin",
     "screens.MinecraftClientMixin",
