@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc1_16_5.mixin.action.entity;
+package dev.stashy.extrasounds.mc1_16_4.mixin.action.entity;
 
 import dev.stashy.extrasounds.logics.impl.EntitySoundHandler;
 import net.minecraft.entity.Entity;

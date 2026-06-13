@@ -26,7 +26,7 @@ include 'sound-categories:versioned:sc1.18'
 // 1.17 family
 include 'sound-categories:versioned:sc1.17.1', 'sound-categories:versioned:sc1.17'
 // 1.16 family
-include 'sound-categories:versioned:sc1.16.5'
+include 'sound-categories:versioned:sc1.16.5', 'sound-categories:versioned:sc1.16.4'
 
 // ExtraSounds modules
 include 'logics'
@@ -41,4 +41,4 @@ include 'versioned:es1.18.2', 'versioned:es1.18'
 // 1.17 family
 include 'versioned:es1.17.1', 'versioned:es1.17'
 // 1.16 family
-include 'versioned:es1.16.5'
+include 'versioned:es1.16.5', 'versioned:es1.16.4'

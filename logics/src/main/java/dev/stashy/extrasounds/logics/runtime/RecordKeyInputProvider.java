@@ -8,6 +8,9 @@ public abstract class RecordKeyInputProvider {
     @Nullable
     public static final RecordKeyInputProvider INSTANCE;
 
+    protected static final String METHOD_KEY_IS_CUT = RecordKeyInputProvider.class.getCanonicalName() + "#isCut";
+    protected static final String METHOD_KEY_IS_PASTE = RecordKeyInputProvider.class.getCanonicalName() + "#isPaste";
+
     static {
         RecordKeyInputProvider instance = null;
         try {
