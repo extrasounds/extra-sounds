@@ -77,7 +77,7 @@ public abstract class VersionedHotbarSoundHandler {
         }
 
         final Item item = this.popPickingItem();
-        if (!player.getMainHandStack().isOf(item) && item != ITEM_EMPTY) {
+        if (!(player.getMainHandStack().getItem() == item) && item != ITEM_EMPTY) {
             ExtraSounds.MANAGER.playSound2D(item.getDefaultStack(), SoundType.HOTBAR);
         }
     }

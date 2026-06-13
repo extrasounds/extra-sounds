@@ -23,7 +23,7 @@ public abstract class MinecraftClientMixin {
     @Nullable
     public Screen currentScreen;
 
-    @Inject(at = @At("HEAD"), method = "setScreen")
+    @Inject(at = @At("HEAD"), method = "openScreen")
     private void extrasounds$screenChange(@Nullable Screen screen, CallbackInfo ci) {
         if (currentScreen != screen && screen instanceof HandledScreen && !(screen instanceof CreativeInventoryScreen)) {
             ExtraSounds.MANAGER.playSound2D(Sounds.INVENTORY_OPEN, Mixers.SCREENS, 1f);

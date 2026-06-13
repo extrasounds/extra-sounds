@@ -6,6 +6,10 @@ import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
+import net.minecraft.component.ComponentMap;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BundleItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -68,5 +72,20 @@ public final class Main extends VersionedMain {
     @Override
     public float getSoundVolume(SoundCategory soundCategory) {
         return MinecraftClient.getInstance().options.getCategorySoundVolume(soundCategory);
+    }
+    
+    @Override
+    public Identifier getItemIdWithComponents(ItemStack itemStack) {
+        ComponentMap map = itemStack.getComponents();
+        if (map.contains(DataComponentTypes.ITEM_MODEL)) {
+            return map.get(DataComponentTypes.ITEM_MODEL);
+        } else {
+            return this.getItemId(itemStack.getItem());
+        }
+    }
+
+    @Override
+    public PlayerInventory getPlayerInventory(PlayerEntity player) {
+        return player.getInventory();
     }
 }

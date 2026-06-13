@@ -61,8 +61,8 @@ public abstract class EditBoxMixin {
     @Inject(method = "handleSpecialKey", at = @At("HEAD"))
     private void extrasounds$specialAction(KeyInput keyInput, CallbackInfoReturnable<Boolean> cir) {
         try {
-            Method $isPaste = KEY_INPUT_CLASS.getMethod("isPaste");
-            Method $isCut = KEY_INPUT_CLASS.getMethod("isCut");
+            Method $isPaste = KEY_INPUT_CLASS.getMethod("method_74243");
+            Method $isCut = KEY_INPUT_CLASS.getMethod("method_74244");
             this.bPasteAction = (boolean) $isPaste.invoke(keyInput);
             this.bCutAction = (boolean) $isCut.invoke(keyInput);
         } catch (Exception ex) {

@@ -39,7 +39,6 @@ import java.util.Optional;
 public abstract class ClientPlayerInteractionManagerMixin {
     @Unique
     private final AbstractInteractionHandler soundHandler = new AbstractInteractionHandler() {
-        private final Class<BlockState> BLOCK_STATE_CLASS = BlockState.class;
 
         @Override
         protected EquipmentSlot getPreferredSlot(ArmorStandEntity armorStandEntity, ItemStack itemStack) {

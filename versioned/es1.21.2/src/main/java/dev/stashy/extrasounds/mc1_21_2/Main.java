@@ -8,6 +8,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BundleItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -80,5 +82,10 @@ public final class Main extends VersionedMain {
         } else {
             return this.getItemId(itemStack.getItem());
         }
+    }
+
+    @Override
+    public PlayerInventory getPlayerInventory(PlayerEntity player) {
+        return player.getInventory();
     }
 }

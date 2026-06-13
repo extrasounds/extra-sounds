@@ -117,12 +117,8 @@ public abstract class BaseVanillaGenerator {
             return SoundDefinition.of(aliased(PAPER));
         } else if (this.isStewItem(item)) {
             return SoundDefinition.of(aliased(BOWL));
-        } else if (item instanceof BundleItem) {
-            return SoundDefinition.of(aliased(BUNDLES));
         } else if (item instanceof EggItem) {
             return SoundDefinition.of(aliased(EGG));
-        } else if (item instanceof SpyglassItem) {
-            return SoundDefinition.of(aliased(Gear.IRON));
         }
 
         return DEFAULT_SOUND;

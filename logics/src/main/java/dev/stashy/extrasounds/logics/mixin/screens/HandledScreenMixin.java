@@ -26,11 +26,10 @@ public abstract class HandledScreenMixin {
     @Inject(
             method = {  // mouseDragged
                     "method_25403(DDIDD)Z",
-//                    "method_25403(Lnet/minecraft/class_11909;DD)Z",  // >=MC1.21.9
+                    "method_25403(Lnet/minecraft/class_11909;DD)Z",  // >=MC1.21.9
                     "mouseDragged(Lnet/minecraft/client/gui/Click;DD)Z"  // >=MC1.21.9
             },
-            at = @At(value = "INVOKE", target = "Ljava/util/Set;add(Ljava/lang/Object;)Z"),
-            require = 1
+            at = @At(value = "INVOKE", target = "Ljava/util/Set;add(Ljava/lang/Object;)Z")
     )
     private void extrasounds$quickCraftSound(CallbackInfoReturnable<Boolean> cir, @Local Slot slot) {
         if (!cursorDragSlots.contains(slot) && !cursorDragSlots.isEmpty()) {

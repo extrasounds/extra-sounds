@@ -60,6 +60,8 @@ public final class VanillaGenerator extends BaseVanillaGenerator {
                 return SoundDefinition.of(soundEntry);
             } else if (item instanceof SpyglassItem) {
                 return SoundDefinition.of(aliased(Gear.COPPER));
+            } else if (item instanceof BundleItem) {
+                return SoundDefinition.of(aliased(BUNDLES));
             }
 
             return super.generalSounds(item);
@@ -77,7 +79,7 @@ public final class VanillaGenerator extends BaseVanillaGenerator {
 
         Optional<TagKey<Item>> optionalTagKey = Optional.empty();
         try {
-            Method $items = REPAIRABLE_COMPONENT_CLASS.getMethod("items");
+            Method $items = REPAIRABLE_COMPONENT_CLASS.getMethod("comp_2939");
             optionalTagKey = ((RegistryEntryList<Item>) $items.invoke(component)).getTagKey();
         } catch (Exception ex) {
             ExtraSounds.LOGGER.error("Cannot invoke RepairableComponent#items", ex);

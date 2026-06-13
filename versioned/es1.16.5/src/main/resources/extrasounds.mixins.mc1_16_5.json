@@ -1,0 +1,36 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.stashy.extrasounds.mc1_16_5.mixin",
+  "plugin": "dev.stashy.extrasounds.mc1_16_5.VersionedMixinPlugin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+    "action.block.ClientPlayerInteractionManagerMixin",
+    "action.entity.ClientPlayerInteractionManagerMixin",
+    "action.entity.LivingEntityMixin",
+    "chat.ChatHudMixin",
+    "effect.ClientPlayerEntityMixin",
+    "effect.ExtendLivingEntityMixin",
+    "hotbar.ClientConnectionMixin",
+    "hotbar.ClientPlayerEntityMixin",
+    "hotbar.MinecraftClientMixin",
+    "hotbar.MouseMixin",
+    "screens.ClientPlayerInteractionManagerMixin",
+    "screens.CreativeInventoryScreenMixin",
+    "screens.LoomScreenMixin",
+    "screens.MerchantScreenMixin",
+    "screens.StonecutterScreenMixin",
+    "typing.ChatScreenMixin",
+    "typing.SignEditScreenMixin",
+    "typing.SelectionManagerMixin",
+    "typing.SuggestionWindowMixin",
+    "typing.TextFieldWidgetMixin",
+
+    "resource.ReloadableResourceManagerImplMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

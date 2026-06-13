@@ -47,6 +47,10 @@ public final class VanillaGenerator extends BaseVanillaGenerator {
             } else if (item instanceof BucketItem) {
                 final SoundEntry soundEntry = ((BucketItem) item).fluid.getBucketFillSound().map(sound -> event(sound.getId(), 0.7f)).orElse(aliased(METAL));
                 return SoundDefinition.of(soundEntry);
+            } else if (item instanceof SpyglassItem) {
+                return SoundDefinition.of(aliased(Gear.IRON));
+            } else if (item instanceof BundleItem) {
+                return SoundDefinition.of(aliased(BUNDLES));
             }
 
             return super.generalSounds(item);

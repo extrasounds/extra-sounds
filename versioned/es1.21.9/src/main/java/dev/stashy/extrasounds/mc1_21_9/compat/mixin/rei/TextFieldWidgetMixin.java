@@ -55,7 +55,7 @@ public abstract class TextFieldWidgetMixin implements TextField {
     )
     private void extrasounds$cutAction(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
         try {
-            Method $isCut = KEY_INPUT_CLASS.getMethod("isCut");
+            Method $isCut = KEY_INPUT_CLASS.getMethod("method_74244");
             if (!(boolean) $isCut.invoke(input) || this.getSelectedText().isEmpty()) {
                 return;
             }
@@ -75,7 +75,7 @@ public abstract class TextFieldWidgetMixin implements TextField {
     )
     private void extrasounds$pasteAction(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
         try {
-            Method $isPaste = KEY_INPUT_CLASS.getMethod("isPaste");
+            Method $isPaste = KEY_INPUT_CLASS.getMethod("method_74243");
             if (!(boolean) $isPaste.invoke(input) || !this.soundHandler.isPosUpdated(this.cursorPos, this.cursorPos)) {
                 return;
             }

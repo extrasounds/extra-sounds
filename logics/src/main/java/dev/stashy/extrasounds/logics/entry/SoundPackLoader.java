@@ -99,8 +99,8 @@ public final class SoundPackLoader {
         });
 
         // Register the vanilla generator.
-        soundGenMappers.put(Identifier.DEFAULT_NAMESPACE, BaseVanillaGenerator.GENERATOR);
-        generatorVer.add(CacheInfo.getModVersion(FabricLoader.getInstance().getModContainer(Identifier.DEFAULT_NAMESPACE).orElseThrow(RuntimeException::new)));
+        soundGenMappers.put("minecraft", BaseVanillaGenerator.GENERATOR);
+        generatorVer.add(CacheInfo.getModVersion(FabricLoader.getInstance().getModContainer("minecraft").orElseThrow(RuntimeException::new)));
 
         final CacheInfo currentCacheInfo = CacheInfo.of(generatorVer.toArray(new String[0]));
 

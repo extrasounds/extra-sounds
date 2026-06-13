@@ -5,14 +5,13 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "access.AdvancementTabAccessor",
-    "access.FlowerPotBlockInvoker",
+    "access.FlowerPotBlockAccessor",
     "access.LockableSlotAccessor",
 
     "action.item.ClientPlayerEntityMixin",
     "hotbar.MinecraftClientMixin",
     "screens.AdvancementsScreenMixin",
     "screens.AdvancementTabMixin",
-    "screens.ClientPlayerInteractionManagerMixin",
     "screens.HandledScreenMixin",
     "screens.MinecraftClientMixin",
     "keyboard.ScreenshotRecorderMixin"

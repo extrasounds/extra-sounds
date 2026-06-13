@@ -28,7 +28,7 @@ public final class EntitySoundHandler {
 
         final VersionedSoundEventWrapper sound;
         if (type == EffectType.ADD) {
-            switch (effect.getCategory()) {
+            switch (effect.getType()) {
                 case HARMFUL:
                     sound = Sounds.EFFECT_ADD_NEGATIVE;
                     break;
@@ -38,7 +38,7 @@ public final class EntitySoundHandler {
                     sound = Sounds.EFFECT_ADD_POSITIVE;
             }
         } else if (type == EffectType.REMOVE) {
-            switch (effect.getCategory()) {
+            switch (effect.getType()) {
                 case HARMFUL:
                     sound = Sounds.EFFECT_REMOVE_NEGATIVE;
                     break;

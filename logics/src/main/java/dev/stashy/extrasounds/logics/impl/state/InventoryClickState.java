@@ -77,7 +77,7 @@ public final class InventoryClickState {
      * @return {@code true} if off-screen area was clicked.
      */
     public boolean isEmptySpaceClicked() {
-        return this.slotIndex == ScreenHandler.EMPTY_SPACE_SLOT_INDEX && this.actionType != SlotActionType.QUICK_CRAFT;
+        return this.slotIndex == -999 && this.actionType != SlotActionType.QUICK_CRAFT;
     }
 
     private boolean isRightClick() {
@@ -113,7 +113,7 @@ public final class InventoryClickState {
             // Swap event.
             if (PlayerInventory.isValidHotbarIndex(this.button)) {
                 // Pressed hotbar key.
-                result = player.getInventory().getStack(this.button).copy();
+                result = ExtraSounds.MAIN.getPlayerInventory(player).getStack(this.button).copy();
             } else {
                 // Pressed offhand key.
                 result = player.getOffHandStack().copy();

@@ -16,7 +16,7 @@ public class SoundEventImpl extends VersionedSoundEventWrapper {
     public SoundEventImpl(Identifier identifier) {
         SoundEvent event = null;
         try {
-            Method $of = SOUND_EVENT_CLASS.getMethod("of", Identifier.class);
+            Method $of = SOUND_EVENT_CLASS.getMethod("method_47908", Identifier.class);
             event = (SoundEvent) $of.invoke(SOUND_EVENT_CLASS, identifier);
         } catch (Exception ex) {
             ExtraSounds.LOGGER.error("Cannot invoke SoundEvent#of(Identifier)", ex);
@@ -40,7 +40,7 @@ public class SoundEventImpl extends VersionedSoundEventWrapper {
     @Override
     public Identifier getId() {
         try {
-            Method $id = SOUND_EVENT_CLASS.getMethod("id");
+            Method $id = SOUND_EVENT_CLASS.getMethod("comp_3319");
             return (Identifier) $id.invoke(this.instance);
         } catch (Exception ex) {
             ExtraSounds.LOGGER.error("Cannot invoke SoundEvent#id", ex);

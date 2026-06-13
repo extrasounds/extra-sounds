@@ -25,7 +25,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 
     @Inject(method = "setCurrentHand", at = @At("HEAD"))
     private void extrasounds$bowPullSound(Hand hand, CallbackInfo ci) {
-        if (!this.getStackInHand(hand).isOf(Items.BOW)) {
+        if (this.getStackInHand(hand).getItem() != Items.BOW) {
             return;
         }
 
@@ -34,7 +34,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 
     @Inject(method = "clearActiveItem", at = @At(value = "HEAD"))
     private void extrasounds$cancelPullSound(CallbackInfo ci) {
-        if (!this.activeItemStack.isOf(Items.BOW)) {
+        if (this.activeItemStack.getItem() != Items.BOW) {
             return;
         }
 

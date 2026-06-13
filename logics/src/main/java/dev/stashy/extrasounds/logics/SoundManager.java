@@ -155,7 +155,7 @@ public final class SoundManager {
             return;
         }
 
-        ItemStack stack = player.getInventory().getStack(i);
+        ItemStack stack = ExtraSounds.MAIN.getPlayerInventory(player).getStack(i);
         if (stack.isEmpty()) {
             this.playSound2D(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
         } else {

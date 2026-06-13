@@ -2,7 +2,6 @@ package dev.stashy.extrasounds.logics.impl;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.state.ActionResultState;
-import dev.stashy.extrasounds.logics.mixin.access.FlowerPotBlockInvoker;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.sounds.Sounds;
 import net.minecraft.block.*;
@@ -36,6 +35,10 @@ public abstract class AbstractInteractionHandler {
     protected abstract BlockPos getBlockPos(Vec3d vec3d);
 
     protected abstract boolean isFlowerPotBlocks();
+
+    protected boolean shouldSoundFlowerPot(FlowerPotBlock block) {
+        return true;
+    }
 
     protected abstract boolean isRedstoneOreBlocks();
 
@@ -104,12 +107,17 @@ public abstract class AbstractInteractionHandler {
                 actionResult == ActionResultState.SUCCESS
         ) {
             final FlowerPotBlock potBlock = (FlowerPotBlock) this.block;
-            if (!((FlowerPotBlockInvoker) potBlock).invokeIsEmpty()) {
-                // Take from pot
-                ExtraSounds.MANAGER.blockInteract(potBlock.getContent().asItem().getDefaultStack(), blockPos);
-            } else {
+            if (!this.shouldSoundFlowerPot(potBlock) || !(potBlock instanceof FlowerPotBlockConnector)) {
+                return;
+            }
+
+            final FlowerPotBlockConnector connector = (FlowerPotBlockConnector) potBlock;
+            if (connector.isContentEmpty()) {
                 // Place into pot
                 ExtraSounds.MANAGER.blockInteract(this.currentHandStack.getItem().getDefaultStack(), blockPos);
+            } else {
+                // Take from pot
+                ExtraSounds.MANAGER.blockInteract(potBlock.getContent().asItem().getDefaultStack(), blockPos);
             }
         }
     }
