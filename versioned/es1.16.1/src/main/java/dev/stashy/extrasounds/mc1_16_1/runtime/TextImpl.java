@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc1_16_2.runtime;
+package dev.stashy.extrasounds.mc1_16_1.runtime;
 
 import dev.stashy.extrasounds.logics.runtime.VersionedText;
 import net.minecraft.client.gui.screen.ScreenTexts;
@@ -8,7 +8,7 @@ import net.minecraft.text.TranslatableText;
 public class TextImpl extends VersionedText {
     @Override
     public Text empty() {
-        return Text.of("");
+        return Text.method_30163("");
     }
 
     @Override

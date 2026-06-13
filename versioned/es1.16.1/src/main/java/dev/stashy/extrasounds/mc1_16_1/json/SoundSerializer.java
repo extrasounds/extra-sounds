@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc1_16_2.json;
+package dev.stashy.extrasounds.mc1_16_1.json;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc1_16_2;
+package dev.stashy.extrasounds.mc1_16_1;
 
 import dev.stashy.extrasounds.logics.VersionedMain;
 import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;
