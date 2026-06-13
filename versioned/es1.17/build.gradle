@@ -1,0 +1,33 @@
+plugins {
+    id 'fabric-loom'
+}
+
+var extraSounds = project.parent.parent
+
+version = "${extraSounds.mod_version}+${versionDetails().gitHash[0..7]}~lonefelidae16"
+
+base {
+    archivesName = "${extraSounds.archives_base_name}-interchanger+mc${project.minecraft_version}"
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.minecraft_version}${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    implementation "me.lonefelidae16:groominglib:${extraSounds.groom_version}"
+
+    modCompileOnly "maven.modrinth:rei:${project.rei_version}+fabric"
+
+    implementation project(path: extraSounds.project('logics').path, configuration: 'namedElements')
+}
+
+tasks.withType(ProcessResources).configureEach {
+    project.ext['moduleId'] = 'mc1_17'
+    project.ext['moduleName'] = '1.17 module'
+    project.ext['moduleAccessWidener'] = 'extrasounds.accesswidener'
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/extrasounds.accesswidener")
+}
