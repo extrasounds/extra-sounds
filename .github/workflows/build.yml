@@ -7,11 +7,13 @@ name: Build and Release
 on:
   push:
     branches:
-      - dev
+      - main
+      - legacy
       - 'port/**'
       - 'workflow/**'
     tags:
-      - 'v3/**'
+      - '*'
+      - 'legacy/**'
   pull_request:
 
 jobs:
