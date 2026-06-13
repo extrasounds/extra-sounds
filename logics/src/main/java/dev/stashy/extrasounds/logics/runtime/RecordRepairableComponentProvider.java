@@ -4,8 +4,6 @@ import dev.stashy.extrasounds.logics.ExtraSounds;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Method;
-
 public abstract class RecordRepairableComponentProvider {
     @Nullable
     public static final RecordRepairableComponentProvider INSTANCE;
