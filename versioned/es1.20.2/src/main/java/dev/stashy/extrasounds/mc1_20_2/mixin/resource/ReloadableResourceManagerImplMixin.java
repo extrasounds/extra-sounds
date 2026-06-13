@@ -1,18 +1,25 @@
 package dev.stashy.extrasounds.mc1_20_2.mixin.resource;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.entry.SoundPackLoader;
-import net.minecraft.resource.ReloadableResourceManagerImpl;
-import net.minecraft.resource.ResourcePack;
-import net.minecraft.resource.ResourceType;
+import dev.stashy.extrasounds.logics.runtime.VersionedClientResource;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.resource.*;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Mixin(ReloadableResourceManagerImpl.class)
 public abstract class ReloadableResourceManagerImplMixin {
@@ -29,5 +36,24 @@ public abstract class ReloadableResourceManagerImplMixin {
         List<ResourcePack> modifiable = new LinkedList<>(arg3);
         modifiable.add(0, (ResourcePack) SoundPackLoader.EXTRA_SOUNDS_RESOURCE);
         return modifiable;
+    }
+
+    @Inject(method = "reload", at = @At("RETURN"))
+    private void extrasounds$afterReload(CallbackInfoReturnable<ResourceReload> cir) {
+        final Set<String> soundEvents = new HashSet<>();
+        for (Resource pack : MinecraftClient.getInstance().getResourceManager().getAllResources(SoundPackLoader.SOUNDS_JSON_ID)) {
+            if (pack.getResourcePackName().equals(VersionedClientResource.PACK_NAME) || pack.getResourcePackName().equals(ExtraSounds.class.getSimpleName())) {
+                // Avoid auto-gen resource via SoundPackLoader.
+                continue;
+            }
+            try (InputStream stream = pack.getInputStream()) {
+                final BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(stream)));
+                final JsonObject jsonObject = JsonParser.parseString(reader.lines().collect(Collectors.joining())).getAsJsonObject();
+                soundEvents.addAll(jsonObject.keySet());
+            } catch (Exception ignored) {
+            }
+        }
+
+        SoundPackLoader.registerExternalSoundEvent(soundEvents);
     }
 }

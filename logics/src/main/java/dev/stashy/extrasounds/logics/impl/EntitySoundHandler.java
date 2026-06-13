@@ -7,7 +7,7 @@ import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -61,11 +61,11 @@ public final class EntitySoundHandler {
         ExtraSounds.MANAGER.playSound(Sounds.Entities.POOF, SoundType.ENTITY.category, .7f, pitch, blockPos);
     }
 
-    public void onItemUse(Item item) {
-        if (item == Items.AIR) {
+    public void onItemUse(ItemStack itemStack) {
+        if (itemStack.getItem() == Items.AIR) {
             return;
         }
 
-        ExtraSounds.MANAGER.playSound2D(ExtraSounds.MANAGER.getSoundByItem(item, SoundType.GRAB), SoundType.ENTITY);
+        ExtraSounds.MANAGER.playSound2D(ExtraSounds.MANAGER.getSoundByStack(itemStack, SoundType.GRAB), SoundType.ENTITY);
     }
 }

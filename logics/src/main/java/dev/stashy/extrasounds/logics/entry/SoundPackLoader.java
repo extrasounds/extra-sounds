@@ -36,13 +36,15 @@ import java.util.stream.Collectors;
 
 public final class SoundPackLoader {
     private static final int CACHE_VERSION = 1;
-    private static final Identifier SOUNDS_JSON_ID = ExtraSounds.generateIdentifier("sounds.json");
+    public static final Identifier SOUNDS_JSON_ID = ExtraSounds.generateIdentifier("sounds.json");
     private static final String CACHE_FNAME = ExtraSounds.MODID + ".cache";
     private static final Path CACHE_PATH = Paths.get(System.getProperty("java.io.tmpdir"), ".minecraft_fabric", CACHE_FNAME);
 
-    public static final Map<Identifier, VersionedSoundEventWrapper> CUSTOM_SOUND_EVENT = new HashMap<>();
+    private static final Map<Identifier, VersionedSoundEventWrapper> AUTO_GEN_SOUND_EVENT = new HashMap<>();
+    private static final Map<Identifier, VersionedSoundEventWrapper> EXTERNAL_SOUND_EVENT = new HashMap<>();
+    private static final Map<Identifier, VersionedSoundEventWrapper> CUSTOM_SOUND_EVENT = new HashMap<>();
     public static final VersionedClientResource EXTRA_SOUNDS_RESOURCE = Objects.requireNonNull(
-            VersionedClientResource.newInstance(ExtraSounds.MODID, String.format("%s Runtime Resources", ExtraSounds.class.getSimpleName()))
+            VersionedClientResource.newInstance(ExtraSounds.MODID, VersionedClientResource.PACK_NAME)
     );
     public static final Logger LOGGER = LogManager.getLogger(
             SoundPackLoader.class,
@@ -54,7 +56,7 @@ public final class SoundPackLoader {
             )
     );
 
-    private static final Gson GSON = new GsonBuilder()
+    public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(SoundEntry.class, new SoundEntrySerializer())
             .registerTypeHierarchyAdapter(VersionedSoundWrapper.class, Objects.requireNonNull(VersionedSoundSerializer.newInstance()))
             .create();
@@ -143,7 +145,7 @@ public final class SoundPackLoader {
         } else if (DebugUtils.DEBUG) {
             LOGGER.info("init finished; took {}ms.", tookMillis);
         }
-        LOGGER.info("sound pack successfully loaded; {} entries.", CUSTOM_SOUND_EVENT.size());
+        LOGGER.info("Generated sound pack successfully loaded; {} entries.", AUTO_GEN_SOUND_EVENT.size());
     }
 
     /**
@@ -169,6 +171,7 @@ public final class SoundPackLoader {
             }
         }
 
+        // process for registered item.
         for (Item item : ExtraSounds.MAIN.getItemRegistry()) {
             final Identifier itemId = ExtraSounds.MAIN.getItemId(item);
             final SoundDefinition definition;
@@ -188,15 +191,15 @@ public final class SoundPackLoader {
                 definition = SoundDefinition.of(fallbackSoundEntry);
             }
 
-            final Identifier pickupClickId = ExtraSounds.getClickId(itemId, SoundType.GRAB);
-            final SoundDefinition filled = definition.fill(Sounds.aliased(ExtraSounds.createEvent(pickupClickId)));
-            generateSoundEntry(pickupClickId, filled.pickup, resource);
+            final Identifier grabId = ExtraSounds.getClickId(itemId, SoundType.GRAB);
+            final SoundDefinition filled = definition.fill(Sounds.aliased(ExtraSounds.createEvent(grabId)));
+            generateSoundEntry(grabId, filled.pickup, resource);
             generateSoundEntry(ExtraSounds.getClickId(itemId, SoundType.PLACE), filled.place, resource);
             generateSoundEntry(ExtraSounds.getClickId(itemId, SoundType.HOTBAR), filled.hotbar, resource);
 
             if (DebugUtils.SEARCH_UNDEF_SOUND) {
                 final boolean isFallbackSoundEntry = Objects.equals(GSON.toJson(definition.pickup), fallbackSoundJson);
-                final boolean notIncludeSoundsJson = !inSoundsJsonIds.contains(pickupClickId.getPath());
+                final boolean notIncludeSoundsJson = !inSoundsJsonIds.contains(grabId.getPath());
                 if (isFallbackSoundEntry && notIncludeSoundsJson) {
                     LOGGER.warn("unregistered sound was found: '{}'", itemId);
                 }
@@ -222,7 +225,39 @@ public final class SoundPackLoader {
      * @param clickId Target id.
      */
     private static void putSoundEvent(Identifier clickId) {
-        CUSTOM_SOUND_EVENT.put(clickId, ExtraSounds.createEvent(clickId));
+        AUTO_GEN_SOUND_EVENT.put(clickId, ExtraSounds.createEvent(clickId));
+    }
+
+    private static void putExternalSoundEvent(Identifier identifier) {
+        EXTERNAL_SOUND_EVENT.put(identifier, ExtraSounds.createEvent(identifier));
+    }
+
+    public static Optional<VersionedSoundEventWrapper> getSoundEventById(Identifier... ids) {
+        if (ids == null) {
+            return Optional.empty();
+        }
+
+        for (Identifier target : ids) {
+            if (CUSTOM_SOUND_EVENT.containsKey(target)) {
+                return Optional.of(CUSTOM_SOUND_EVENT.get(target));
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static void registerExternalSoundEvent(Set<String> externalSounds) {
+        EXTERNAL_SOUND_EVENT.clear();
+        CUSTOM_SOUND_EVENT.clear();
+
+        for (String event : externalSounds) {
+            putExternalSoundEvent(ExtraSounds.generateIdentifier(ExtraSounds.MODID, event));
+        }
+
+        CUSTOM_SOUND_EVENT.putAll(AUTO_GEN_SOUND_EVENT);
+        if (!EXTERNAL_SOUND_EVENT.isEmpty()) {
+            LOGGER.info("External sound packs were found; {} entries.", EXTERNAL_SOUND_EVENT.size());
+            CUSTOM_SOUND_EVENT.putAll(EXTERNAL_SOUND_EVENT);
+        }
     }
 
     /**

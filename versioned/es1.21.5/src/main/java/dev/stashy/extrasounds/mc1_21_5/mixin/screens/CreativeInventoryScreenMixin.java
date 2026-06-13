@@ -84,7 +84,7 @@ public abstract class CreativeInventoryScreenMixin extends HandledScreen<Creativ
     @Inject(method = "setSelectedTab", at = @At("HEAD"))
     private void extrasounds$tabChange(ItemGroup group, CallbackInfo ci) {
         if (this.currentTab != group) {
-            ExtraSounds.MANAGER.playSound2D(group.getIcon().getItem(), SoundType.GRAB);
+            ExtraSounds.MANAGER.playSound2D(group.getIcon(), SoundType.GRAB);
             this.screenScrollHandler.resetScrollPos();
             this.currentTab = group;
         }

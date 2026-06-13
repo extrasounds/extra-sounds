@@ -39,6 +39,6 @@ public abstract class ClientConnectionMixin {
             return;
         }
 
-        this.soundHandler.onSwap(player.getMainHandStack().getItem(), player.getOffHandStack().getItem());
+        this.soundHandler.onSwap(player.getMainHandStack(), player.getOffHandStack());
     }
 }

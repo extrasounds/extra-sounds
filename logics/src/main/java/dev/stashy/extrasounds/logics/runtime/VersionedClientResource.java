@@ -25,6 +25,8 @@ import java.util.function.Supplier;
  * {@link net.minecraft.resource.ResourcePack} directly and will not be re-mapped.
  */
 public abstract class VersionedClientResource {
+    public static final String PACK_NAME = String.format("%s Runtime Resources", ExtraSounds.class.getSimpleName());
+
     protected static final ExecutorService EXECUTOR_SERVICE;
     protected static final Logger LOGGER;
 

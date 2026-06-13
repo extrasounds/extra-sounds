@@ -33,7 +33,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
         final ItemStack stackInHand = player.getStackInHand(hand);
         if (stackInHand.isOf(Items.NAME_TAG) && stackInHand.hasCustomName()) {
-            this.soundHandler.onItemUse(Items.NAME_TAG);
+            this.soundHandler.onItemUse(Items.NAME_TAG.getDefaultStack());
         }
     }
 }

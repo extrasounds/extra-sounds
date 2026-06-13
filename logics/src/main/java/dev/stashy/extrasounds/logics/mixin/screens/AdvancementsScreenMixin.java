@@ -29,7 +29,7 @@ public abstract class AdvancementsScreenMixin {
         final boolean result = original.call(instance, screenX, screenY, mouseX, mouseY);
         if (result && currentTab != tab && tab instanceof AdvancementTabAccessor) {
             AdvancementTabAccessor accessor = (AdvancementTabAccessor) tab;
-            ExtraSounds.MANAGER.playSound2D(accessor.getIcon().getItem(), SoundType.DEFAULT);
+            ExtraSounds.MANAGER.playSound2D(accessor.getIcon().getItem().getDefaultStack(), SoundType.DEFAULT);
         }
         return result;
     }

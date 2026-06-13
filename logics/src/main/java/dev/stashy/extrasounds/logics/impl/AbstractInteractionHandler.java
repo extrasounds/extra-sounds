@@ -87,7 +87,7 @@ public abstract class AbstractInteractionHandler {
                 bCanInteract && !(this.mainHandStack.getItem() instanceof BlockItem)
         ) {
             // Redstone Ores
-            ExtraSounds.MANAGER.blockInteract(this.block.asItem(), blockPos);
+            ExtraSounds.MANAGER.blockInteract(this.block.asItem().getDefaultStack(), blockPos);
         } else if (this.isCampfireBlocks() && (this.blockEntity instanceof CampfireBlockEntity)) {
             // Put item on Campfire
             final CampfireBlockEntity campfireBlockEntity = (CampfireBlockEntity) this.blockEntity;
@@ -97,7 +97,7 @@ public abstract class AbstractInteractionHandler {
 
             Optional<?> recipe = this.getCampfireRecipe(campfireBlockEntity, this.currentHandStack);
             if (recipe.isPresent() && actionResult == ActionResultState.CONSUME) {
-                ExtraSounds.MANAGER.blockInteract(this.currentHandStack.getItem(), blockPos);
+                ExtraSounds.MANAGER.blockInteract(this.currentHandStack, blockPos);
             }
         } else if (this.isFlowerPotBlocks() &&
                 (this.block instanceof FlowerPotBlock) &&
@@ -106,10 +106,10 @@ public abstract class AbstractInteractionHandler {
             final FlowerPotBlock potBlock = (FlowerPotBlock) this.block;
             if (!((FlowerPotBlockInvoker) potBlock).invokeIsEmpty()) {
                 // Take from pot
-                ExtraSounds.MANAGER.blockInteract(potBlock.getContent().asItem(), blockPos);
+                ExtraSounds.MANAGER.blockInteract(potBlock.getContent().asItem().getDefaultStack(), blockPos);
             } else {
                 // Place into pot
-                ExtraSounds.MANAGER.blockInteract(this.currentHandStack.getItem(), blockPos);
+                ExtraSounds.MANAGER.blockInteract(this.currentHandStack.getItem().getDefaultStack(), blockPos);
             }
         }
     }
@@ -127,9 +127,9 @@ public abstract class AbstractInteractionHandler {
             final ItemStack equipped = armorStandEntity.getEquippedStack(slotFromPosition).copy();
             final ItemStack preferred = armorStandEntity.getEquippedStack(slotPreferred).copy();
             if (this.shouldSoundArmorStandEquipped(currentStack, equipped)) {
-                ExtraSounds.MANAGER.blockInteract(equipped.getItem(), this.getBlockPos(hitResult.getPos()));
+                ExtraSounds.MANAGER.blockInteract(equipped.getItem().getDefaultStack(), this.getBlockPos(hitResult.getPos()));
             } else if (this.shouldSoundArmorStandPreferred(currentStack, preferred)) {
-                ExtraSounds.MANAGER.blockInteract(preferred.getItem(), this.getBlockPos(hitResult.getPos()));
+                ExtraSounds.MANAGER.blockInteract(preferred.getItem().getDefaultStack(), this.getBlockPos(hitResult.getPos()));
             }
         }
     }

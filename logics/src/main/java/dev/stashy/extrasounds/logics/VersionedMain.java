@@ -54,4 +54,8 @@ public abstract class VersionedMain {
     public abstract boolean shouldIgnoreItemSound(Item cursorItem, Item slotItem, InventoryClickState state);
 
     public abstract float getSoundVolume(SoundCategory soundCategory);
+
+    public Identifier getItemIdWithComponents(ItemStack itemStack) {
+        return this.getItemId(itemStack.getItem());
+    }
 }

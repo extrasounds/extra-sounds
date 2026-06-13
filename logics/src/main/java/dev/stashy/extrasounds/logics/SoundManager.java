@@ -6,7 +6,6 @@ import dev.stashy.extrasounds.logics.impl.VersionedHotbarSoundHandler;
 import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;
 import dev.stashy.extrasounds.logics.runtime.VersionedPositionedSoundInstanceWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
-import dev.stashy.extrasounds.logics.throwable.SoundNotFoundException;
 import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
 import me.lonefelidae16.groominglib.api.PrefixableMessageFactory;
@@ -29,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 public final class SoundManager {
@@ -78,7 +78,7 @@ public final class SoundManager {
         final ItemStack slotStack = state.getSlotStack();
         if (actionType == SlotActionType.QUICK_MOVE) {
             // cursor holding an item, then Shift + mouse (double) click.
-            this.handleQuickMoveSound(slotStack.getItem());
+            this.handleQuickMoveSound(slotStack);
             return;
         }
         if (state.isSlotBlocked()) {
@@ -137,9 +137,9 @@ public final class SoundManager {
                  *  --> PICKUP
                  */
                 if (!hasSlot || hasCursor && ExtraSounds.MAIN.canItemsCombine(slotStack, cursorStack)) {
-                    this.playSound2D(cursorStack.getItem(), SoundType.PLACE);
+                    this.playSound2D(cursorStack, SoundType.PLACE);
                 } else {
-                    this.playSound2D(slotStack.getItem(), SoundType.GRAB);
+                    this.playSound2D(slotStack, SoundType.GRAB);
                 }
         }
     }
@@ -159,7 +159,7 @@ public final class SoundManager {
         if (stack.isEmpty()) {
             this.playSound2D(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
         } else {
-            this.playSound2D(stack.getItem(), SoundType.HOTBAR);
+            this.playSound2D(stack, SoundType.HOTBAR);
         }
     }
 
@@ -168,32 +168,33 @@ public final class SoundManager {
         this.playSound(snd, blockIntr.category, 1f, blockIntr.pitch, position);
     }
 
-    public void blockInteract(Item item, BlockPos position) {
-        this.blockInteract(this.getSoundByItem(item, SoundType.DEFAULT), position);
+    public void blockInteract(ItemStack itemStack, BlockPos position) {
+        this.blockInteract(this.getSoundByStack(itemStack, SoundType.DEFAULT), position);
     }
 
     public void playSound2D(VersionedSoundEventWrapper snd, SoundType type) {
         this.playSound2D(snd, type.category, type.pitch);
     }
 
-    public void playSound2D(Item item, SoundType type) {
-        this.playSound2D(this.getSoundByItem(item, type), type.category, type.pitch);
+    public void playSound2D(ItemStack itemStack, SoundType type) {
+        this.playSound2D(this.getSoundByStack(itemStack, type), type.category, type.pitch);
     }
 
     /**
      * SlotActionType.QUICK_MOVE is too many method calls
      *
-     * @param item Target item to quickMove
+     * @param itemStack Target item to quickMove
      * @see net.minecraft.client.network.ClientPlayerInteractionManager#clickSlot
      * @see ScreenHandler#internalOnSlotClick
      */
-    private void handleQuickMoveSound(Item item) {
+    private void handleQuickMoveSound(ItemStack itemStack) {
+        final Item item = itemStack.getItem();
         if (item == Items.AIR) {
             return;
         }
         long now = System.currentTimeMillis();
         if (now - this.lastPlayed > 10 || item != this.quickMovingItem) {
-            this.playSound2D(item, SoundType.GRAB);
+            this.playSound2D(itemStack, SoundType.GRAB);
             this.lastPlayed = now;
             this.quickMovingItem = item;
         }
@@ -297,18 +298,27 @@ public final class SoundManager {
         MinecraftClient.getInstance().getSoundManager().stopSounds(e.getId(), type.category);
     }
 
-    public VersionedSoundEventWrapper getSoundByItem(Item item, SoundType type) {
-        Identifier itemId = ExtraSounds.MAIN.getItemId(item);
-        Identifier id = ExtraSounds.getClickId(itemId, type);
-        VersionedSoundEventWrapper sound = SoundPackLoader.CUSTOM_SOUND_EVENT.getOrDefault(id, null);
-        if (sound == null) {
-            if (!this.missingSoundId.contains(id)) {
-                this.missingSoundId.add(id);
-                LOGGER.error("Sound '{}' cannot be found in packs.", id, new SoundNotFoundException());
+
+    public VersionedSoundEventWrapper getSoundByStack(ItemStack item, SoundType type) {
+        final Identifier itemModelId = ExtraSounds.getClickId(ExtraSounds.MAIN.getItemIdWithComponents(item), type);
+        final Identifier itemId = ExtraSounds.getClickId(ExtraSounds.MAIN.getItemId(item.getItem()), type);
+        final Optional<VersionedSoundEventWrapper> sound = SoundPackLoader.getSoundEventById(itemModelId, itemId);
+        if (sound.isPresent()) {
+            return sound.get();
+        } else {
+            logMissingSoundId(itemId);
+            if (!itemModelId.equals(itemId)) {
+                logMissingSoundId(itemModelId);
             }
             return FALLBACK_SOUND_EVENT;
         }
-        return sound;
+    }
+
+    private void logMissingSoundId(Identifier id) {
+        if (!this.missingSoundId.contains(id)) {
+            this.missingSoundId.add(id);
+            LOGGER.error("Sound '{}' cannot be found in packs.", id);
+        }
     }
 
     public VersionedHotbarSoundHandler getHotbarSoundHandler() {

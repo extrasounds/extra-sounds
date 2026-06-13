@@ -85,7 +85,7 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
     @Inject(method = "setSelectedTab", at = @At("HEAD"))
     private void extrasounds$tabChange(ItemGroup group, CallbackInfo ci) {
         if (this.currentTab != group.getIndex()) {
-            ExtraSounds.MANAGER.playSound2D(group.getIcon().getItem(), SoundType.GRAB);
+            ExtraSounds.MANAGER.playSound2D(group.getIcon(), SoundType.GRAB);
             this.screenScrollHandler.resetScrollPos();
             this.currentTab = group.getIndex();
         }
