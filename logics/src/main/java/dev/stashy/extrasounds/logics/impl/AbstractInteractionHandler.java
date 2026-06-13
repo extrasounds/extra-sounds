@@ -90,7 +90,7 @@ public abstract class AbstractInteractionHandler {
                 bCanInteract && !(this.mainHandStack.getItem() instanceof BlockItem)
         ) {
             // Redstone Ores
-            ExtraSounds.MANAGER.blockInteract(this.block.asItem().getDefaultStack(), blockPos);
+            ExtraSounds.MANAGER.blockInteract(this.block.asItem().getStackForRender(), blockPos);
         } else if (this.isCampfireBlocks() && (this.blockEntity instanceof CampfireBlockEntity)) {
             // Put item on Campfire
             final CampfireBlockEntity campfireBlockEntity = (CampfireBlockEntity) this.blockEntity;
@@ -114,10 +114,10 @@ public abstract class AbstractInteractionHandler {
             final FlowerPotBlockConnector connector = (FlowerPotBlockConnector) potBlock;
             if (connector.isContentEmpty()) {
                 // Place into pot
-                ExtraSounds.MANAGER.blockInteract(this.currentHandStack.getItem().getDefaultStack(), blockPos);
+                ExtraSounds.MANAGER.blockInteract(this.currentHandStack.getItem().getStackForRender(), blockPos);
             } else {
                 // Take from pot
-                ExtraSounds.MANAGER.blockInteract(potBlock.getContent().asItem().getDefaultStack(), blockPos);
+                ExtraSounds.MANAGER.blockInteract(potBlock.getContent().asItem().getStackForRender(), blockPos);
             }
         }
     }
@@ -135,9 +135,9 @@ public abstract class AbstractInteractionHandler {
             final ItemStack equipped = armorStandEntity.getEquippedStack(slotFromPosition).copy();
             final ItemStack preferred = armorStandEntity.getEquippedStack(slotPreferred).copy();
             if (this.shouldSoundArmorStandEquipped(currentStack, equipped)) {
-                ExtraSounds.MANAGER.blockInteract(equipped.getItem().getDefaultStack(), this.getBlockPos(hitResult.getPos()));
+                ExtraSounds.MANAGER.blockInteract(equipped.getItem().getStackForRender(), this.getBlockPos(hitResult.getPos()));
             } else if (this.shouldSoundArmorStandPreferred(currentStack, preferred)) {
-                ExtraSounds.MANAGER.blockInteract(preferred.getItem().getDefaultStack(), this.getBlockPos(hitResult.getPos()));
+                ExtraSounds.MANAGER.blockInteract(preferred.getItem().getStackForRender(), this.getBlockPos(hitResult.getPos()));
             }
         }
     }
