@@ -58,6 +58,33 @@
       "extrasounds:item/arrow/pickup6"
     ]
   },
+  "item.integrated.dry": {
+    "sounds": [
+      "extrasounds:item/dry/pickup1",
+      "extrasounds:item/dry/pickup2",
+      "extrasounds:item/dry/pickup3",
+      "extrasounds:item/dry/pickup4"
+    ]
+  },
+  "item.integrated.crunchy": {
+    "sounds": [
+      "extrasounds:item/crunchy/pickup1",
+      "extrasounds:item/crunchy/pickup2",
+      "extrasounds:item/crunchy/pickup3",
+      "extrasounds:item/crunchy/pickup4",
+      "extrasounds:item/crunchy/pickup5",
+      "extrasounds:item/crunchy/pickup6"
+    ]
+  },
+  "item.integrated.shell": {
+    "sounds": [
+      "extrasounds:item/shell/pickup1",
+      "extrasounds:item/shell/pickup2",
+      "extrasounds:item/shell/pickup3",
+      "extrasounds:item/shell/pickup4",
+      "extrasounds:item/shell/pickup5"
+    ]
+  },
   "item.pickup.minecraft.air": {
     "replace": true,
     "sounds": [
@@ -173,7 +200,7 @@
   "item.category.crunchy_dry": {
     "sounds": [
       {
-        "name": "minecraft:block.big_dripleaf.place",
+        "name": "extrasounds:item.integrated.crunchy",
         "volume": 0.8,
         "pitch": 1,
         "type": "event"
@@ -193,7 +220,7 @@
   "item.category.food_dry": {
     "sounds": [
       {
-        "name": "minecraft:block.rooted_dirt.place",
+        "name": "extrasounds:item.integrated.dry",
         "volume": 0.7,
         "pitch": 1.7,
         "type": "event"
@@ -933,7 +960,7 @@
     "replace": true,
     "sounds": [
       {
-        "name": "minecraft:block.rooted_dirt.place",
+        "name": "extrasounds:item.integrated.dry",
         "pitch": 1.7,
         "type": "event",
         "volume": 0.8
@@ -1546,7 +1573,7 @@
     "replace": true,
     "sounds": [
       {
-        "name": "minecraft:block.tuff.place",
+        "name": "extrasounds:item.integrated.shell",
         "pitch": 1.8,
         "type": "event",
         "volume": 0.7
