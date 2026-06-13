@@ -2,6 +2,8 @@ plugins {
     id 'fabric-loom'
 }
 
+apply from: 'https://gitlab.kow08absty.com/-/snippets/4/raw/main/mod-fat-jar.gradle'
+
 var extraSounds = project.parent.parent
 
 version = "${extraSounds.mod_version}+${versionDetails().gitHash[0..7]}~lonefelidae16"
@@ -17,7 +19,7 @@ dependencies {
 
     implementation "me.lonefelidae16:groominglib:${extraSounds.groom_version}"
 
-    modCompileOnly "maven.modrinth:rei:${project.rei_version}+fabric"
+    modFatJarCompileOnly "maven.modrinth:rei:${project.rei_version}+fabric"
 
     implementation project(path: extraSounds.project('logics').path, configuration: 'namedElements')
 }
