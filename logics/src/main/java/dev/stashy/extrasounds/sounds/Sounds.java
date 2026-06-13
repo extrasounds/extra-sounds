@@ -1,5 +1,6 @@
 package dev.stashy.extrasounds.sounds;
 
+import com.google.common.collect.ImmutableList;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundWrapper;
@@ -7,7 +8,6 @@ import net.minecraft.client.sound.Sound;
 import net.minecraft.client.sound.SoundEntry;
 import net.minecraft.util.Identifier;
 
-import java.util.List;
 import java.util.Objects;
 
 public final class Sounds {
@@ -75,7 +75,7 @@ public final class Sounds {
     }
 
     public static SoundEntry single(Identifier id, float volume, float pitch, Sound.RegistrationType type) {
-        return new SoundEntry(List.of(
+        return new SoundEntry(ImmutableList.of(
                 (Sound) Objects.requireNonNull(
                         VersionedSoundWrapper.newInstance(id, volume, pitch, 1,
                                 type, false, false, 16)

@@ -37,16 +37,16 @@ public final class ExtraSounds {
             final String prefix = type.prefix;
             final String namespace = id.getNamespace();
             final String path = id.getPath();
-            if (prefix.isBlank() || namespace.isBlank() || path.isBlank()) {
+            if (prefix.isEmpty() || namespace.isEmpty() || path.isEmpty()) {
                 throw new IllegalArgumentException(
-                        "Identifier cannot contain blank String: prefix = '%s', namespace = '%s', path = '%s'".formatted(
+                        String.format("Identifier cannot contain blank String: prefix = '%s', namespace = '%s', path = '%s'",
                                 prefix,
                                 namespace,
                                 path
                         )
                 );
             }
-            return Objects.requireNonNull(MAIN.generateIdentifier(ExtraSounds.MODID, "%s.%s.%s".formatted(prefix, namespace, path)));
+            return Objects.requireNonNull(MAIN.generateIdentifier(ExtraSounds.MODID, String.format("%s.%s.%s", prefix, namespace, path)));
         } catch (Exception ex) {
             ExtraSounds.LOGGER.error("Failed to create Click Id.", ex);
         }

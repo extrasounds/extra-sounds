@@ -6,6 +6,7 @@ import dev.stashy.extrasounds.mapping.SoundGenerator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,13 +36,13 @@ public class DebugUtils {
     public static void init() {
         if (!DEBUG) return;
         ExtraSounds.LOGGER.info("DEBUG mode enabled.");
-        ExtraSounds.LOGGER.info("Debug path: {}", Path.of(DEBUG_PATH).toAbsolutePath());
+        ExtraSounds.LOGGER.info("Debug path: {}", Paths.get(DEBUG_PATH).toAbsolutePath());
     }
 
     public static void exportSoundsJson(byte[] jsonData) {
         if (!DEBUG) return;
         try {
-            Path p = Path.of(DEBUG_PATH).resolve("sounds.json");
+            Path p = Paths.get(DEBUG_PATH).resolve("sounds.json");
             createFile(p);
             Files.write(p, jsonData, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
@@ -51,13 +52,13 @@ public class DebugUtils {
 
     public static void exportGenerators(Map<String, SoundGenerator> generator) {
         if (!DEBUG) return;
-        Path p = Path.of(DEBUG_PATH).resolve("generators.txt");
+        Path p = Paths.get(DEBUG_PATH).resolve("generators.txt");
         createFile(p);
         try {
             Files.write(p, generator.keySet().stream()
                     .map(it -> {
-                        var clazz = generator.get(it).itemSoundGenerator.getClass();
-                        return "namespace: %s; class: %s".formatted(it, clazz.getName());
+                        Class<?> clazz = generator.get(it).itemSoundGenerator.getClass();
+                        return String.format("namespace: %s; class: %s", it, clazz.getName());
                     })
                     .collect(Collectors.toList()));
         } catch (IOException e) {
@@ -67,7 +68,7 @@ public class DebugUtils {
 
     private static void createFile(Path p) {
         try {
-            final Path debugPath = Path.of(DebugUtils.DEBUG_PATH);
+            final Path debugPath = Paths.get(DebugUtils.DEBUG_PATH);
             if (!Files.isDirectory(debugPath))
                 Files.createDirectory(debugPath);
             if (!Files.exists(p))

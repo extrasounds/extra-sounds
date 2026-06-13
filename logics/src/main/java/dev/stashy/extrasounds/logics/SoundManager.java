@@ -33,10 +33,12 @@ import java.util.Set;
 public final class SoundManager {
     private static final Logger LOGGER = LogManager.getLogger(
             SoundManager.class,
-            new PrefixableMessageFactory("%s/%s".formatted(
-                    ExtraSounds.class.getSimpleName(),
-                    SoundManager.class.getSimpleName()
-            ))
+            new PrefixableMessageFactory(
+                    String.format("%s/%s",
+                            ExtraSounds.class.getSimpleName(),
+                            SoundManager.class.getSimpleName()
+                    )
+            )
     );
 
     public static final VersionedSoundEventWrapper FALLBACK_SOUND_EVENT = Sounds.ITEM_PICK;
@@ -108,12 +110,12 @@ public final class SoundManager {
         }
 
         switch (actionType) {
-            case PICKUP_ALL -> {
+            case PICKUP_ALL:
                 if (hasCursor) {
                     this.playSound(Sounds.ITEM_PICK_ALL, SoundType.PICKUP);
                 }
-            }
-            case THROW -> {
+                break;
+            case THROW:
                 if (!hasCursor) {
                     if (state.button == 0) {
                         // one item drop from stack (default: Q key)
@@ -121,8 +123,8 @@ public final class SoundManager {
                     }
                     this.playThrow(slotStack);
                 }
-            }
-            default -> {
+                break;
+            default:
                 /*
                  * hasCursor == true, hasSlot == true
                  *  --> ItemStack#canCombine ? PLACE : EXCHANGE;
@@ -138,7 +140,6 @@ public final class SoundManager {
                 } else {
                     this.playSound(slotStack.getItem(), SoundType.PICKUP);
                 }
-            }
         }
     }
 
@@ -149,7 +150,7 @@ public final class SoundManager {
         }
 
         if (!PlayerInventory.isValidHotbarIndex(i)) {
-            LOGGER.error("Invalid index '{}' was passed.", i, new IndexOutOfBoundsException(i));
+            LOGGER.error("Invalid index '{}' was passed.", i, new IndexOutOfBoundsException());
             return;
         }
 
@@ -211,7 +212,7 @@ public final class SoundManager {
             }
             return;
         }
-        final var soundInstance = VersionedPositionedSoundInstanceWrapper.newInstance(
+        final VersionedPositionedSoundInstanceWrapper soundInstance = VersionedPositionedSoundInstanceWrapper.newInstance(
                 snd.getId(), category, volume, pitch, false, 0, SoundInstance.AttenuationType.NONE,
                 0.0D, 0.0D, 0.0D, true
         );
@@ -227,7 +228,7 @@ public final class SoundManager {
             }
             return;
         }
-        final var soundInstance = VersionedPositionedSoundInstanceWrapper.newInstance(
+        final VersionedPositionedSoundInstanceWrapper soundInstance = VersionedPositionedSoundInstanceWrapper.newInstance(
                 snd, type.category, volume, pitch, position
         );
         this.playSound(Objects.requireNonNull(soundInstance));
@@ -294,7 +295,7 @@ public final class SoundManager {
     }
 
     public VersionedSoundEventWrapper getSoundByItem(Item item, SoundType type) {
-        var itemId = ExtraSounds.MAIN.getItemId(item);
+        Identifier itemId = ExtraSounds.MAIN.getItemId(item);
         Identifier id = ExtraSounds.getClickId(itemId, type);
         VersionedSoundEventWrapper sound = SoundPackLoader.CUSTOM_SOUND_EVENT.getOrDefault(id, null);
         if (sound == null) {

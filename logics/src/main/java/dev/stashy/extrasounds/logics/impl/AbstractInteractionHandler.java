@@ -3,6 +3,7 @@ package dev.stashy.extrasounds.logics.impl;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.state.ActionResultState;
 import dev.stashy.extrasounds.logics.mixin.access.FlowerPotBlockInvoker;
+import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.sounds.Sounds;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -67,14 +68,14 @@ public abstract class AbstractInteractionHandler {
                 bCanInteract
         ) {
             // Repeater
-            final var sound = this.blockState.get(RepeaterBlock.DELAY) == 4 ? Sounds.Actions.REPEATER_RESET : Sounds.Actions.REPEATER_ADD;
+            final VersionedSoundEventWrapper sound = this.blockState.get(RepeaterBlock.DELAY) == 4 ? Sounds.Actions.REPEATER_RESET : Sounds.Actions.REPEATER_ADD;
             ExtraSounds.MANAGER.blockInteract(sound, blockPos);
         } else if (this.blockState.isOf(Blocks.DAYLIGHT_DETECTOR) &&
                 this.blockState.contains(DaylightDetectorBlock.INVERTED) &&
                 bCanInteract
         ) {
             // Daylight Detector
-            final var sound = this.blockState.get(DaylightDetectorBlock.INVERTED) ? Sounds.Actions.REDSTONE_COMPONENT_ON : Sounds.Actions.REDSTONE_COMPONENT_OFF;
+            final VersionedSoundEventWrapper sound = this.blockState.get(DaylightDetectorBlock.INVERTED) ? Sounds.Actions.REDSTONE_COMPONENT_ON : Sounds.Actions.REDSTONE_COMPONENT_OFF;
             ExtraSounds.MANAGER.blockInteract(sound, blockPos);
         } else if (this.blockState.isOf(Blocks.REDSTONE_WIRE) && bCanInteract &&
                 actionResult == ActionResultState.SUCCESS
@@ -87,20 +88,22 @@ public abstract class AbstractInteractionHandler {
         ) {
             // Redstone Ores
             ExtraSounds.MANAGER.blockInteract(this.block.asItem(), blockPos);
-        } else if (this.isCampfireBlocks() && (this.blockEntity instanceof CampfireBlockEntity campfireBlockEntity)) {
+        } else if (this.isCampfireBlocks() && (this.blockEntity instanceof CampfireBlockEntity)) {
             // Put item on Campfire
+            final CampfireBlockEntity campfireBlockEntity = (CampfireBlockEntity) this.blockEntity;
             if (campfireBlockEntity.getItemsBeingCooked().stream().noneMatch(ItemStack::isEmpty)) {
                 return;
             }
 
-            var recipe = this.getCampfireRecipe(campfireBlockEntity, this.currentHandStack);
+            Optional<?> recipe = this.getCampfireRecipe(campfireBlockEntity, this.currentHandStack);
             if (recipe.isPresent() && actionResult == ActionResultState.CONSUME) {
                 ExtraSounds.MANAGER.blockInteract(this.currentHandStack.getItem(), blockPos);
             }
         } else if (this.isFlowerPotBlocks() &&
-                (this.block instanceof FlowerPotBlock potBlock) &&
+                (this.block instanceof FlowerPotBlock) &&
                 actionResult == ActionResultState.SUCCESS
         ) {
+            final FlowerPotBlock potBlock = (FlowerPotBlock) this.block;
             if (!((FlowerPotBlockInvoker) potBlock).invokeIsEmpty()) {
                 // Take from pot
                 ExtraSounds.MANAGER.blockInteract(potBlock.getContent().asItem(), blockPos);
@@ -113,7 +116,8 @@ public abstract class AbstractInteractionHandler {
 
     public final void onInteractEntityAt(ItemStack stackInHand, Entity entity, EntityHitResult hitResult, Vec3d target) {
         final ItemStack currentStack = stackInHand.copy();
-        if (entity instanceof ArmorStandEntity armorStandEntity) {
+        if (entity instanceof ArmorStandEntity) {
+            final ArmorStandEntity armorStandEntity = (ArmorStandEntity) entity;
             final EquipmentSlot slotFromPosition = this.getSlotFromPosition(armorStandEntity, target);
             final EquipmentSlot slotPreferred = this.getPreferredSlot(armorStandEntity, currentStack);
             if (!armorStandEntity.hasStackEquipped(slotFromPosition) && !armorStandEntity.hasStackEquipped(slotPreferred)) {

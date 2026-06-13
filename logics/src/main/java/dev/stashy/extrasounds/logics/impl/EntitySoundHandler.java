@@ -28,15 +28,25 @@ public final class EntitySoundHandler {
 
         final VersionedSoundEventWrapper sound;
         if (type == EffectType.ADD) {
-            sound = switch (effect.getCategory()) {
-                case HARMFUL -> Sounds.EFFECT_ADD_NEGATIVE;
-                case NEUTRAL, BENEFICIAL -> Sounds.EFFECT_ADD_POSITIVE;
-            };
+            switch (effect.getCategory()) {
+                case HARMFUL:
+                    sound = Sounds.EFFECT_ADD_NEGATIVE;
+                    break;
+                case NEUTRAL:
+                case BENEFICIAL:
+                default:
+                    sound = Sounds.EFFECT_ADD_POSITIVE;
+            }
         } else if (type == EffectType.REMOVE) {
-            sound = switch (effect.getCategory()) {
-                case HARMFUL -> Sounds.EFFECT_REMOVE_NEGATIVE;
-                case NEUTRAL, BENEFICIAL -> Sounds.EFFECT_REMOVE_POSITIVE;
-            };
+            switch (effect.getCategory()) {
+                case HARMFUL:
+                    sound = Sounds.EFFECT_REMOVE_NEGATIVE;
+                    break;
+                case NEUTRAL:
+                case BENEFICIAL:
+                default:
+                    sound = Sounds.EFFECT_REMOVE_POSITIVE;
+            }
         } else {
             ExtraSounds.LOGGER.error("Argument of type '{}' is not supported for '{}'", EffectType.class.getSimpleName(), type);
             return;

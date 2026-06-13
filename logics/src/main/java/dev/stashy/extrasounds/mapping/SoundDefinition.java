@@ -66,9 +66,10 @@ public class SoundDefinition {
         if (that == this) {
             return true;
         }
-        if (!(that instanceof SoundDefinition soundDefinition)) {
+        if (!(that instanceof SoundDefinition)) {
             return false;
         }
+        final SoundDefinition soundDefinition = (SoundDefinition) that;
         return Objects.equals(soundDefinition.pickup, this.pickup) &&
                 Objects.equals(soundDefinition.place, this.place) &&
                 Objects.equals(soundDefinition.hotbar, this.hotbar);

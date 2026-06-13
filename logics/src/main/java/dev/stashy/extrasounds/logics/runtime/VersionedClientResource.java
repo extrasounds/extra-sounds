@@ -1,5 +1,6 @@
 package dev.stashy.extrasounds.logics.runtime;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.gson.JsonObject;
 import dev.stashy.extrasounds.logics.ExtraSounds;
@@ -14,10 +15,7 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -35,7 +33,7 @@ public abstract class VersionedClientResource {
         LOGGER = LogManager.getLogger(
                 VersionedClientResource.class,
                 new PrefixableMessageFactory(
-                        "%s/ResourcePack".formatted(ExtraSounds.class.getSimpleName())
+                        String.format("%s/ResourcePack", ExtraSounds.class.getSimpleName())
                 )
         );
         EXECUTOR_SERVICE = Executors.newFixedThreadPool(proc, new ThreadFactoryBuilder().setDaemon(true).setNameFormat("ResPack-Workers-%s").build());
@@ -58,7 +56,7 @@ public abstract class VersionedClientResource {
     }
 
     public void addResourceAsync(Identifier location, Function<Identifier, byte[]> supplier) {
-        var future = EXECUTOR_SERVICE.submit(() -> supplier.apply(location));
+        Future<byte[]> future = EXECUTOR_SERVICE.submit(() -> supplier.apply(location));
         this.assets.put(location, () -> {
             try {
                 return future.get();
@@ -75,11 +73,11 @@ public abstract class VersionedClientResource {
 
     public Set<String> getNamespacesImpl(ResourceType type) {
         if (type != ResourceType.CLIENT_RESOURCES) {
-            return Set.of();
+            return ImmutableSet.of();
         }
 
         Set<String> namespaces = new HashSet<>();
-        for (var id : this.assets.keySet()) {
+        for (Identifier id : this.assets.keySet()) {
             namespaces.add(id.getNamespace());
         }
         return namespaces;
@@ -92,7 +90,7 @@ public abstract class VersionedClientResource {
     protected JsonObject createPackJson() {
         JsonObject object = new JsonObject();
         object.addProperty("pack_format", this.packVersion);
-        object.addProperty("description", "%s Runtime ResPack".formatted(ExtraSounds.class.getSimpleName()));
+        object.addProperty("description", String.format("%s Runtime ResPack", ExtraSounds.class.getSimpleName()));
         return object;
     }
 }

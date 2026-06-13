@@ -3,6 +3,7 @@ plugins {
 }
 
 var extraSounds = project.parent.parent
+var targetJavaLang = Integer.parseInt(project.java_lang_version)
 
 version = "${extraSounds.mod_version}+${versionDetails().gitHash[0..7]}~lonefelidae16"
 
@@ -20,6 +21,10 @@ dependencies {
     modCompileOnly "maven.modrinth:rei:${project.rei_version}+fabric"
 
     implementation project(path: extraSounds.project('logics').path, configuration: 'namedElements')
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release.set(targetJavaLang)
 }
 
 tasks.withType(ProcessResources).configureEach {

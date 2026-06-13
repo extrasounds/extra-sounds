@@ -1,5 +1,6 @@
 package dev.stashy.extrasounds.logics.compat;
 
+import com.google.common.collect.ImmutableList;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
@@ -40,7 +41,7 @@ public final class CompatibilityMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public List<String> getMixins() {
-        return List.of();
+        return ImmutableList.of();
     }
 
     @Override

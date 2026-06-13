@@ -126,7 +126,7 @@ public final class InventoryClickState {
 
     @Override
     public String toString() {
-        return "slot = %s, slotIndex = %d, cursorStack = %s, action = %s, button = %d".formatted(
+        return String.format("slot = %s, slotIndex = %d, cursorStack = %s, action = %s, button = %d",
                 (this.slot == null) ? "null" : this.slot.getClass(),
                 this.slotIndex,
                 this.cursorStack.toString(),

@@ -16,6 +16,7 @@ import dev.stashy.extrasounds.sounds.Sounds;
 import me.lonefelidae16.groominglib.api.PrefixableMessageFactory;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.sound.SoundEntry;
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,18 +38,20 @@ public final class SoundPackLoader {
     private static final int CACHE_VERSION = 1;
     private static final Identifier SOUNDS_JSON_ID = ExtraSounds.generateIdentifier("sounds.json");
     private static final String CACHE_FNAME = ExtraSounds.MODID + ".cache";
-    private static final Path CACHE_PATH = Path.of(System.getProperty("java.io.tmpdir"), ".minecraft_fabric", CACHE_FNAME);
+    private static final Path CACHE_PATH = Paths.get(System.getProperty("java.io.tmpdir"), ".minecraft_fabric", CACHE_FNAME);
 
     public static final Map<Identifier, VersionedSoundEventWrapper> CUSTOM_SOUND_EVENT = new HashMap<>();
     public static final VersionedClientResource EXTRA_SOUNDS_RESOURCE = Objects.requireNonNull(
-            VersionedClientResource.newInstance(ExtraSounds.MODID, "%s Runtime Resources".formatted(ExtraSounds.class.getSimpleName()))
+            VersionedClientResource.newInstance(ExtraSounds.MODID, String.format("%s Runtime Resources", ExtraSounds.class.getSimpleName()))
     );
     public static final Logger LOGGER = LogManager.getLogger(
             SoundPackLoader.class,
-            new PrefixableMessageFactory("%s/%s".formatted(
-                    ExtraSounds.class.getSimpleName(),
-                    SoundPackLoader.class.getSimpleName()
-            ))
+            new PrefixableMessageFactory(
+                    String.format("%s/%s",
+                            ExtraSounds.class.getSimpleName(),
+                            SoundPackLoader.class.getSimpleName()
+                    )
+            )
     );
 
     private static final Gson GSON = new GsonBuilder()
@@ -67,7 +71,7 @@ public final class SoundPackLoader {
         final List<String> generatorVer = new ArrayList<>();
 
         // Collect entry points from mods.
-        final var containers = FabricLoader.getInstance().getEntrypointContainers(ExtraSounds.MODID, SoundGenerator.class);
+        final List<EntrypointContainer<SoundGenerator>> containers = FabricLoader.getInstance().getEntrypointContainers(ExtraSounds.MODID, SoundGenerator.class);
         containers.forEach(container -> {
             final SoundGenerator generator = container.getEntrypoint();
             if (generator == null || generator.itemSoundGenerator == null) {
@@ -77,8 +81,8 @@ public final class SoundPackLoader {
             final String namespace;
             try {
                 namespace = container.getProvider().getMetadata().getId();
-                if (namespace == null || namespace.isBlank()) {
-                    throw new Exception("namespace is invalid: null or blank");
+                if (namespace == null || namespace.isEmpty()) {
+                    throw new Exception("namespace is invalid: null or empty");
                 }
             } catch (Exception ex) {
                 LOGGER.error("Failed to read mod metadata, ignoring.", ex);
@@ -93,7 +97,7 @@ public final class SoundPackLoader {
 
         // Register the vanilla generator.
         soundGenMappers.put(Identifier.DEFAULT_NAMESPACE, BaseVanillaGenerator.GENERATOR);
-        generatorVer.add(CacheInfo.getModVersion(FabricLoader.getInstance().getModContainer(Identifier.DEFAULT_NAMESPACE).orElseThrow()));
+        generatorVer.add(CacheInfo.getModVersion(FabricLoader.getInstance().getModContainer(Identifier.DEFAULT_NAMESPACE).orElseThrow(RuntimeException::new)));
 
         final CacheInfo currentCacheInfo = CacheInfo.of(generatorVer.toArray(new String[0]));
 
@@ -106,7 +110,7 @@ public final class SoundPackLoader {
             }
 
             if (DebugUtils.NO_CACHE) {
-                throw new RuntimeException("JVM arg '%s' is detected.".formatted(DebugUtils.NO_CACHE_VAR));
+                throw new RuntimeException(String.format("JVM arg '%s' is detected.", DebugUtils.NO_CACHE_VAR));
             }
 
             final CacheData cacheData = CacheData.read();
@@ -155,7 +159,7 @@ public final class SoundPackLoader {
         final Set<String> inSoundsJsonIds = new HashSet<>();
         final String fallbackSoundJson = GSON.toJson(fallbackSoundEntry);
         if (DebugUtils.SEARCH_UNDEF_SOUND) {
-            try (InputStream stream = SoundPackLoader.class.getClassLoader().getResourceAsStream("assets/%s/%s".formatted(ExtraSounds.MODID, SOUNDS_JSON_ID.getPath()))) {
+            try (InputStream stream = SoundPackLoader.class.getClassLoader().getResourceAsStream(String.format("assets/%s/%s", ExtraSounds.MODID, SOUNDS_JSON_ID.getPath()))) {
                 Objects.requireNonNull(stream);
                 final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
                 final JsonObject jsonObject = JsonParser.parseString(reader.lines().collect(Collectors.joining())).getAsJsonObject();
@@ -170,7 +174,8 @@ public final class SoundPackLoader {
             final SoundDefinition definition;
             if (soundGenerator.containsKey(itemId.getNamespace())) {
                 definition = soundGenerator.get(itemId.getNamespace()).itemSoundGenerator.apply(item);
-            } else if (item instanceof BlockItem blockItem) {
+            } else if (item instanceof BlockItem) {
+                final BlockItem blockItem = (BlockItem) item;
                 SoundDefinition blockSoundDef = SoundDefinition.of(fallbackSoundEntry);
                 try {
                     final BlockState blockState = blockItem.getBlock().getDefaultState();
@@ -223,14 +228,24 @@ public final class SoundPackLoader {
     /**
      * Shows the information of the cache.<br>
      * This is used at the first line in the file defined by {@link SoundPackLoader#CACHE_FNAME}.
-     *
-     * @param version   The cache version.
-     * @param itemCount The number of the Item Registry.
-     * @param modInfo   The String array of mod ids.
      */
-    record CacheInfo(int version, int itemCount, String[] modInfo) {
+    static class CacheInfo {
+        private final int version;
+        private final int itemCount;
+        private final String[] modInfo;
         private static final String DELIMITER_MOD_INFO = ",";
         private static final String DELIMITER_HEAD = ";";
+
+        /**
+         * @param version   The cache version.
+         * @param itemCount The number of the Item Registry.
+         * @param modInfo   The String array of mod ids.
+         */
+        CacheInfo(int version, int itemCount, String[] modInfo) {
+            this.version = version;
+            this.itemCount = itemCount;
+            this.modInfo = modInfo;
+        }
 
         /**
          * Creates new cache info from generator version info.
@@ -250,7 +265,7 @@ public final class SoundPackLoader {
          */
         public static CacheInfo fromString(String string) {
             try {
-                var arr = string.split(DELIMITER_HEAD);
+                String[] arr = string.split(DELIMITER_HEAD);
                 return new CacheInfo(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), arr[2].split(DELIMITER_MOD_INFO));
             } catch (Exception ignored) {
                 return new CacheInfo(0, 0, new String[0]);
@@ -259,10 +274,12 @@ public final class SoundPackLoader {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof CacheInfo comp)
+            if (obj instanceof CacheInfo) {
+                CacheInfo comp = (CacheInfo) obj;
                 return this.version == comp.version
                         && this.itemCount == comp.itemCount
                         && Arrays.equals(this.modInfo, comp.modInfo);
+            }
             return false;
         }
 
@@ -286,7 +303,7 @@ public final class SoundPackLoader {
                 final ModMetadata metadata = container.getMetadata();
                 final String modId = metadata.getId();
                 final String modVer = metadata.getVersion().getFriendlyString();
-                return sanitize("%s %s".formatted(modId, modVer));
+                return sanitize(String.format("%s %s", modId, modVer));
             } catch (Exception ex) {
                 LOGGER.error("Failed to obtain mod info.", ex);
             }
@@ -294,7 +311,7 @@ public final class SoundPackLoader {
         }
 
         private static String sanitize(String in) {
-            return in.replaceAll("[%s%s]".formatted(DELIMITER_HEAD, DELIMITER_MOD_INFO), "_");
+            return in.replaceAll(String.format("[%s%s]", DELIMITER_HEAD, DELIMITER_MOD_INFO), "_");
         }
     }
 
@@ -340,7 +357,7 @@ public final class SoundPackLoader {
          * Writes to the file.
          *
          * @param info The current cache info.
-         * @param map  The cache data that will be converted to json.
+         * @param map  The cache data that will be converted to JSON.
          */
         static void create(CacheInfo info, Map<String, SoundEntry> map) {
             try (BufferedWriter writer = Files.newBufferedWriter(CACHE_PATH)) {
