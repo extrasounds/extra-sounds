@@ -14,13 +14,7 @@ tasks.named('runClient').configure {
 }
 
 var verStr = (project.findProperty('verStr') ?: versionDetails().gitHash[0..7]).toString()
-var buildNum = ''
-if (verStr.contains('-')) {
-    var spl = verStr.split('-')
-    verStr = spl[0]
-    buildNum = "-${spl[1]}"
-}
-version = "${project.mod_version}+${verStr}~lonefelidae16${buildNum}"
+version = "${project.mod_version}+${verStr}"
 
 allprojects {
     group = project.maven_group

@@ -4,8 +4,9 @@ import dev.stashy.extrasounds.logics.Mixers;
 import net.minecraft.sound.SoundCategory;
 
 public enum SoundType {
-    PICKUP(1f, Mixers.INVENTORY, "item.pickup"),
-    PLACE(0.9f, Mixers.INVENTORY, "item.place"),
+    DEFAULT(1f, Mixers.SCREENS, "item.pickup"),
+    GRAB(1f, Mixers.SCREENS, "item.pickup"),
+    PLACE(0.9f, Mixers.SCREENS, "item.place"),
     HOTBAR(1f, Mixers.HOTBAR, "item.select"),
     CHAT(1f, Mixers.CHAT, "ui.chat"),
     CHAT_MENTION(1f, Mixers.CHAT_MENTION, "ui.chat"),

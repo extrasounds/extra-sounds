@@ -21,15 +21,15 @@ public final class ChatSoundHandler {
         }
 
         if (containsPlName && !ExtraSounds.MANAGER.isMuted(SoundType.CHAT_MENTION)) {
-            ExtraSounds.MANAGER.playSound(Sounds.CHAT_MENTION, SoundType.CHAT_MENTION);
+            ExtraSounds.MANAGER.playSound2D(Sounds.CHAT_MENTION, SoundType.CHAT_MENTION);
         } else if (!containsScreenshot || ExtraSounds.MANAGER.isMuted(SoundType.SCREENSHOT)) {
-            ExtraSounds.MANAGER.playSound(Sounds.CHAT, SoundType.CHAT);
+            ExtraSounds.MANAGER.playSound2D(Sounds.CHAT, SoundType.CHAT);
         }
     }
 
     public void onScroll(int line) {
         if (line != this.currentLines) {
-            ExtraSounds.MANAGER.playSound(Sounds.INVENTORY_SCROLL, SoundType.CHAT);
+            ExtraSounds.MANAGER.playSound2D(Sounds.INVENTORY_SCROLL, SoundType.CHAT);
             this.currentLines = line;
         }
     }

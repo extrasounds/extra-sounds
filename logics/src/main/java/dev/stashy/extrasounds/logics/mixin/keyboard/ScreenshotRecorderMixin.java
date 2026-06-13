@@ -18,7 +18,7 @@ public abstract class ScreenshotRecorderMixin {
     }, at = @At("HEAD"))
     private static void extrasounds$screenshotSound(CallbackInfo ci) {
         if (!ExtraSounds.MANAGER.isMuted(SoundType.SCREENSHOT)) {
-            ExtraSounds.MANAGER.playSound(Sounds.SCREENSHOT, SoundType.SCREENSHOT);
+            ExtraSounds.MANAGER.playSound2D(Sounds.SCREENSHOT, SoundType.SCREENSHOT);
         }
     }
 }

@@ -188,7 +188,7 @@ public final class SoundPackLoader {
                 definition = SoundDefinition.of(fallbackSoundEntry);
             }
 
-            final Identifier pickupClickId = ExtraSounds.getClickId(itemId, SoundType.PICKUP);
+            final Identifier pickupClickId = ExtraSounds.getClickId(itemId, SoundType.GRAB);
             final SoundDefinition filled = definition.fill(Sounds.aliased(ExtraSounds.createEvent(pickupClickId)));
             generateSoundEntry(pickupClickId, filled.pickup, resource);
             generateSoundEntry(ExtraSounds.getClickId(itemId, SoundType.PLACE), filled.place, resource);

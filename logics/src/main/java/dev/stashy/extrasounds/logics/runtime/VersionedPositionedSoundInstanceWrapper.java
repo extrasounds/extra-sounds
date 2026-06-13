@@ -5,7 +5,6 @@ import me.lonefelidae16.groominglib.api.McVersionInterchange;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -33,9 +32,5 @@ public interface VersionedPositionedSoundInstanceWrapper extends SoundInstance {
         }
 
         return null;
-    }
-
-    static VersionedPositionedSoundInstanceWrapper newInstance(VersionedSoundEventWrapper soundEvent, SoundCategory category, float volume, float pitch, BlockPos position) {
-        return newInstance(soundEvent.getId(), category, volume, pitch, false, 0, SoundInstance.AttenuationType.LINEAR, position.getX() + 0.5, position.getY() + 0.5, position.getZ() + 0.5, false);
     }
 }

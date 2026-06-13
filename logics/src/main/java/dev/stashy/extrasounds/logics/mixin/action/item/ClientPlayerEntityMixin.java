@@ -29,7 +29,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
             return;
         }
 
-        ExtraSounds.MANAGER.playSound(Sounds.Actions.BOW_PULL, SoundType.ITEM_INTR);
+        ExtraSounds.MANAGER.playSound2D(Sounds.Actions.BOW_PULL, SoundType.ITEM_INTR);
     }
 
     @Inject(method = "clearActiveItem", at = @At(value = "HEAD"))

@@ -8,9 +8,9 @@
 
     "action.item.ClientPlayerEntityMixin",
     "hotbar.MinecraftClientMixin",
-    "inventory.ClientPlayerInteractionManagerMixin",
-    "inventory.HandledScreenMixin",
-    "inventory.MinecraftClientMixin",
+    "screens.ClientPlayerInteractionManagerMixin",
+    "screens.HandledScreenMixin",
+    "screens.MinecraftClientMixin",
     "keyboard.ScreenshotRecorderMixin"
   ],
   "injectors": {
