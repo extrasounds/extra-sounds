@@ -1,6 +1,8 @@
 package dev.stashy.extrasounds.mc1_21_2.entry;
 
+import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.entry.BaseVanillaGenerator;
+import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.mapping.SoundDefinition;
 import dev.stashy.extrasounds.mapping.SoundGenerator;
 import net.minecraft.block.Block;
@@ -10,22 +12,34 @@ import net.minecraft.client.sound.SoundEntry;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.RepairableComponent;
 import net.minecraft.item.*;
+import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
+
+import java.lang.reflect.Method;
+import java.util.Objects;
+import java.util.Optional;
 
 import static dev.stashy.extrasounds.sounds.Categories.*;
 import static dev.stashy.extrasounds.sounds.Sounds.*;
 
 public final class VanillaGenerator extends BaseVanillaGenerator {
+    private static final Class<RepairableComponent> REPAIRABLE_COMPONENT_CLASS = RepairableComponent.class;
+
     @Override
     protected SoundGenerator generate() {
         return SoundGenerator.of(item -> {
-            if (item instanceof BlockItem blockItem) {
-                final Block block = blockItem.getBlock();
-                final Identifier blockSoundId = block.getDefaultState().getSoundGroup().getPlaceSound().id();
-                if (block instanceof PillarBlock pillarBlock && pillarBlock.getDefaultState().getSoundGroup().equals(BlockSoundGroup.FROGLIGHT)) {
-                    return SoundDefinition.of(event(blockSoundId, 0.6f));
+            if (item instanceof BlockItem) {
+                final Block block = ((BlockItem) item).getBlock();
+                final VersionedSoundEventWrapper wrapper = Objects.requireNonNull(VersionedSoundEventWrapper.fromSoundEvent(block.getDefaultState().getSoundGroup().getPlaceSound()));
+                final Identifier blockSoundId = wrapper.getId();
+                if (block instanceof PillarBlock) {
+                    final PillarBlock pillarBlock = (PillarBlock) block;
+                    if (pillarBlock.getDefaultState().getSoundGroup().equals(BlockSoundGroup.FROGLIGHT)) {
+                        return SoundDefinition.of(event(blockSoundId, 0.6f));
+                    }
                 }
                 return this.generateFromBlock(block);
             } else if (item.getComponents().contains(DataComponentTypes.REPAIRABLE)) {
@@ -38,8 +52,11 @@ public final class VanillaGenerator extends BaseVanillaGenerator {
                 return SoundDefinition.of(aliased(LOOSE_METAL));
             } else if (item instanceof DiscFragmentItem) {
                 return SoundDefinition.of(single(METAL_BITS.getId(), 0.9f, 0.85f, Sound.RegistrationType.SOUND_EVENT));
-            } else if (item instanceof BucketItem bucketItem) {
-                final SoundEntry soundEntry = bucketItem.fluid.getBucketFillSound().map(sound -> event(sound.id(), 0.7f)).orElse(aliased(METAL));
+            } else if (item instanceof BucketItem) {
+                final SoundEntry soundEntry = ((BucketItem) item).fluid.getBucketFillSound().map(sound -> {
+                    final VersionedSoundEventWrapper wrapper = Objects.requireNonNull(VersionedSoundEventWrapper.fromSoundEvent(sound));
+                    return event(wrapper.getId(), 0.7f);
+                }).orElse(aliased(METAL));
                 return SoundDefinition.of(soundEntry);
             }
 
@@ -51,17 +68,24 @@ public final class VanillaGenerator extends BaseVanillaGenerator {
         return item instanceof PotionItem || item instanceof ExperienceBottleItem || item == Items.OMINOUS_BOTTLE;
     }
 
-    private SoundDefinition generateFromRepairable(RepairableComponent component) {
+    private SoundDefinition generateFromRepairable(Object component) {
         if (component == null) {
             return SoundDefinition.of(aliased(Gear.GENERIC));
         }
 
-        final var optionalTagKey = component.items().getTagKey();
-        if (optionalTagKey.isEmpty()) {
+        Optional<TagKey<Item>> optionalTagKey = Optional.empty();
+        try {
+            Method $items = REPAIRABLE_COMPONENT_CLASS.getMethod("items");
+            optionalTagKey = ((RegistryEntryList<Item>) $items.invoke(component)).getTagKey();
+        } catch (Exception ex) {
+            ExtraSounds.LOGGER.error("Cannot invoke RepairableComponent#items", ex);
+        }
+
+        if (!optionalTagKey.isPresent()) {
             return SoundDefinition.of(aliased(Gear.GENERIC));
         }
 
-        final var matTags = optionalTagKey.get();
+        final Object matTags = optionalTagKey.get();
         if (matTags == ItemTags.WOODEN_TOOL_MATERIALS) {
             return SoundDefinition.of(aliased(Gear.WOOD));
         } else if (matTags == ItemTags.STONE_TOOL_MATERIALS) {

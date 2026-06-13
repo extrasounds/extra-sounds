@@ -99,12 +99,22 @@ public abstract class ClientPlayerInteractionManagerMixin {
         }
 
         final BlockPos blockPos = hitResult.getBlockPos();
-        final ActionResultState wrapper = switch (cir.getReturnValue()) {
-            case SUCCESS -> ActionResultState.SUCCESS;
-            case CONSUME, CONSUME_PARTIAL -> ActionResultState.CONSUME;
-            case PASS -> ActionResultState.PASS;
-            case FAIL -> ActionResultState.FAIL;
-        };
+        final ActionResultState wrapper;
+        switch (cir.getReturnValue()) {
+            case SUCCESS:
+                wrapper = ActionResultState.SUCCESS;
+                break;
+            case CONSUME:
+            case CONSUME_PARTIAL:
+                wrapper = ActionResultState.CONSUME;
+                break;
+            case PASS:
+                wrapper = ActionResultState.PASS;
+                break;
+            case FAIL:
+            default:
+                wrapper = ActionResultState.FAIL;
+        }
         this.soundHandler.onUse(player, blockPos, wrapper);
     }
 

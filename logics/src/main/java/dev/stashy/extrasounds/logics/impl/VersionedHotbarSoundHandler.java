@@ -10,12 +10,11 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 
 public abstract class VersionedHotbarSoundHandler {
     public static final int FORCE_HOTBAR_CHANGE = -1;
 
-    private static final Item ITEM_EMPTY = Items.AIR;
+    private static final Item ITEM_EMPTY = null;
 
     private Item pickingItem = ITEM_EMPTY;
 

@@ -13,11 +13,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.lang.reflect.Method;
+
 @Pseudo
 @Mixin(TextFieldWidget.class)
 public abstract class TextFieldWidgetMixin implements TextField {
     @Unique
     private final TextFieldHandler soundHandler = new TextFieldHandler();
+    @Unique
+    private static final Class<KeyInput> KEY_INPUT_CLASS = KeyInput.class;
 
     @Shadow(remap = false)
     protected int cursorPos;
@@ -51,7 +55,8 @@ public abstract class TextFieldWidgetMixin implements TextField {
     )
     private void extrasounds$cutAction(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
         try {
-            if (!input.isCut() || this.getSelectedText().isEmpty()) {
+            Method $isCut = KEY_INPUT_CLASS.getMethod("isCut");
+            if (!(boolean) $isCut.invoke(input) || this.getSelectedText().isEmpty()) {
                 return;
             }
             this.soundHandler.onKey(TextFieldHandler.KeyType.CUT);
@@ -70,7 +75,8 @@ public abstract class TextFieldWidgetMixin implements TextField {
     )
     private void extrasounds$pasteAction(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
         try {
-            if (!input.isPaste() || !this.soundHandler.isPosUpdated(this.cursorPos, this.cursorPos)) {
+            Method $isPaste = KEY_INPUT_CLASS.getMethod("isPaste");
+            if (!(boolean) $isPaste.invoke(input) || !this.soundHandler.isPosUpdated(this.cursorPos, this.cursorPos)) {
                 return;
             }
             this.soundHandler.onKey(TextFieldHandler.KeyType.PASTE);

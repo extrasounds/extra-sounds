@@ -2,6 +2,7 @@ package dev.stashy.extrasounds.mc1_21.mixin.action.block;
 
 import dev.stashy.extrasounds.logics.impl.AbstractInteractionHandler;
 import dev.stashy.extrasounds.logics.impl.state.ActionResultState;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -38,6 +39,8 @@ import java.util.Optional;
 public abstract class ClientPlayerInteractionManagerMixin {
     @Unique
     private final AbstractInteractionHandler soundHandler = new AbstractInteractionHandler() {
+        private final Class<BlockState> BLOCK_STATE_CLASS = BlockState.class;
+
         @Override
         protected EquipmentSlot getPreferredSlot(ArmorStandEntity armorStandEntity, ItemStack itemStack) {
             return armorStandEntity.getPreferredEquipmentSlot(itemStack);
@@ -55,17 +58,17 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
         @Override
         protected boolean isFlowerPotBlocks() {
-            return this.blockState.isIn(BlockTags.FLOWER_POTS);
+            return this.blockState.getBlock().getRegistryEntry().isIn(BlockTags.FLOWER_POTS);
         }
 
         @Override
         protected boolean isRedstoneOreBlocks() {
-            return this.blockState.isIn(BlockTags.REDSTONE_ORES);
+            return this.blockState.getBlock().getRegistryEntry().isIn(BlockTags.REDSTONE_ORES);
         }
 
         @Override
         protected boolean isCampfireBlocks() {
-            return this.blockState.isIn(BlockTags.CAMPFIRES);
+            return this.blockState.getBlock().getRegistryEntry().isIn(BlockTags.CAMPFIRES);
         }
 
         @Override
@@ -116,12 +119,23 @@ public abstract class ClientPlayerInteractionManagerMixin {
         }
 
         final BlockPos blockPos = hitResult.getBlockPos();
-        final ActionResultState wrapper = switch (mutableObject.getValue()) {
-            case SUCCESS, SUCCESS_NO_ITEM_USED -> ActionResultState.SUCCESS;
-            case CONSUME, CONSUME_PARTIAL -> ActionResultState.CONSUME;
-            case PASS -> ActionResultState.PASS;
-            case FAIL -> ActionResultState.FAIL;
-        };
+        final ActionResultState wrapper;
+        switch (mutableObject.getValue()) {
+            case SUCCESS:
+            case SUCCESS_NO_ITEM_USED:
+                wrapper = ActionResultState.SUCCESS;
+                break;
+            case CONSUME:
+            case CONSUME_PARTIAL:
+                wrapper = ActionResultState.CONSUME;
+                break;
+            case PASS:
+                wrapper = ActionResultState.PASS;
+                break;
+            case FAIL:
+            default:
+                wrapper = ActionResultState.FAIL;
+        }
         this.soundHandler.onUse(player, blockPos, wrapper);
     }
 

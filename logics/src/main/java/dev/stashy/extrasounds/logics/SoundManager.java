@@ -53,7 +53,7 @@ public final class SoundManager {
         this.hotbarSoundHandler = VersionedHotbarSoundHandler.newInstance();
         this.missingSoundId = new HashSet<>();
         this.lastPlayed = 0;
-        this.quickMovingItem = Items.AIR;
+        this.quickMovingItem = null;
     }
 
     /**

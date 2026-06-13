@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc1_18.impl;
+package dev.stashy.extrasounds.mc1_17_1.impl;
 
 import dev.stashy.extrasounds.logics.impl.VersionedHotbarSoundHandler;
 import net.minecraft.entity.player.PlayerEntity;

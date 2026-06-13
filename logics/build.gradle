@@ -22,7 +22,3 @@ dependencies {
     // Integrations
     modCompileOnly "maven.modrinth:midnightcontrols:${extraSounds.mn_ctrls_version}"
 }
-
-loom {
-    accessWidenerPath = file("src/main/resources/extrasounds.accesswidener")
-}

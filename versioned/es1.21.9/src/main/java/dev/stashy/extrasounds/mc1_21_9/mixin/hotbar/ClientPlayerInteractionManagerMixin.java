@@ -69,7 +69,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
             return;
         }
 
-        if (player.isCreative() || player.getInventory().contains(stack -> ExtraSounds.MAIN.canItemsCombine(stack, target)) && !ExtraSounds.MAIN.canItemsCombine(player.getOffHandStack(), target)) {
+        if (player.isCreative() || player.getInventory().contains(target) && !ExtraSounds.MAIN.canItemsCombine(player.getOffHandStack(), target)) {
             this.soundHandler.storePickingItem(target.getItem());
         }
     }

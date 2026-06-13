@@ -26,6 +26,7 @@ public abstract class EditBoxMixin {
     private int selectionEnd;
     @Shadow
     private String text;
+
     @Shadow
     public abstract boolean hasSelection();
 

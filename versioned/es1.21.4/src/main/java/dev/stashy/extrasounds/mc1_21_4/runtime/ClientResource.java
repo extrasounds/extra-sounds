@@ -1,8 +1,8 @@
 package dev.stashy.extrasounds.mc1_21_4.runtime;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
-import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.runtime.VersionedClientResource;
 import net.minecraft.registry.VersionedIdentifier;
 import net.minecraft.resource.*;
@@ -14,12 +14,15 @@ import org.jetbrains.annotations.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
 public class ClientResource extends VersionedClientResource implements ResourcePack {
+    private static final Class<ResourceMetadataSerializer> RESOURCE_METADATA_SERIALIZER_CLASS = ResourceMetadataSerializer.class;
+
     private final ResourcePackInfo info;
 
     public ClientResource(String modId, String packName) {
@@ -46,7 +49,7 @@ public class ClientResource extends VersionedClientResource implements ResourceP
     @Override
     protected Supplier<InputStream> openRootImpl(String... segments) {
         try {
-            var stream = Objects.requireNonNull(this.openRoot(segments)).get();
+            InputStream stream = Objects.requireNonNull(this.openRoot(segments)).get();
             return () -> Objects.requireNonNull(stream);
         } catch (Exception ignored) {
         }
@@ -61,7 +64,7 @@ public class ClientResource extends VersionedClientResource implements ResourceP
         }
 
         try {
-            final var supplier = Objects.requireNonNull(this.assets.get(id));
+            final Supplier<byte[]> supplier = Objects.requireNonNull(this.assets.get(id));
             return () -> new ByteArrayInputStream(Objects.requireNonNull(supplier.get()));
         } catch (Exception ignored) {
         }
@@ -74,8 +77,8 @@ public class ClientResource extends VersionedClientResource implements ResourceP
             return;
         }
 
-        for (var id : this.assets.keySet()) {
-            var supplier = this.assets.get(id);
+        for (Identifier id : this.assets.keySet()) {
+            Supplier<byte[]> supplier = this.assets.get(id);
             if (supplier == null) {
                 continue;
             }
@@ -94,15 +97,19 @@ public class ClientResource extends VersionedClientResource implements ResourceP
     @Override
     public @Nullable <T> T parseMetadata(ResourceMetadataSerializer<T> metaReader) throws IOException {
         try {
-            var stream = Objects.requireNonNull(this.openRootImpl("pack.mcmeta")).get();
+            InputStream stream = Objects.requireNonNull(this.openRootImpl("pack.mcmeta")).get();
             return AbstractFileResourcePack.parseMetadata(metaReader, Objects.requireNonNull(stream));
         } catch (Exception ignored) {
-            if (metaReader.name().equals("pack")) {
-                final JsonObject object = super.createPackJson();
-                return metaReader.codec().parse(JsonOps.INSTANCE, object).ifError(tError -> ExtraSounds.LOGGER.error("Cannot register Runtime ResPack: {}", tError)).result().orElse(null);
-            } else {
-                return null;
+            try {
+                Method $name = RESOURCE_METADATA_SERIALIZER_CLASS.getMethod("name");
+                Method $codec = RESOURCE_METADATA_SERIALIZER_CLASS.getMethod("codec");
+                if ($name.invoke(metaReader).equals("pack")) {
+                    final JsonObject object = super.createPackJson();
+                    return ((Codec<T>) $codec.invoke(metaReader)).parse(JsonOps.INSTANCE, object).result().orElse(null);
+                }
+            } catch (Exception ignore) {
             }
+            return null;
         }
     }
 

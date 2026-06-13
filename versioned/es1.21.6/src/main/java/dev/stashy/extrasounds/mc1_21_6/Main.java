@@ -1,10 +1,10 @@
 package dev.stashy.extrasounds.mc1_21_6;
 
 import dev.stashy.extrasounds.logics.VersionedMain;
+import dev.stashy.extrasounds.logics.impl.LockableSlotConnector;
 import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.item.BundleItem;
 import net.minecraft.item.Item;
@@ -16,10 +16,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IndexedIterable;
 
 public final class Main extends VersionedMain {
-    public Main() {
-        IGNORE_SOUND_PREDICATE_MAP.remove(Items.BUNDLE);
-    }
-
     @Override
     public Identifier generateIdentifier(String namespace, String path) {
         return Identifier.of(namespace, path);
@@ -60,18 +56,13 @@ public final class Main extends VersionedMain {
         }
 
         if (slotItem instanceof BundleItem) {
-            if (state.slot instanceof CreativeInventoryScreen.LockableSlot) {
+            if (state.slot instanceof LockableSlotConnector && ((LockableSlotConnector) state.slot).extrasounds$isCreativeSlot()) {
                 return false;
             }
-            if ((state.isRMB && cursorItem == Items.AIR) || (!state.isRMB && cursorItem != Items.AIR)) {
-                return true;
-            }
+            return (state.isRMB && cursorItem == Items.AIR) || (!state.isRMB && cursorItem != Items.AIR);
         }
 
-        var predicateCursor = IGNORE_SOUND_PREDICATE_MAP.getOrDefault(cursorItem, null);
-        var predicateSlot = IGNORE_SOUND_PREDICATE_MAP.getOrDefault(slotItem, null);
-
-        return (predicateCursor != null && predicateCursor.test(state)) || (predicateSlot != null && predicateSlot.test(state));
+        return false;
     }
 
     @Override

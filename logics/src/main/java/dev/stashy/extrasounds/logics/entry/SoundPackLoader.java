@@ -1,5 +1,6 @@
 package dev.stashy.extrasounds.logics.entry;
 
+import com.google.common.collect.Iterables;
 import com.google.gson.*;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.SoundManager;
@@ -121,7 +122,7 @@ public final class SoundPackLoader {
             }
 
             final JsonObject jsonObject = cacheData.asJsonObject();
-            jsonObject.keySet().forEach(key -> putSoundEvent(ExtraSounds.generateIdentifier(ExtraSounds.MODID, key)));
+            jsonObject.entrySet().forEach(entry -> putSoundEvent(ExtraSounds.generateIdentifier(ExtraSounds.MODID, entry.getKey())));
         } catch (Exception ex) {
             // If there is an exception, regenerate and write the cache.
             if (DebugUtils.DEBUG) {
@@ -164,8 +165,8 @@ public final class SoundPackLoader {
             try (InputStream stream = SoundPackLoader.class.getClassLoader().getResourceAsStream(String.format("assets/%s/%s", ExtraSounds.MODID, SOUNDS_JSON_ID.getPath()))) {
                 Objects.requireNonNull(stream);
                 final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-                final JsonObject jsonObject = JsonParser.parseString(reader.lines().collect(Collectors.joining())).getAsJsonObject();
-                inSoundsJsonIds.addAll(jsonObject.keySet());
+                final JsonObject jsonObject = new JsonParser().parse(reader.lines().collect(Collectors.joining())).getAsJsonObject();
+                inSoundsJsonIds.addAll(jsonObject.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toSet()));
             } catch (Exception ex) {
                 LOGGER.warn("cannot open ExtraSounds' {}.", SOUNDS_JSON_ID.getPath(), ex);
             }
@@ -289,7 +290,7 @@ public final class SoundPackLoader {
          * @return A new instance of {@link CacheInfo}.
          */
         public static CacheInfo of(String[] info) {
-            return new CacheInfo(CACHE_VERSION, ExtraSounds.MAIN.getItemRegistry().size(), info);
+            return new CacheInfo(CACHE_VERSION, Iterables.size(ExtraSounds.MAIN.getItemRegistry()), info);
         }
 
         /**
@@ -409,7 +410,7 @@ public final class SoundPackLoader {
         }
 
         public JsonObject asJsonObject() throws JsonParseException {
-            return JsonParser.parseString(this.json.toString()).getAsJsonObject();
+            return new JsonParser().parse(this.json.toString()).getAsJsonObject();
         }
 
         public byte[] asJsonBytes() {

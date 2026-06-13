@@ -18,11 +18,17 @@ public class SoundSerializer extends VersionedSoundSerializer {
     public JsonElement serialize(VersionedSoundWrapper src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject obj = new JsonObject();
         obj.addProperty("name", src.getIdentifierImpl().toString());
-        if (src.getVolumeImpl() instanceof FloatSupplier supplier && supplier.get(MC_RANDOM) != 1) {
-            obj.addProperty("volume", supplier.get(MC_RANDOM));
+        if (src.getVolumeImpl() instanceof FloatSupplier) {
+            final float volume = ((FloatSupplier) src.getVolumeImpl()).get(MC_RANDOM);
+            if (volume != 1) {
+                obj.addProperty("volume", volume);
+            }
         }
-        if (src.getPitchImpl() instanceof FloatSupplier supplier && supplier.get(MC_RANDOM) != 1) {
-            obj.addProperty("pitch", supplier.get(MC_RANDOM));
+        if (src.getPitchImpl() instanceof FloatSupplier) {
+            final float pitch = ((FloatSupplier) src.getPitchImpl()).get(MC_RANDOM);
+            if (pitch != 1) {
+                obj.addProperty("pitch", pitch);
+            }
         }
         if (src.getWeightImpl() != 1) {
             obj.addProperty("weight", src.getWeightImpl());

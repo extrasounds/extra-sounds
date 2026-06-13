@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc1_18.runtime;
+package dev.stashy.extrasounds.mc1_17_1.runtime;
 
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundWrapper;
 import net.minecraft.client.sound.Sound;

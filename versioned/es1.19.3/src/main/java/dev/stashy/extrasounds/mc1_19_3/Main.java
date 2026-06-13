@@ -1,18 +1,35 @@
 package dev.stashy.extrasounds.mc1_19_3;
 
 import dev.stashy.extrasounds.logics.VersionedMain;
+import dev.stashy.extrasounds.logics.impl.LockableSlotConnector;
 import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
+import me.lonefelidae16.groominglib.Util;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IndexedIterable;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Predicate;
+
 public final class Main extends VersionedMain {
+    private static final Map<Item, Predicate<InventoryClickState>> IGNORE_SOUND_PREDICATE_MAP = Util.make(new HashMap<>(), map -> {
+        map.put(Items.BUNDLE, status -> {
+            if (status.slot instanceof LockableSlotConnector) {
+                final boolean bCreativeSlot = ((LockableSlotConnector) status.slot).extrasounds$isCreativeSlot();
+                return status.isRMB && bCreativeSlot;
+            }
+            return false;
+        });
+    });
+
     @Override
     public Identifier generateIdentifier(String namespace, String path) {
         return Identifier.of(namespace, path);
@@ -46,8 +63,8 @@ public final class Main extends VersionedMain {
 
     @Override
     public boolean shouldIgnoreItemSound(Item cursorItem, Item slotItem, InventoryClickState state) {
-        var predicateCursor = IGNORE_SOUND_PREDICATE_MAP.getOrDefault(cursorItem, null);
-        var predicateSlot = IGNORE_SOUND_PREDICATE_MAP.getOrDefault(slotItem, null);
+        Predicate<InventoryClickState> predicateCursor = IGNORE_SOUND_PREDICATE_MAP.getOrDefault(cursorItem, null);
+        Predicate<InventoryClickState> predicateSlot = IGNORE_SOUND_PREDICATE_MAP.getOrDefault(slotItem, null);
 
         return (predicateCursor != null && predicateCursor.test(state)) || (predicateSlot != null && predicateSlot.test(state));
     }

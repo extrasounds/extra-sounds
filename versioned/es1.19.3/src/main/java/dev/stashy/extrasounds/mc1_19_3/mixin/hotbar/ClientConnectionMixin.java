@@ -32,9 +32,10 @@ public abstract class ClientConnectionMixin {
         if (player == null || !this.isOpen()) {
             return;
         }
-        if (!(packet instanceof PlayerActionC2SPacket actionC2SPacket)) {
+        if (!(packet instanceof PlayerActionC2SPacket)) {
             return;
         }
+        final PlayerActionC2SPacket actionC2SPacket = (PlayerActionC2SPacket) packet;
         if (actionC2SPacket.getAction() != PlayerActionC2SPacket.Action.SWAP_ITEM_WITH_OFFHAND) {
             return;
         }

@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -49,7 +50,7 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
 
         @Override
         protected boolean isCreativeInventorySlot(Slot slot) {
-            return CreativeInventoryScreenMixin.this.isCreativeInventorySlot(slot);
+            return CreativeInventoryScreenMixin.this.invokeIsCreativeInventorySlot(slot);
         }
 
         @Override
@@ -66,8 +67,8 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
     @Shadow
     private float scrollPosition;
 
-    @Shadow
-    abstract boolean isCreativeInventorySlot(@Nullable Slot slot);
+    @Invoker("isCreativeInventorySlot")
+    abstract boolean invokeIsCreativeInventorySlot(@Nullable Slot slot);
 
     public CreativeInventoryScreenMixin(CreativeInventoryScreen.CreativeScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
         super(screenHandler, playerInventory, text);
@@ -103,7 +104,6 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
 
     @Inject(method = "mouseDragged", at = @At(value = "INVOKE", target = METHOD_SIGN_SCROLL_ITEMS))
     private void extrasounds$creativeScreenScrollDrag(CallbackInfoReturnable<Boolean> cir) {
-        var screenHandler = this.getScreenHandler();
         this.screenScrollHandler.onScroll(this.extrasounds$getScreenScrollRow());
     }
 

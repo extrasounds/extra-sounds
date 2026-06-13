@@ -1,5 +1,6 @@
 package dev.stashy.extrasounds.mc1_21_9.mixin.typing;
 
+import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.TextFieldHandler;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.input.KeyInput;
@@ -11,8 +12,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.lang.reflect.Method;
+
 @Mixin(TextFieldWidget.class)
 public abstract class TextFieldWidgetMixin {
+    @Unique
+    private static final Class<KeyInput> KEY_INPUT_CLASS = KeyInput.class;
     @Unique
     private final TextFieldHandler soundHandler = new TextFieldHandler();
 
@@ -59,8 +64,13 @@ public abstract class TextFieldWidgetMixin {
             )
     )
     private void extrasounds$cutAction(KeyInput keyInput, CallbackInfoReturnable<Boolean> cir) {
-        if (!keyInput.isCut() || this.getSelectedText().isEmpty()) {
-            return;
+        try {
+            Method $isCut = KEY_INPUT_CLASS.getMethod("isCut");
+            if (!(boolean) $isCut.invoke(keyInput) || this.getSelectedText().isEmpty()) {
+                return;
+            }
+        } catch (Exception ex) {
+            ExtraSounds.LOGGER.error("Cannot invoke KeyInput#isCut", ex);
         }
         this.soundHandler.onKey(TextFieldHandler.KeyType.CUT);
         this.soundHandler.setCursor(this.selectionEnd);
@@ -84,8 +94,13 @@ public abstract class TextFieldWidgetMixin {
             )
     )
     private void extrasounds$pasteAction(KeyInput keyInput, CallbackInfoReturnable<Boolean> cir) {
-        if (!keyInput.isPaste() || !this.soundHandler.isPosUpdated(this.selectionStart, this.selectionEnd)) {
-            return;
+        try {
+            Method $isPaste = KEY_INPUT_CLASS.getMethod("isPaste");
+            if (!(boolean) $isPaste.invoke(keyInput) || !this.soundHandler.isPosUpdated(this.selectionStart, this.selectionEnd)) {
+                return;
+            }
+        } catch (Exception ex) {
+            ExtraSounds.LOGGER.error("Cannot invoke KeyInput#isPaste", ex);
         }
         this.soundHandler.onKey(TextFieldHandler.KeyType.PASTE);
         this.soundHandler.setCursor(this.selectionEnd);

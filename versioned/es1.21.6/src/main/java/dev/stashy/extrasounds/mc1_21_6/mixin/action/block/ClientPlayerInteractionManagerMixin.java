@@ -57,22 +57,22 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
         @Override
         protected boolean isFlowerPotBlocks() {
-            return this.blockState.isIn(BlockTags.FLOWER_POTS);
+            return this.blockState.getBlock().getRegistryEntry().isIn(BlockTags.FLOWER_POTS);
         }
 
         @Override
         protected boolean isRedstoneOreBlocks() {
-            return this.blockState.isIn(BlockTags.REDSTONE_ORES);
+            return this.blockState.getBlock().getRegistryEntry().isIn(BlockTags.REDSTONE_ORES);
         }
 
         @Override
         protected boolean isCampfireBlocks() {
-            return this.blockState.isIn(BlockTags.CAMPFIRES);
+            return this.blockState.getBlock().getRegistryEntry().isIn(BlockTags.CAMPFIRES);
         }
 
         @Override
         protected Optional<?> getCampfireRecipe(CampfireBlockEntity campfireBlockEntity, ItemStack currentHandStack) {
-            var world = campfireBlockEntity.getWorld();
+            World world = campfireBlockEntity.getWorld();
             if (world == null) {
                 return Optional.empty();
             }
@@ -127,7 +127,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
         }
 
         final BlockPos blockPos = hitResult.getBlockPos();
-        final ActionResult actionResult = mutableObject.getValue();
+        final Object actionResult = mutableObject.getValue();
         final ActionResultState wrapper;
         if (actionResult == ActionResult.SUCCESS || actionResult == ActionResult.SUCCESS_SERVER) {
             wrapper = ActionResultState.SUCCESS;

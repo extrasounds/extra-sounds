@@ -1,5 +1,6 @@
 package dev.stashy.extrasounds.mc1_19.runtime;
 
+import com.google.common.collect.ImmutableList;
 import dev.stashy.extrasounds.logics.runtime.VersionedClientResource;
 import net.minecraft.resource.AbstractFileResourcePack;
 import net.minecraft.resource.ResourcePack;
@@ -44,7 +45,7 @@ public class ClientResource extends VersionedClientResource implements ResourceP
         }
 
         try {
-            final var supplier = Objects.requireNonNull(this.assets.get(id));
+            final Supplier<byte[]> supplier = Objects.requireNonNull(this.assets.get(id));
             return new ByteArrayInputStream(Objects.requireNonNull(supplier.get()));
         } catch (Exception ignored) {
         }
@@ -54,12 +55,12 @@ public class ClientResource extends VersionedClientResource implements ResourceP
     @Override
     public Collection<Identifier> findResources(ResourceType type, String namespace, String prefix, Predicate<Identifier> allowedPathPredicate) {
         if (type != ResourceType.CLIENT_RESOURCES) {
-            return List.of();
+            return ImmutableList.of();
         }
 
         List<Identifier> result = Lists.newArrayList();
-        for (var id : this.assets.keySet()) {
-            var supplier = this.assets.get(id);
+        for (Identifier id : this.assets.keySet()) {
+            Supplier<byte[]> supplier = this.assets.get(id);
             if (supplier == null) {
                 continue;
             }
@@ -75,8 +76,8 @@ public class ClientResource extends VersionedClientResource implements ResourceP
         if (type != ResourceType.CLIENT_RESOURCES) {
             return false;
         }
-        for (var key : this.assets.keySet()) {
-            var supplier = this.assets.get(key);
+        for (Identifier key : this.assets.keySet()) {
+            Supplier<byte[]> supplier = this.assets.get(key);
             if (supplier == null) {
                 continue;
             }
@@ -96,7 +97,7 @@ public class ClientResource extends VersionedClientResource implements ResourceP
     @Override
     public <T> T parseMetadata(ResourceMetadataReader<T> metaReader) throws IOException {
         try {
-            var stream = Objects.requireNonNull(this.openRootImpl("pack.mcmeta")).get();
+            InputStream stream = Objects.requireNonNull(this.openRootImpl("pack.mcmeta")).get();
             return AbstractFileResourcePack.parseMetadata(metaReader, Objects.requireNonNull(stream));
         } catch (Exception ignored) {
             if (metaReader.getKey().equals("pack")) {

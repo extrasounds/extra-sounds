@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc1_18.json;
+package dev.stashy.extrasounds.mc1_17_1.json;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -14,11 +14,17 @@ public class SoundSerializer extends VersionedSoundSerializer {
     public JsonElement serialize(VersionedSoundWrapper src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject obj = new JsonObject();
         obj.addProperty("name", src.getIdentifierImpl().toString());
-        if (src.getVolumeImpl() instanceof Float value && value != 1) {
-            obj.addProperty("volume", value);
+        if (src.getVolumeImpl() instanceof Float) {
+            final float value = (Float) src.getVolumeImpl();
+            if (value != 1) {
+                obj.addProperty("volume", value);
+            }
         }
-        if (src.getPitchImpl() instanceof Float value && value != 1) {
-            obj.addProperty("pitch", value);
+        if (src.getPitchImpl() instanceof Float) {
+            final float value = (Float) src.getVolumeImpl();
+            if (value != 1) {
+                obj.addProperty("pitch", value);
+            }
         }
         if (src.getWeightImpl() != 1) {
             obj.addProperty("weight", src.getWeightImpl());

@@ -16,6 +16,10 @@ public class SoundEventImpl extends VersionedSoundEventWrapper {
         this.instance = blockState.getSoundGroup().getPlaceSound();
     }
 
+    public SoundEventImpl(Object soundEvent) {
+        this.instance = (SoundEvent) soundEvent;
+    }
+
     @Override
     public Object getInstance() {
         return this.instance;

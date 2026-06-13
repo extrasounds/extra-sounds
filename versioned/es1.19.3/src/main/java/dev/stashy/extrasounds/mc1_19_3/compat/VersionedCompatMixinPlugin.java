@@ -10,7 +10,7 @@ public class VersionedCompatMixinPlugin extends VersionedMixinPlugin {
             return false;
         }
 
-        if (mixinClassName.contains(VersionedCompatMixinPlugin.class.getPackageName() + ".mixin.rei")) {
+        if (mixinClassName.contains(VersionedCompatMixinPlugin.class.getPackage().getName() + ".mixin.rei")) {
             return FabricLoader.getInstance().isModLoaded("roughlyenoughitems");
         }
 

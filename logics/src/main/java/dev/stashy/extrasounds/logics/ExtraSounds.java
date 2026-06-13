@@ -23,6 +23,7 @@ public final class ExtraSounds {
 
     public static final String BASE_PACKAGE = "dev.stashy.extrasounds";
     public static final String MODID = "extrasounds";
+    public static final String MOD_NAME = "ExtraSounds v3 Legacy";
     public static final Map<String, Method> CACHED_METHOD_MAP = new HashMap<>();
     public static final VersionedMain MAIN = Objects.requireNonNull(VersionedMain.newInstance());
     public static final SoundManager MANAGER = new SoundManager();

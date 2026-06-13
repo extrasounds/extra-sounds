@@ -42,7 +42,7 @@ public abstract class ReloadableResourceManagerImplMixin {
     private void extrasounds$afterReload(CallbackInfoReturnable<ResourceReload> cir) {
         final Set<String> soundEvents = new HashSet<>();
         for (Resource pack : MinecraftClient.getInstance().getResourceManager().getAllResources(SoundPackLoader.SOUNDS_JSON_ID)) {
-            if (pack.getResourcePackName().equals(VersionedClientResource.PACK_NAME) || pack.getResourcePackName().equals(ExtraSounds.class.getSimpleName())) {
+            if (pack.getResourcePackName().equals(VersionedClientResource.PACK_NAME) || pack.getResourcePackName().equals(ExtraSounds.MOD_NAME)) {
                 // Avoid auto-gen resource via SoundPackLoader.
                 continue;
             }

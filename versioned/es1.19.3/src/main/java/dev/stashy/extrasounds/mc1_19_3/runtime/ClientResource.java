@@ -31,7 +31,7 @@ public class ClientResource extends VersionedClientResource implements ResourceP
     @Override
     protected Supplier<InputStream> openRootImpl(String... segments) {
         try {
-            var stream = Objects.requireNonNull(this.openRoot(segments)).get();
+            InputStream stream = Objects.requireNonNull(this.openRoot(segments)).get();
             return () -> Objects.requireNonNull(stream);
         } catch (Exception ignored) {
         }
@@ -46,7 +46,7 @@ public class ClientResource extends VersionedClientResource implements ResourceP
         }
 
         try {
-            final var supplier = Objects.requireNonNull(this.assets.get(id));
+            final Supplier<byte[]> supplier = Objects.requireNonNull(this.assets.get(id));
             return () -> new ByteArrayInputStream(Objects.requireNonNull(supplier.get()));
         } catch (Exception ignored) {
         }
@@ -59,8 +59,8 @@ public class ClientResource extends VersionedClientResource implements ResourceP
             return;
         }
 
-        for (var id : this.assets.keySet()) {
-            var supplier = this.assets.get(id);
+        for (Identifier id : this.assets.keySet()) {
+            Supplier<byte[]> supplier = this.assets.get(id);
             if (supplier == null) {
                 continue;
             }
@@ -80,7 +80,7 @@ public class ClientResource extends VersionedClientResource implements ResourceP
     @Override
     public <T> T parseMetadata(ResourceMetadataReader<T> metaReader) throws IOException {
         try {
-            var stream = Objects.requireNonNull(this.openRootImpl("pack.mcmeta")).get();
+            InputStream stream = Objects.requireNonNull(this.openRootImpl("pack.mcmeta")).get();
             return AbstractFileResourcePack.parseMetadata(metaReader, Objects.requireNonNull(stream));
         } catch (Exception ignored) {
             if (metaReader.getKey().equals("pack")) {
