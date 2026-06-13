@@ -2,8 +2,10 @@ package dev.stashy.extrasounds.mc1_21_9.mixin.typing;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.TextFieldHandler;
+import dev.stashy.extrasounds.logics.runtime.RecordKeyInputProvider;
 import net.minecraft.client.gui.EditBox;
 import net.minecraft.client.input.KeyInput;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -12,12 +14,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.lang.reflect.Method;
+import java.util.Objects;
 
 @Mixin(EditBox.class)
 public abstract class EditBoxMixin {
     @Unique
-    private static final Class<KeyInput> KEY_INPUT_CLASS = KeyInput.class;
+    @NotNull
+    private static final RecordKeyInputProvider KEY_INPUT_PROVIDER = Objects.requireNonNull(RecordKeyInputProvider.INSTANCE);
     @Unique
     private final TextFieldHandler soundHandler = new TextFieldHandler();
     @Unique
@@ -61,10 +64,8 @@ public abstract class EditBoxMixin {
     @Inject(method = "handleSpecialKey", at = @At("HEAD"))
     private void extrasounds$specialAction(KeyInput keyInput, CallbackInfoReturnable<Boolean> cir) {
         try {
-            Method $isPaste = KEY_INPUT_CLASS.getMethod("method_74243");
-            Method $isCut = KEY_INPUT_CLASS.getMethod("method_74244");
-            this.bPasteAction = (boolean) $isPaste.invoke(keyInput);
-            this.bCutAction = (boolean) $isCut.invoke(keyInput);
+            this.bPasteAction = KEY_INPUT_PROVIDER.invokeKeyInput$isPaste(keyInput);
+            this.bCutAction = KEY_INPUT_PROVIDER.invokeKeyInput$isCut(keyInput);
         } catch (Exception ex) {
             ExtraSounds.LOGGER.error("Cannot invoke KeyInput methods.", ex);
         }

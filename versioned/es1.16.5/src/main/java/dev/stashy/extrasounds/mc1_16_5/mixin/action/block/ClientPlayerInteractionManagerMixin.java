@@ -46,7 +46,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
         @Override
         protected boolean shouldSoundFlowerPot(FlowerPotBlock block) {
             if (block instanceof FlowerPotBlockConnector) {
-                return !((FlowerPotBlockConnector) block).isContentEmpty();
+                return ((FlowerPotBlockConnector) block).isContentEmpty();
             }
             return true;
         }

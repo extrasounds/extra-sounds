@@ -2,6 +2,7 @@ package dev.stashy.extrasounds.mc1_21_2.runtime;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
@@ -16,7 +17,12 @@ public class SoundEventImpl extends VersionedSoundEventWrapper {
     public SoundEventImpl(Identifier identifier) {
         SoundEvent event = null;
         try {
-            Method $of = SOUND_EVENT_CLASS.getMethod("method_47908", Identifier.class);
+            final Method $of;
+            if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+                $of = SOUND_EVENT_CLASS.getMethod("of", Identifier.class);
+            } else {
+                $of = SOUND_EVENT_CLASS.getMethod("method_47908", Identifier.class);
+            }
             event = (SoundEvent) $of.invoke(SOUND_EVENT_CLASS, identifier);
         } catch (Exception ex) {
             ExtraSounds.LOGGER.error("Cannot invoke SoundEvent#of(Identifier)", ex);

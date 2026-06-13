@@ -2,8 +2,10 @@ package dev.stashy.extrasounds.mc1_21_9.mixin.typing;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.TextFieldHandler;
+import dev.stashy.extrasounds.logics.runtime.RecordKeyInputProvider;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.input.KeyInput;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -12,12 +14,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.lang.reflect.Method;
+import java.util.Objects;
 
 @Mixin(TextFieldWidget.class)
 public abstract class TextFieldWidgetMixin {
     @Unique
-    private static final Class<KeyInput> KEY_INPUT_CLASS = KeyInput.class;
+    @NotNull
+    private static final RecordKeyInputProvider KEY_INPUT_PROVIDER = Objects.requireNonNull(RecordKeyInputProvider.INSTANCE);
     @Unique
     private final TextFieldHandler soundHandler = new TextFieldHandler();
 
@@ -65,8 +68,7 @@ public abstract class TextFieldWidgetMixin {
     )
     private void extrasounds$cutAction(KeyInput keyInput, CallbackInfoReturnable<Boolean> cir) {
         try {
-            Method $isCut = KEY_INPUT_CLASS.getMethod("method_74244");
-            if (!(boolean) $isCut.invoke(keyInput) || this.getSelectedText().isEmpty()) {
+            if (!KEY_INPUT_PROVIDER.invokeKeyInput$isCut(keyInput) || this.getSelectedText().isEmpty()) {
                 return;
             }
         } catch (Exception ex) {
@@ -95,8 +97,7 @@ public abstract class TextFieldWidgetMixin {
     )
     private void extrasounds$pasteAction(KeyInput keyInput, CallbackInfoReturnable<Boolean> cir) {
         try {
-            Method $isPaste = KEY_INPUT_CLASS.getMethod("method_74243");
-            if (!(boolean) $isPaste.invoke(keyInput) || !this.soundHandler.isPosUpdated(this.selectionStart, this.selectionEnd)) {
+            if (!KEY_INPUT_PROVIDER.invokeKeyInput$isPaste(keyInput) || !this.soundHandler.isPosUpdated(this.selectionStart, this.selectionEnd)) {
                 return;
             }
         } catch (Exception ex) {

@@ -2,6 +2,7 @@ package dev.stashy.extrasounds.mc1_21_2.entry;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.entry.BaseVanillaGenerator;
+import dev.stashy.extrasounds.logics.runtime.RecordRepairableComponentProvider;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.mapping.SoundDefinition;
 import dev.stashy.extrasounds.mapping.SoundGenerator;
@@ -10,15 +11,14 @@ import net.minecraft.block.PillarBlock;
 import net.minecraft.client.sound.Sound;
 import net.minecraft.client.sound.SoundEntry;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.RepairableComponent;
 import net.minecraft.item.*;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -26,7 +26,8 @@ import static dev.stashy.extrasounds.sounds.Categories.*;
 import static dev.stashy.extrasounds.sounds.Sounds.*;
 
 public final class VanillaGenerator extends BaseVanillaGenerator {
-    private static final Class<RepairableComponent> REPAIRABLE_COMPONENT_CLASS = RepairableComponent.class;
+    @NotNull
+    private static final RecordRepairableComponentProvider REPAIRABLE_COMPONENT_PROVIDER = Objects.requireNonNull(RecordRepairableComponentProvider.INSTANCE);
 
     @Override
     protected SoundGenerator generate() {
@@ -79,8 +80,7 @@ public final class VanillaGenerator extends BaseVanillaGenerator {
 
         Optional<TagKey<Item>> optionalTagKey = Optional.empty();
         try {
-            Method $items = REPAIRABLE_COMPONENT_CLASS.getMethod("comp_2939");
-            optionalTagKey = ((RegistryEntryList<Item>) $items.invoke(component)).getTagKey();
+            optionalTagKey = ((RegistryEntryList<Item>) REPAIRABLE_COMPONENT_PROVIDER.invokeRepairableComponent$items(component)).getTagKey();
         } catch (Exception ex) {
             ExtraSounds.LOGGER.error("Cannot invoke RepairableComponent#items", ex);
         }

@@ -4,7 +4,6 @@ import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
 import net.minecraft.client.sound.SoundInstance;
-import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;

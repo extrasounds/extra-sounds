@@ -2,7 +2,6 @@ package dev.stashy.extrasounds.mc1_21.mixin.action.block;
 
 import dev.stashy.extrasounds.logics.impl.AbstractInteractionHandler;
 import dev.stashy.extrasounds.logics.impl.state.ActionResultState;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
