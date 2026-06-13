@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "extrasounds",
   "version": "${version}",
-  "name": "ExtraSounds",
+  "name": "ExtraSounds v3 Legacy",
   "description": "Adds more sounds to Minecraft UI.",
   "authors": [
     "stashymane",
@@ -24,7 +24,7 @@
   "depends": {
     "fabricloader": ">=0.15",
     "fabric": "*",
-    "minecraft": ">=${mod_support_lowest_mc}",
+    "minecraft": ">=${mod_support_lowest_mc} <=1.21.11",
     "extrasounds-logics": "*",
     "soundcategories": "*"
   }
