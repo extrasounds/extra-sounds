@@ -4,6 +4,8 @@ import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.AbstractCreativeInventoryHandler;
 import dev.stashy.extrasounds.logics.impl.ScreenScrollHandler;
 import dev.stashy.extrasounds.logics.impl.state.InventoryTabType;
+import dev.stashy.extrasounds.logics.impl.state.SlotActionTypeImpl;
+import dev.stashy.extrasounds.logics.runtime.VersionedSlotWrapper;
 import dev.stashy.extrasounds.sounds.SoundType;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
@@ -48,13 +50,13 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
         }
 
         @Override
-        protected boolean isCreativeInventorySlot(Slot slot) {
-            return CreativeInventoryScreenMixin.this.invokeIsCreativeInventorySlot(slot);
+        protected boolean isCreativeInventorySlot(VersionedSlotWrapper slot) {
+            return CreativeInventoryScreenMixin.this.invokeIsCreativeInventorySlot((Slot) slot.getInstance());
         }
 
         @Override
-        protected Slot getDeleteItemSlot() {
-            return CreativeInventoryScreenMixin.this.deleteItemSlot;
+        protected VersionedSlotWrapper getDeleteItemSlot() {
+            return VersionedSlotWrapper.newInstance(CreativeInventoryScreenMixin.this.deleteItemSlot);
         }
     };
 
@@ -79,7 +81,8 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
             return;
         }
 
-        this.inventoryHandler.onClick(this.client.player, slot, slotId, button, actionType, this.client.player.inventory.getCursorStack());
+        SlotActionTypeImpl wrapped = SlotActionTypeImpl.Wrapper.INSTANCE.wrap(actionType);
+        this.inventoryHandler.onClick(this.client.player, VersionedSlotWrapper.newInstance(slot), slotId, button, wrapped, this.client.player.inventory.getCursorStack());
     }
 
     @Inject(method = "setSelectedTab", at = @At("HEAD"))

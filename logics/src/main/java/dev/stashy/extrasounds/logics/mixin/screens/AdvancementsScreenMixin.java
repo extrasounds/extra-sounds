@@ -24,7 +24,14 @@ public abstract class AdvancementsScreenMixin {
     @Unique
     private static AdvancementTab currentTab;
 
-    @WrapOperation(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/advancement/AdvancementTab;isClickOnTab(IIDD)Z"))
+    @WrapOperation(
+            method = {
+                    "mouseClicked",
+                    "method_25402"
+            },
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/advancement/AdvancementTab;isClickOnTab(IIDD)Z"),
+            require = 1
+    )
     private boolean extrasounds$changeAdvancementsTab(AdvancementTab instance, int screenX, int screenY, double mouseX, double mouseY, Operation<Boolean> original, @Local AdvancementTab tab) {
         final boolean result = original.call(instance, screenX, screenY, mouseX, mouseY);
         if (result && currentTab != tab && tab instanceof AdvancementTabAccessor) {

@@ -85,6 +85,108 @@
       "extrasounds:item/shell/pickup5"
     ]
   },
+  "item.integrated.loose_metal": {
+    "sounds": [
+      "extrasounds:item/loose_metal/pickup1",
+      "extrasounds:item/loose_metal/pickup2",
+      "extrasounds:item/loose_metal/pickup3",
+      "extrasounds:item/loose_metal/pickup4",
+      "extrasounds:item/loose_metal/pickup5",
+      "extrasounds:item/loose_metal/pickup6"
+    ]
+  },
+  "item.integrated.metal": {
+    "sounds": [
+      "extrasounds:item/metal/pickup1",
+      "extrasounds:item/metal/pickup2",
+      "extrasounds:item/metal/pickup3",
+      "extrasounds:item/metal/pickup4"
+    ]
+  },
+  "item.integrated.thump": {
+    "sounds": [
+      "extrasounds:item/thump/pickup1",
+      "extrasounds:item/thump/pickup2",
+      "extrasounds:item/thump/pickup3",
+      "extrasounds:item/thump/pickup4",
+      "extrasounds:item/thump/pickup5"
+    ]
+  },
+  "item.integrated.mushroom": {
+    "sounds": [
+      "extrasounds:item/mushroom/pickup1",
+      "extrasounds:item/mushroom/pickup2",
+      "extrasounds:item/mushroom/pickup3",
+      "extrasounds:item/mushroom/pickup4",
+      "extrasounds:item/mushroom/pickup5",
+      "extrasounds:item/mushroom/pickup6"
+    ]
+  },
+  "item.integrated.bone": {
+    "sounds": [
+      "extrasounds:item/bone/pickup1",
+      "extrasounds:item/bone/pickup2",
+      "extrasounds:item/bone/pickup3",
+      "extrasounds:item/bone/pickup4",
+      "extrasounds:item/bone/pickup5"
+    ]
+  },
+  "effect.integrated.remove.negative": {
+    "sounds": [
+      {
+        "name": "extrasounds:effect/remove/negative1",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative2",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative3",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative4",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative5",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative6",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative7",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative8",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative9",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative10",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative11",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative12",
+        "volume": 0.25
+      },
+      {
+        "name": "extrasounds:effect/remove/negative13",
+        "volume": 0.25
+      }
+    ]
+  },
   "item.pickup.minecraft.air": {
     "replace": true,
     "sounds": [
@@ -237,6 +339,15 @@
       }
     ]
   },
+  "item.category.mushroom": {
+    "sounds": [
+      {
+        "name": "extrasounds:item.integrated.mushroom",
+        "pitch": 1.2,
+        "type": "event"
+      }
+    ]
+  },
   "item.category.gear.chain": {
     "sounds": [
       {
@@ -380,7 +491,7 @@
   "item.category.loose_metal": {
     "sounds": [
       {
-        "name": "minecraft:block.nether_bricks.place",
+        "name": "extrasounds:item.integrated.loose_metal",
         "volume": 0.7,
         "pitch": 1.2,
         "type": "event"
@@ -400,7 +511,7 @@
   "item.category.metal": {
     "sounds": [
       {
-        "name": "minecraft:block.nether_gold_ore.place",
+        "name": "extrasounds:item.integrated.metal",
         "volume": 0.7,
         "pitch": 1.5,
         "type": "event"
@@ -410,7 +521,7 @@
   "item.category.metal_bits": {
     "sounds": [
       {
-        "name": "minecraft:block.nether_bricks.place",
+        "name": "extrasounds:item.integrated.loose_metal",
         "volume": 0.7,
         "pitch": 2,
         "type": "event"
@@ -430,7 +541,7 @@
   "item.category.minecart": {
     "sounds": [
       {
-        "name": "minecraft:block.nether_bricks.place",
+        "name": "extrasounds:item.integrated.loose_metal",
         "volume": 0.7,
         "pitch": 0.6,
         "type": "event"
@@ -469,8 +580,7 @@
   "item.category.rail": {
     "sounds": [
       {
-        "name": "minecraft:block.nether_gold_ore.place",
-        "volume": 0.7,
+        "name": "extrasounds:item.category.metal",
         "pitch": 1.7,
         "type": "event"
       }
@@ -684,7 +794,7 @@
   "effect.remove.negative": {
     "sounds": [
       {
-        "name": "minecraft:particle.soul_escape",
+        "name": "extrasounds:effect.integrated.remove.negative",
         "volume": 1.1,
         "pitch": 0.8,
         "type": "event"
@@ -864,7 +974,7 @@
     "replace": true,
     "sounds": [
       {
-        "name": "minecraft:block.bone_block.place",
+        "name": "extrasounds:item.integrated.bone",
         "pitch": 2,
         "type": "event",
         "volume": 0.7
@@ -906,7 +1016,7 @@
     "replace": true,
     "sounds": [
       {
-        "name": "extrasounds:item.pickup.minecraft.mushroom_block",
+        "name": "extrasounds:item.category.mushroom",
         "type": "event"
       }
     ]
@@ -1223,7 +1333,7 @@
     "replace": true,
     "sounds": [
       {
-        "name": "minecraft:block.shroomlight.place",
+        "name": "extrasounds:item.integrated.thump",
         "pitch": 1.4,
         "type": "event",
         "volume": 0.6
@@ -1544,7 +1654,7 @@
     "replace": true,
     "sounds": [
       {
-        "name": "minecraft:block.stem.place",
+        "name": "extrasounds:item.category.mushroom",
         "pitch": 1.7,
         "type": "event",
         "volume": 0.8
@@ -1555,7 +1665,7 @@
     "replace": true,
     "sounds": [
       {
-        "name": "extrasounds:item.pickup.minecraft.mushroom_block",
+        "name": "extrasounds:item.category.mushroom",
         "type": "event"
       }
     ]
@@ -1593,9 +1703,10 @@
     "replace": true,
     "sounds": [
       {
-        "name": "extrasounds:item.pickup.minecraft.end_crystal",
+        "name": "extrasounds:item.integrated.thump",
         "pitch": 1.6,
-        "type": "event"
+        "type": "event",
+        "volume": 0.6
       }
     ]
   },
@@ -1809,7 +1920,7 @@
     "replace": true,
     "sounds": [
       {
-        "name": "extrasounds:item.pickup.minecraft.mushroom_block",
+        "name": "extrasounds:item.category.mushroom",
         "type": "event"
       }
     ]

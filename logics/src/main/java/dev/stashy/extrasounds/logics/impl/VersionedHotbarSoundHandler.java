@@ -10,13 +10,12 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 public abstract class VersionedHotbarSoundHandler {
     public static final int FORCE_HOTBAR_CHANGE = -1;
 
-    private static final Item ITEM_EMPTY = null;
-
-    private Item pickingItem = ITEM_EMPTY;
+    private Item pickingItem;
 
     public abstract int getPlayerInventorySlot(PlayerEntity player);
 
@@ -67,7 +66,7 @@ public abstract class VersionedHotbarSoundHandler {
     }
 
     public void storePickingItem(Item item) {
-        this.setPickingItem(item);
+        this.pickingItem = item;
     }
 
     public void onItemPick() {
@@ -77,18 +76,14 @@ public abstract class VersionedHotbarSoundHandler {
         }
 
         final Item item = this.popPickingItem();
-        if (!(player.getMainHandStack().getItem() == item) && item != ITEM_EMPTY) {
+        if (!(player.getMainHandStack().getItem() == item) && item != Items.AIR) {
             ExtraSounds.MANAGER.playSound2D(item.getStackForRender(), SoundType.HOTBAR);
         }
     }
 
-    public void setPickingItem(Item item) {
-        this.pickingItem = item;
-    }
-
     public Item popPickingItem() {
-        final Item result = this.pickingItem;
-        this.pickingItem = ITEM_EMPTY;
+        final Item result = (this.pickingItem == null) ? Items.AIR : this.pickingItem;
+        this.pickingItem = Items.AIR;
         return result;
     }
 

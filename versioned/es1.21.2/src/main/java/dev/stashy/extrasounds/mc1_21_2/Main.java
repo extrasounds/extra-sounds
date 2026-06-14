@@ -60,7 +60,7 @@ public final class Main extends VersionedMain {
         }
 
         if (slotItem instanceof BundleItem) {
-            if (state.slot instanceof LockableSlotConnector && ((LockableSlotConnector) state.slot).extrasounds$isCreativeSlot()) {
+            if (state.getSlot() instanceof LockableSlotConnector && ((LockableSlotConnector) state.getSlot()).extrasounds$isCreativeSlot()) {
                 return false;
             }
             return (state.isRMB && cursorItem == Items.AIR) || (!state.isRMB && cursorItem != Items.AIR);

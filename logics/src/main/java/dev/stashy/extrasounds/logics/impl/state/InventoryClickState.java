@@ -1,12 +1,10 @@
 package dev.stashy.extrasounds.logics.impl.state;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
+import dev.stashy.extrasounds.logics.runtime.VersionedSlotWrapper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -17,7 +15,7 @@ public final class InventoryClickState {
      * Indicates clicked slot. If null, screen border or off-screen area was clicked.
      * Or {@code QuickCrafting} is finished - mouse button has been released.
      */
-    public final @Nullable Slot slot;
+    private final VersionedSlotWrapper slot;
     /**
      * Indicates the index of slot. There are two ways it can be less than zero - {@code -1} shows screen border,
      * or {@link ScreenHandler#EMPTY_SPACE_SLOT_INDEX} shows off-screen area.
@@ -30,9 +28,9 @@ public final class InventoryClickState {
     /**
      * Indicates the type of action to be taken on the slot.
      */
-    public final SlotActionType actionType;
+    public final SlotActionTypeImpl actionType;
     /**
-     * Indicates mouse buttons, or slot index when {@link #actionType} is {@link SlotActionType#SWAP}.
+     * Indicates mouse buttons, or slot index when {@link #actionType} is {@link SlotActionTypeImpl#SWAP}.
      * Includes {@code QuickCraftStage} while dragging.
      */
     public final int button;
@@ -45,7 +43,7 @@ public final class InventoryClickState {
      */
     public final InventoryTabType tabType;
 
-    public InventoryClickState(@Nullable Slot slot, int slotIndex, ItemStack cursor, SlotActionType actionType, int button, InventoryTabType inventoryTabType) {
+    public InventoryClickState(VersionedSlotWrapper slot, int slotIndex, ItemStack cursor, SlotActionTypeImpl actionType, int button, InventoryTabType inventoryTabType) {
         this.slot = slot;
         this.slotIndex = slotIndex;
         this.cursorStack = cursor.copy();
@@ -56,11 +54,24 @@ public final class InventoryClickState {
     }
 
     public int getQuickCraftButton() {
-        return ScreenHandler.unpackQuickCraftButton(this.button);
+        return unpackQuickCraftButton(this.button);
     }
 
     public boolean isQuickCrafting() {
-        return this.actionType == SlotActionType.QUICK_CRAFT && ScreenHandler.unpackQuickCraftStage(this.button) < 2;
+        return this.actionType == SlotActionTypeImpl.QUICK_CRAFT && unpackQuickCraftStage(this.button) < 2;
+    }
+
+    @Nullable
+    public Object getSlot() {
+        return this.slot.getInstance();
+    }
+
+    private static int unpackQuickCraftButton(int button) {
+        return button >> 2 & 3;
+    }
+
+    private static int unpackQuickCraftStage(int button) {
+        return button & 3;
     }
 
     /**
@@ -70,26 +81,26 @@ public final class InventoryClickState {
      * Both are passed through to the {@link ItemStack#copy()} method.
      */
     public ItemStack getSlotStack() {
-        return (this.slot == null) ? ItemStack.EMPTY.copy() : this.slot.getStack().copy();
+        return (this.getSlot() == null) ? ItemStack.EMPTY.copy() : this.slot.getStack().copy();
     }
 
     /**
      * @return {@code true} if off-screen area was clicked.
      */
     public boolean isEmptySpaceClicked() {
-        return this.slotIndex == -999 && this.actionType != SlotActionType.QUICK_CRAFT;
+        return this.slotIndex == -999 && this.actionType != SlotActionTypeImpl.QUICK_CRAFT;
     }
 
     private boolean isRightClick() {
-        return (this.actionType != SlotActionType.THROW && this.actionType != SlotActionType.SWAP) && this.button == 1 ||
-                this.actionType == SlotActionType.QUICK_CRAFT && this.getQuickCraftButton() == 1;
+        return (this.actionType != SlotActionTypeImpl.THROW && this.actionType != SlotActionTypeImpl.SWAP) && this.button == 1 ||
+                this.actionType == SlotActionTypeImpl.QUICK_CRAFT && this.getQuickCraftButton() == 1;
     }
 
     /**
      * @return {@code true} if the cursor item cannot be inserted in this slot.
      */
     public boolean isSlotBlocked() {
-        if (this.slot == null || this.cursorStack.isEmpty()) {
+        if (this.getSlot() == null || this.cursorStack.isEmpty()) {
             return false;
         }
 
@@ -102,18 +113,18 @@ public final class InventoryClickState {
 
     /**
      * Returns the copy of {@link ItemStack} on the cursor.
-     * If {@link #actionType} is {@link SlotActionType#SWAP}, returns slot stack instead of {@link #cursorStack}.
+     * If {@link #actionType} is {@link SlotActionTypeImpl#SWAP}, returns slot stack instead of {@link #cursorStack}.
      *
      * @param player An instance of a {@link PlayerEntity} that owns inventory where this event triggered.
      * @return The copy of {@link ItemStack}.
      */
     public ItemStack getCursorStack(PlayerEntity player) {
         final ItemStack result;
-        if (this.actionType == SlotActionType.SWAP) {
+        if (this.actionType == SlotActionTypeImpl.SWAP) {
             // Swap event.
             if (PlayerInventory.isValidHotbarIndex(this.button)) {
                 // Pressed hotbar key.
-                result = ExtraSounds.MAIN.getPlayerInventory(player).getStack(this.button).copy();
+                result = ExtraSounds.MAIN.getPlayerInventory(player).getInvStack(this.button).copy();
             } else {
                 // Pressed offhand key.
                 result = player.getOffHandStack().copy();

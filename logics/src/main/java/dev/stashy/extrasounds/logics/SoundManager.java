@@ -4,6 +4,7 @@ import dev.stashy.extrasounds.logics.debug.DebugUtils;
 import dev.stashy.extrasounds.logics.entry.SoundPackLoader;
 import dev.stashy.extrasounds.logics.impl.VersionedHotbarSoundHandler;
 import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;
+import dev.stashy.extrasounds.logics.impl.state.SlotActionTypeImpl;
 import dev.stashy.extrasounds.logics.runtime.VersionedPositionedSoundInstanceWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.sounds.SoundType;
@@ -16,8 +17,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -63,7 +62,7 @@ public final class SoundManager {
      * @param state  click state
      */
     public void handleInventorySlot(PlayerEntity player, InventoryClickState state) {
-        final SlotActionType actionType = state.actionType;
+        final SlotActionTypeImpl actionType = state.actionType;
 
         if (state.isQuickCrafting()) {
             // while dragging.
@@ -76,7 +75,7 @@ public final class SoundManager {
 
         // Determine Slot item.
         final ItemStack slotStack = state.getSlotStack();
-        if (actionType == SlotActionType.QUICK_MOVE) {
+        if (actionType == SlotActionTypeImpl.QUICK_MOVE) {
             // cursor holding an item, then Shift + mouse (double) click.
             this.handleQuickMoveSound(slotStack);
             return;
@@ -155,7 +154,7 @@ public final class SoundManager {
             return;
         }
 
-        ItemStack stack = ExtraSounds.MAIN.getPlayerInventory(player).getStack(i);
+        ItemStack stack = ExtraSounds.MAIN.getPlayerInventory(player).getInvStack(i);
         if (stack.isEmpty()) {
             this.playSound2D(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
         } else {

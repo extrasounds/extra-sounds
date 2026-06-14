@@ -24,8 +24,8 @@ import java.util.function.Predicate;
 public final class Main extends VersionedMain {
     private static final Map<Item, Predicate<InventoryClickState>> IGNORE_SOUND_PREDICATE_MAP = Util.make(new HashMap<>(), map -> {
         map.put(Items.BUNDLE, status -> {
-            if (status.slot instanceof LockableSlotConnector) {
-                final boolean bCreativeSlot = ((LockableSlotConnector) status.slot).extrasounds$isCreativeSlot();
+            if (status.getSlot() instanceof LockableSlotConnector) {
+                final boolean bCreativeSlot = ((LockableSlotConnector) status.getSlot()).extrasounds$isCreativeSlot();
                 return status.isRMB && bCreativeSlot;
             }
             return false;

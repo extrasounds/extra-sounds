@@ -54,7 +54,7 @@ public abstract class BaseVanillaGenerator {
 
     private boolean isGearGenericItem(Item item) {
         return item instanceof BowItem || item instanceof CrossbowItem || item instanceof FishingRodItem ||
-                item instanceof OnAStickItem;
+                item instanceof CarrotOnAStickItem;
     }
 
     private boolean isPaperItem(Item item) {

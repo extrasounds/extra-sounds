@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.IndexedIterable;
 
 public abstract class VersionedMain {
     public static VersionedMain newInstance() {
@@ -29,7 +28,7 @@ public abstract class VersionedMain {
 
     public abstract VersionedSoundEventWrapper generateSoundEvent(Identifier id);
 
-    public abstract IndexedIterable<Item> getItemRegistry();
+    public abstract Iterable<Item> getItemRegistry();
 
     public abstract boolean canItemsCombine(ItemStack stack1, ItemStack stack2);
 

@@ -66,21 +66,21 @@ public abstract class AbstractInteractionHandler {
     public final void onUse(ClientPlayerEntity player, BlockPos blockPos, ActionResultState actionResult) {
         final boolean bCanInteract = this.canInteractBlock(player);
 
-        if (this.blockState.isOf(Blocks.REPEATER) &&
+        if (this.blockState.getBlock() == Blocks.REPEATER &&
                 this.blockState.contains(RepeaterBlock.DELAY) &&
                 bCanInteract
         ) {
             // Repeater
             final VersionedSoundEventWrapper sound = this.blockState.get(RepeaterBlock.DELAY) == 4 ? Sounds.Actions.REPEATER_RESET : Sounds.Actions.REPEATER_ADD;
             ExtraSounds.MANAGER.blockInteract(sound, blockPos);
-        } else if (this.blockState.isOf(Blocks.DAYLIGHT_DETECTOR) &&
+        } else if (this.blockState.getBlock() == Blocks.DAYLIGHT_DETECTOR &&
                 this.blockState.contains(DaylightDetectorBlock.INVERTED) &&
                 bCanInteract
         ) {
             // Daylight Detector
             final VersionedSoundEventWrapper sound = this.blockState.get(DaylightDetectorBlock.INVERTED) ? Sounds.Actions.REDSTONE_COMPONENT_ON : Sounds.Actions.REDSTONE_COMPONENT_OFF;
             ExtraSounds.MANAGER.blockInteract(sound, blockPos);
-        } else if (this.blockState.isOf(Blocks.REDSTONE_WIRE) && bCanInteract &&
+        } else if (this.blockState.getBlock() == Blocks.REDSTONE_WIRE && bCanInteract &&
                 actionResult == ActionResultState.SUCCESS
         ) {
             // Redstone Wire
