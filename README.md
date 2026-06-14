@@ -102,5 +102,5 @@ ExtraSounds a full client mod and has the following problems:
 [Requires Fabric API]: ./md-resource/images/requires-fabric-api.png
 [Fabric API]: https://modrinth.com/mod/fabric-api
 
-[Latest build on GitHub]: https://img.shields.io/github/v/tag/extrasounds/extra-sounds?filter=!legacy%2F*&logo=github&logoColor=black&label=latest&labelColor=whitesmoke&color=plum
+[Latest build on GitHub]: https://img.shields.io/github/v/tag/extrasounds/extra-sounds?filter=v3%2F*&logo=github&logoColor=black&label=latest&labelColor=whitesmoke&color=plum
 [Legacy build on GitHub]: https://img.shields.io/github/v/tag/extrasounds/extra-sounds?filter=legacy%2F*&logo=github&logoColor=white&label=legacy&labelColor=dimgray&color=indigo
