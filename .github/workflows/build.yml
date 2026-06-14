@@ -12,7 +12,7 @@ on:
       - 'port/**'
       - 'workflow/**'
     tags:
-      - '*'
+      - 'v3/**'
       - 'legacy/**'
   pull_request:
 
