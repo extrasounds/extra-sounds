@@ -132,7 +132,7 @@ dependencies {
     compileOnly include(project(path: 'versioned:es1.16.2'))
     compileOnly include(project(path: 'versioned:es1.16'))
     // 1.15 family
-    compileOnly include(project(path: 'versioned:es1.15.1'))
+    compileOnly include(project(path: 'versioned:es1.15'))
     // </editor-fold>
 
     // Sound Categories modules
