@@ -12,17 +12,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AdvancementTab.class)
 public abstract class AdvancementTabMixin {
     @Shadow
-    double originX;
+    double field_2690;
     @Shadow
-    double originY;
+    double field_2689;
 
     @Unique
     private final ScreenScrollHandler scrollHandler = new ScreenScrollHandler();
     @Unique
     private static final double SCROLL_THRESHOLD = 16.;
 
-    @Inject(method = "move", at = @At("RETURN"))
+    @Inject(method = "method_2313", at = @At("RETURN"))
     private void extrasounds$advancementScreenScroll(CallbackInfo ci) {
-        this.scrollHandler.onScroll((int) (this.originX / SCROLL_THRESHOLD), (int) (this.originY / SCROLL_THRESHOLD));
+        this.scrollHandler.onScroll((int) (this.field_2690 / SCROLL_THRESHOLD), (int) (this.field_2689 / SCROLL_THRESHOLD));
     }
 }

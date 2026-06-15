@@ -7,6 +7,7 @@ import dev.stashy.extrasounds.logics.SoundManager;
 import dev.stashy.extrasounds.logics.debug.DebugUtils;
 import dev.stashy.extrasounds.logics.json.SoundEntrySerializer;
 import dev.stashy.extrasounds.logics.json.VersionedSoundSerializer;
+import dev.stashy.extrasounds.logics.runtime.VersionedBlockStateWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedClientResource;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundWrapper;
@@ -19,7 +20,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.sound.SoundEntry;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -182,7 +182,7 @@ public final class SoundPackLoader {
                 final BlockItem blockItem = (BlockItem) item;
                 SoundDefinition blockSoundDef = SoundDefinition.of(fallbackSoundEntry);
                 try {
-                    final BlockState blockState = blockItem.getBlock().getDefaultState();
+                    final VersionedBlockStateWrapper blockState = Objects.requireNonNull(VersionedBlockStateWrapper.newInstance(blockItem.getBlock().getDefaultState()));
                     final VersionedSoundEventWrapper blockSound = VersionedSoundEventWrapper.fromBlockState(blockState);
                     blockSoundDef = SoundDefinition.of(Sounds.aliased(blockSound));
                 } catch (Exception ignored) {

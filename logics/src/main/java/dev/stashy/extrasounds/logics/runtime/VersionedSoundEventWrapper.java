@@ -2,7 +2,6 @@ package dev.stashy.extrasounds.logics.runtime;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
-import net.minecraft.block.BlockState;
 import net.minecraft.util.Identifier;
 
 import java.lang.reflect.Constructor;
@@ -20,7 +19,7 @@ public abstract class VersionedSoundEventWrapper {
         try {
             Class<VersionedSoundEventWrapper> clazz = McVersionInterchange.getCompatibleClass(ExtraSounds.BASE_PACKAGE, "runtime.SoundEventImpl");
             ctorId = clazz.getConstructor(Identifier.class);
-            ctorBlock = clazz.getConstructor(BlockState.class);
+            ctorBlock = clazz.getConstructor(VersionedBlockStateWrapper.class);
             ctorCopy = clazz.getConstructor(Object.class);
         } catch (Exception ex) {
             ExtraSounds.LOGGER.error("Failed to find 'SoundEvent' class.", ex);
@@ -39,7 +38,7 @@ public abstract class VersionedSoundEventWrapper {
         return null;
     }
 
-    public static VersionedSoundEventWrapper fromBlockState(BlockState blockState) {
+    public static VersionedSoundEventWrapper fromBlockState(VersionedBlockStateWrapper blockState) {
         try {
             return CTOR_WITH_BLOCK.newInstance(blockState);
         } catch (Exception ex) {

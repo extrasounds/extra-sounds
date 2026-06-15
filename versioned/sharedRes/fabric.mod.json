@@ -23,7 +23,6 @@
   ],
   "depends": {
     "fabricloader": "*",
-    "fabric": "*",
     "minecraft": "*",
     "soundcategories": "*"
   }

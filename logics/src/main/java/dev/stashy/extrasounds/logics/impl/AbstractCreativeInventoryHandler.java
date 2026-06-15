@@ -9,7 +9,6 @@ import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractCreativeInventoryHandler {
 

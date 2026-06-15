@@ -5,7 +5,7 @@ import dev.stashy.extrasounds.logics.Mixers;
 import dev.stashy.extrasounds.sounds.Sounds;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
+import net.minecraft.client.gui.screen.ingame.ContainerScreen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,9 +25,9 @@ public abstract class MinecraftClientMixin {
 
     @Inject(at = @At("HEAD"), method = "openScreen")
     private void extrasounds$screenChange(@Nullable Screen screen, CallbackInfo ci) {
-        if (currentScreen != screen && screen instanceof AbstractContainerScreen && !(screen instanceof CreativeInventoryScreen)) {
+        if (currentScreen != screen && screen instanceof ContainerScreen && !(screen instanceof CreativeInventoryScreen)) {
             ExtraSounds.MANAGER.playSound2D(Sounds.INVENTORY_OPEN, Mixers.SCREENS, 1f);
-        } else if (screen == null && currentScreen instanceof AbstractContainerScreen) {
+        } else if (screen == null && currentScreen instanceof ContainerScreen) {
             ExtraSounds.MANAGER.playSound2D(Sounds.INVENTORY_CLOSE, Mixers.SCREENS, 1f);
         }
     }

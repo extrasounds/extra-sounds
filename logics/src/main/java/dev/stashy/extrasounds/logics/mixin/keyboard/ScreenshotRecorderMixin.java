@@ -15,7 +15,8 @@ public abstract class ScreenshotRecorderMixin {
             "saveScreenshot(Ljava/io/File;Ljava/lang/String;IILnet/minecraft/client/gl/Framebuffer;Ljava/util/function/Consumer;)V",
             "method_22690(Ljava/io/File;Ljava/lang/String;Lnet/minecraft/class_276;Ljava/util/function/Consumer;)V",    // saveScreenshot(File, String, Framebuffer, Consumer)
             "method_22690(Ljava/io/File;Ljava/lang/String;IILnet/minecraft/class_276;Ljava/util/function/Consumer;)V",  // saveScreenshot(File, String, int, int, Framebuffer, Consumer)
-            "method_22690(Ljava/io/File;Ljava/lang/String;Lnet/minecraft/class_276;ILjava/util/function/Consumer;)V"    // saveScreenshot(File, String, Framebuffer, int, Consumer)
+            "method_22690(Ljava/io/File;Ljava/lang/String;Lnet/minecraft/class_276;ILjava/util/function/Consumer;)V",   // saveScreenshot(File, String, Framebuffer, int, Consumer)
+            "method_1662(Ljava/io/File;Ljava/lang/String;IILnet/minecraft/class_276;Ljava/util/function/Consumer;)V"
     }, at = @At("HEAD"))
     private static void extrasounds$screenshotSound(CallbackInfo ci) {
         if (!ExtraSounds.MANAGER.isMuted(SoundType.SCREENSHOT)) {

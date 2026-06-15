@@ -2,6 +2,7 @@ package dev.stashy.extrasounds.mc1_18.mixin.action.block;
 
 import dev.stashy.extrasounds.logics.impl.AbstractInteractionHandler;
 import dev.stashy.extrasounds.logics.impl.state.ActionResultState;
+import dev.stashy.extrasounds.logics.runtime.VersionedBlockStateWrapper;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
@@ -26,6 +27,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -52,17 +54,17 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
         @Override
         protected boolean isFlowerPotBlocks() {
-            return this.blockState.isIn(BlockTags.FLOWER_POTS);
+            return BlockTags.FLOWER_POTS.contains(this.block);
         }
 
         @Override
         protected boolean isRedstoneOreBlocks() {
-            return this.blockState.isIn(BlockTags.REDSTONE_ORES);
+            return BlockTags.REDSTONE_ORES.contains(this.block);
         }
 
         @Override
         protected boolean isCampfireBlocks() {
-            return this.blockState.isIn(BlockTags.CAMPFIRES);
+            return BlockTags.CAMPFIRES.contains(this.block);
         }
 
         @Override
@@ -88,7 +90,8 @@ public abstract class ClientPlayerInteractionManagerMixin {
         }
 
         final BlockPos blockPos = hitResult.getBlockPos();
-        this.soundHandler.setInteractionState(world.getBlockState(blockPos), world.getBlockEntity(blockPos),
+        final VersionedBlockStateWrapper blockState = Objects.requireNonNull(VersionedBlockStateWrapper.newInstance(world.getBlockState(blockPos)));
+        this.soundHandler.setInteractionState(blockState, world.getBlockEntity(blockPos),
                 player.getStackInHand(hand), player.getMainHandStack(), player.getOffHandStack());
     }
 

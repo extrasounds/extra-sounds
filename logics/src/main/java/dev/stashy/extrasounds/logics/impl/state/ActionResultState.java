@@ -4,5 +4,9 @@ public enum ActionResultState {
     SUCCESS,
     CONSUME,
     PASS,
-    FAIL,
+    FAIL;
+
+    public static boolean isSuccess(ActionResultState actionResult) {
+        return actionResult == SUCCESS || actionResult == CONSUME;
+    }
 }

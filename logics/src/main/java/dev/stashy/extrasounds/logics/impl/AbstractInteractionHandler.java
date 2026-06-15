@@ -2,6 +2,7 @@ package dev.stashy.extrasounds.logics.impl;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.state.ActionResultState;
+import dev.stashy.extrasounds.logics.runtime.VersionedBlockStateWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.sounds.Sounds;
 import net.minecraft.block.*;
@@ -21,7 +22,7 @@ import net.minecraft.util.math.Vec3d;
 import java.util.Optional;
 
 public abstract class AbstractInteractionHandler {
-    protected BlockState blockState;
+    protected VersionedBlockStateWrapper blockState;
     protected BlockEntity blockEntity;
     protected Block block;
     protected ItemStack currentHandStack;
@@ -54,10 +55,10 @@ public abstract class AbstractInteractionHandler {
         return !player.isSneaking() || (player.isSneaking() && this.mainHandStack.isEmpty() && this.offHandStack.isEmpty());
     }
 
-    public final void setInteractionState(BlockState blockState, BlockEntity blockEntity, ItemStack stackInHand, ItemStack mainHandStack, ItemStack offHandStack) {
+    public final void setInteractionState(VersionedBlockStateWrapper blockState, BlockEntity blockEntity, ItemStack stackInHand, ItemStack mainHandStack, ItemStack offHandStack) {
         this.blockState = blockState;
         this.blockEntity = blockEntity;
-        this.block = blockState.getBlock();
+        this.block = blockState.getBlockImpl();
         this.currentHandStack = stackInHand.copy();
         this.mainHandStack = mainHandStack.copy();
         this.offHandStack = offHandStack.copy();
@@ -66,27 +67,27 @@ public abstract class AbstractInteractionHandler {
     public final void onUse(ClientPlayerEntity player, BlockPos blockPos, ActionResultState actionResult) {
         final boolean bCanInteract = this.canInteractBlock(player);
 
-        if (this.blockState.getBlock() == Blocks.REPEATER &&
-                this.blockState.contains(RepeaterBlock.DELAY) &&
+        if (this.block == Blocks.REPEATER &&
+                this.blockState.containsProperty(RepeaterBlock.DELAY) &&
                 bCanInteract
         ) {
             // Repeater
-            final VersionedSoundEventWrapper sound = this.blockState.get(RepeaterBlock.DELAY) == 4 ? Sounds.Actions.REPEATER_RESET : Sounds.Actions.REPEATER_ADD;
+            final VersionedSoundEventWrapper sound = this.blockState.getProperty(RepeaterBlock.DELAY) == 4 ? Sounds.Actions.REPEATER_RESET : Sounds.Actions.REPEATER_ADD;
             ExtraSounds.MANAGER.blockInteract(sound, blockPos);
-        } else if (this.blockState.getBlock() == Blocks.DAYLIGHT_DETECTOR &&
-                this.blockState.contains(DaylightDetectorBlock.INVERTED) &&
+        } else if (this.block == Blocks.DAYLIGHT_DETECTOR &&
+                this.blockState.containsProperty(DaylightDetectorBlock.INVERTED) &&
                 bCanInteract
         ) {
             // Daylight Detector
-            final VersionedSoundEventWrapper sound = this.blockState.get(DaylightDetectorBlock.INVERTED) ? Sounds.Actions.REDSTONE_COMPONENT_ON : Sounds.Actions.REDSTONE_COMPONENT_OFF;
+            final VersionedSoundEventWrapper sound = this.blockState.getProperty(DaylightDetectorBlock.INVERTED) ? Sounds.Actions.REDSTONE_COMPONENT_ON : Sounds.Actions.REDSTONE_COMPONENT_OFF;
             ExtraSounds.MANAGER.blockInteract(sound, blockPos);
-        } else if (this.blockState.getBlock() == Blocks.REDSTONE_WIRE && bCanInteract &&
+        } else if (this.block == Blocks.REDSTONE_WIRE && bCanInteract &&
                 actionResult == ActionResultState.SUCCESS
         ) {
             // Redstone Wire
             ExtraSounds.MANAGER.blockInteract(Sounds.Actions.REDSTONE_WIRE_CHANGE, blockPos);
         } else if (this.isRedstoneOreBlocks() &&
-                this.blockState.contains(RedstoneOreBlock.LIT) &&
+                this.blockState.containsProperty(RedstoneOreBlock.LIT) &&
                 bCanInteract && !(this.mainHandStack.getItem() instanceof BlockItem)
         ) {
             // Redstone Ores
@@ -99,7 +100,7 @@ public abstract class AbstractInteractionHandler {
             }
 
             Optional<?> recipe = this.getCampfireRecipe(campfireBlockEntity, this.currentHandStack);
-            if (recipe.isPresent() && actionResult == ActionResultState.CONSUME) {
+            if (recipe.isPresent() && ActionResultState.isSuccess(actionResult)) {
                 ExtraSounds.MANAGER.blockInteract(this.currentHandStack, blockPos);
             }
         } else if (this.isFlowerPotBlocks() &&

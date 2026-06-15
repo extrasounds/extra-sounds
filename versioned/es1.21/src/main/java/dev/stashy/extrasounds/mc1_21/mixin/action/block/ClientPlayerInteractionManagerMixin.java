@@ -2,6 +2,7 @@ package dev.stashy.extrasounds.mc1_21.mixin.action.block;
 
 import dev.stashy.extrasounds.logics.impl.AbstractInteractionHandler;
 import dev.stashy.extrasounds.logics.impl.state.ActionResultState;
+import dev.stashy.extrasounds.logics.runtime.VersionedBlockStateWrapper;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -29,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -38,7 +40,6 @@ import java.util.Optional;
 public abstract class ClientPlayerInteractionManagerMixin {
     @Unique
     private final AbstractInteractionHandler soundHandler = new AbstractInteractionHandler() {
-
         @Override
         protected EquipmentSlot getPreferredSlot(ArmorStandEntity armorStandEntity, ItemStack itemStack) {
             return armorStandEntity.getPreferredEquipmentSlot(itemStack);
@@ -56,17 +57,17 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
         @Override
         protected boolean isFlowerPotBlocks() {
-            return this.blockState.getBlock().getRegistryEntry().isIn(BlockTags.FLOWER_POTS);
+            return this.blockState.getBlockImpl().getRegistryEntry().isIn(BlockTags.FLOWER_POTS);
         }
 
         @Override
         protected boolean isRedstoneOreBlocks() {
-            return this.blockState.getBlock().getRegistryEntry().isIn(BlockTags.REDSTONE_ORES);
+            return this.blockState.getBlockImpl().getRegistryEntry().isIn(BlockTags.REDSTONE_ORES);
         }
 
         @Override
         protected boolean isCampfireBlocks() {
-            return this.blockState.getBlock().getRegistryEntry().isIn(BlockTags.CAMPFIRES);
+            return this.blockState.getBlockImpl().getRegistryEntry().isIn(BlockTags.CAMPFIRES);
         }
 
         @Override
@@ -96,10 +97,9 @@ public abstract class ClientPlayerInteractionManagerMixin {
         }
 
         final BlockPos blockPos = hitResult.getBlockPos();
-        this.soundHandler.setInteractionState(
-                world.getBlockState(blockPos), world.getBlockEntity(blockPos),
-                player.getStackInHand(hand), player.getMainHandStack(), player.getOffHandStack()
-        );
+        final VersionedBlockStateWrapper blockState = Objects.requireNonNull(VersionedBlockStateWrapper.newInstance(world.getBlockState(blockPos)));
+        this.soundHandler.setInteractionState(blockState, world.getBlockEntity(blockPos),
+                player.getStackInHand(hand), player.getMainHandStack(), player.getOffHandStack());
     }
 
     @Inject(

@@ -1,6 +1,7 @@
 package dev.stashy.extrasounds.mc1_21_2.runtime;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
+import dev.stashy.extrasounds.logics.runtime.VersionedBlockStateWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
@@ -35,8 +36,8 @@ public class SoundEventImpl extends VersionedSoundEventWrapper {
         this.instance = event;
     }
 
-    public SoundEventImpl(BlockState blockState) {
-        this.instance = blockState.getSoundGroup().getPlaceSound();
+    public SoundEventImpl(VersionedBlockStateWrapper blockState) {
+        this.instance = blockState.getSoundGroupImpl().getPlaceSound();
     }
 
     public SoundEventImpl(Object soundEvent) {

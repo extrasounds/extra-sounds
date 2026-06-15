@@ -2,6 +2,7 @@ package dev.stashy.extrasounds.logics.entry;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.SoundManager;
+import dev.stashy.extrasounds.logics.runtime.VersionedBlockStateWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.mapping.SoundDefinition;
 import dev.stashy.extrasounds.mapping.SoundGenerator;
@@ -71,7 +72,7 @@ public abstract class BaseVanillaGenerator {
 
     protected SoundDefinition generateFromBlock(Block block) {
         final BlockState blockState = block.getDefaultState();
-        final Identifier blockSoundId = Objects.requireNonNull(VersionedSoundEventWrapper.fromBlockState(blockState)).getId();
+        final Identifier blockSoundId = Objects.requireNonNull(VersionedSoundEventWrapper.fromBlockState(VersionedBlockStateWrapper.newInstance(blockState))).getId();
 
         if (block instanceof AbstractRailBlock) {
             return SoundDefinition.of(aliased(RAIL));

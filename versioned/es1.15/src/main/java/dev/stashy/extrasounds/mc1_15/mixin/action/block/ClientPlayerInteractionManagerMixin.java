@@ -3,6 +3,7 @@ package dev.stashy.extrasounds.mc1_15.mixin.action.block;
 import dev.stashy.extrasounds.logics.impl.AbstractInteractionHandler;
 import dev.stashy.extrasounds.logics.impl.FlowerPotBlockConnector;
 import dev.stashy.extrasounds.logics.impl.state.ActionResultState;
+import dev.stashy.extrasounds.logics.runtime.VersionedBlockStateWrapper;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.block.entity.CampfireBlockEntity;
@@ -29,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -63,17 +65,17 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
         @Override
         protected boolean isFlowerPotBlocks() {
-            return BlockTags.FLOWER_POTS.contains(this.blockState.getBlock());
+            return BlockTags.FLOWER_POTS.contains(this.blockState.getBlockImpl());
         }
 
         @Override
         protected boolean isRedstoneOreBlocks() {
-            return this.blockState.getBlock() == Blocks.REDSTONE_ORE;
+            return this.blockState.getBlockImpl() == Blocks.REDSTONE_ORE;
         }
 
         @Override
         protected boolean isCampfireBlocks() {
-            return this.blockState.getBlock() == Blocks.CAMPFIRE;
+            return this.blockState.getBlockImpl() == Blocks.CAMPFIRE;
         }
 
         @Override
@@ -99,7 +101,8 @@ public abstract class ClientPlayerInteractionManagerMixin {
         }
 
         final BlockPos blockPos = hitResult.getBlockPos();
-        this.soundHandler.setInteractionState(world.getBlockState(blockPos), world.getBlockEntity(blockPos),
+        final VersionedBlockStateWrapper blockState = Objects.requireNonNull(VersionedBlockStateWrapper.newInstance(world.getBlockState(blockPos)));
+        this.soundHandler.setInteractionState(blockState, world.getBlockEntity(blockPos),
                 player.getStackInHand(hand), player.getMainHandStack(), player.getOffHandStack());
     }
 

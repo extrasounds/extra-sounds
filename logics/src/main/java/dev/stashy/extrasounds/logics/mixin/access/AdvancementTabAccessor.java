@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(AdvancementTab.class)
 public interface AdvancementTabAccessor {
-    @Accessor("icon")
+    @Accessor("field_2697")
     ItemStack getIcon();
 }

@@ -1,5 +1,6 @@
 package dev.stashy.extrasounds.mc1_15.runtime;
 
+import dev.stashy.extrasounds.logics.runtime.VersionedBlockStateWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import net.minecraft.block.BlockState;
 import net.minecraft.sound.SoundEvent;
@@ -12,8 +13,8 @@ public class SoundEventImpl extends VersionedSoundEventWrapper {
         this.instance = new SoundEvent(identifier);
     }
 
-    public SoundEventImpl(BlockState blockState) {
-        this.instance = blockState.getSoundGroup().getPlaceSound();
+    public SoundEventImpl(VersionedBlockStateWrapper blockState) {
+        this.instance = blockState.getSoundGroupImpl().getPlaceSound();
     }
 
     public SoundEventImpl(Object soundEvent) {

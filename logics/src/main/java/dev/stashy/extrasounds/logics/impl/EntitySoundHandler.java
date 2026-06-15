@@ -12,6 +12,9 @@ import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Helper class for managing {@link net.minecraft.entity.Entity} status.
  */
@@ -21,13 +24,16 @@ public final class EntitySoundHandler {
         REMOVE
     }
 
+    private final Set<StatusEffect> statusEffects = new HashSet<>();
+
     public void onEffectChanged(StatusEffect effect, EffectType type) {
         if (DebugUtils.DEBUG) {
-            ExtraSounds.LOGGER.info("EffectType = {}, Effect = {}", type, effect.getName().getString());
+            ExtraSounds.LOGGER.info("EffectType = {}, Effect = {}", type, effect);
         }
 
         final VersionedSoundEventWrapper sound;
         if (type == EffectType.ADD) {
+            this.statusEffects.add(effect);
             switch (effect.getType()) {
                 case HARMFUL:
                     sound = Sounds.EFFECT_ADD_NEGATIVE;
@@ -38,6 +44,10 @@ public final class EntitySoundHandler {
                     sound = Sounds.EFFECT_ADD_POSITIVE;
             }
         } else if (type == EffectType.REMOVE) {
+            if (!this.statusEffects.contains(effect)) {
+                return;
+            }
+            this.statusEffects.remove(effect);
             switch (effect.getType()) {
                 case HARMFUL:
                     sound = Sounds.EFFECT_REMOVE_NEGATIVE;

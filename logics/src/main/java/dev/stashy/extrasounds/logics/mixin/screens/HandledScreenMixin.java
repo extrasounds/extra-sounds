@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
-import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
+import net.minecraft.client.gui.screen.ingame.ContainerScreen;
 import net.minecraft.container.Slot;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * For {@link net.minecraft.container.SlotActionType#QUICK_CRAFT} sound on Inventory.
  */
-@Mixin(AbstractContainerScreen.class)
+@Mixin(ContainerScreen.class)
 public abstract class HandledScreenMixin {
     @Shadow
     protected @Final Set<Slot> cursorDragSlots;
