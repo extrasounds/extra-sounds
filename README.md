@@ -27,8 +27,10 @@ Sign in to GitHub to get it.
 
 Works with the following Minecraft versions:
 
+* Minecraft 1.14 family:
+  - 1.14 - 1.14.4
 * Minecraft 1.15 family:
-  - 1.15.2
+  - 1.15 - 1.15.2
 * Minecraft 1.16 family:
   - 1.16 - 1.16.5
 * Minecraft 1.17 family:

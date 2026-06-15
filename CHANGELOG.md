@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.0.0-legacy+1.21.11+1.14-build.1] - 2026-06-16
+### ✨ Added
+
+* Supports 1.14 - 1.15.1.
+
 ## [3.0.0-legacy+1.21.11+1.15.2-build.1] - 2026-06-14
 Bumped to v3 officially🎉
 
