@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.0.0-legacy+1.21.11+1.14-build.2] - 2026-06-17
+### ↻ Updated
+
+* Typing sound on BookEditScreen: 1.14.x
+
 ## [3.0.0-legacy+1.21.11+1.14-build.1] - 2026-06-16
 ### ✨ Added
 
