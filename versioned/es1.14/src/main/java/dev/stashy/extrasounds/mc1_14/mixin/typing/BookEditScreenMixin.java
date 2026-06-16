@@ -71,13 +71,7 @@ public abstract class BookEditScreenMixin {
             this.soundHandler.setCursor(this.cursorIndex);
             this.bDeleteAction = false;
         }
-        if (this.bPasteAction) {
-            if (this.soundHandler.isPosUpdated(this.cursorIndex, this.cursorIndex)) {
-                this.soundHandler.onKey(TextFieldHandler.KeyType.PASTE);
-                this.soundHandler.setCursor(this.cursorIndex);
-            }
-            this.bPasteAction = false;
-        }
+        this.soundHandler.setCursor(this.cursorIndex);
     }
 
     @Inject(method = "writeString", at = @At("RETURN"))
@@ -88,7 +82,12 @@ public abstract class BookEditScreenMixin {
         if (insertion.equals("\n")) {
             this.soundHandler.onKey(TextFieldHandler.KeyType.RETURN);
         } else {
-            this.soundHandler.onKey(TextFieldHandler.KeyType.INSERT);
+            if (this.bPasteAction) {
+                this.soundHandler.onKey(TextFieldHandler.KeyType.PASTE);
+                this.bPasteAction = false;
+            } else {
+                this.soundHandler.onKey(TextFieldHandler.KeyType.INSERT);
+            }
         }
         this.soundHandler.setCursor(this.cursorIndex);
     }
