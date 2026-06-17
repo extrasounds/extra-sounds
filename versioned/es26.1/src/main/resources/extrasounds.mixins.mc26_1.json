@@ -4,8 +4,6 @@
   "package": "dev.stashy.extrasounds.mc26_1.mixin",
   "plugin": "dev.stashy.extrasounds.mc26_1.VersionedMixinPlugin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
-  ],
   "client": [
     "screens.MinecraftMixin"
   ],
