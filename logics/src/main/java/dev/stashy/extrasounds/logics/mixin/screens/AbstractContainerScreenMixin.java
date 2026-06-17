@@ -23,11 +23,7 @@ public abstract class AbstractContainerScreenMixin {
     @Shadow
     protected @Final Set<Slot> quickCraftSlots;
 
-    @Inject(
-            method = "mouseDragged(Lnet/minecraft/client/input/MouseButtonEvent;DD)Z",
-            at = @At(value = "INVOKE", target = "Ljava/util/Set;add(Ljava/lang/Object;)Z"),
-            require = 1
-    )
+    @Inject(method = "mouseDragged(Lnet/minecraft/client/input/MouseButtonEvent;DD)Z", at = @At(value = "INVOKE", target = "Ljava/util/Set;add(Ljava/lang/Object;)Z"))
     private void extrasounds$quickCraftSound(CallbackInfoReturnable<Boolean> cir, @Local Slot slot) {
         if (!quickCraftSlots.contains(slot) && !quickCraftSlots.isEmpty()) {
             ExtraSounds.MANAGER.playSound2D(Sounds.ITEM_DRAG, SoundType.PLACE);

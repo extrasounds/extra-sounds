@@ -63,7 +63,8 @@ allprojects {
                     "mod_sources",
                     "mod_issues",
                     "mod_license",
-                    "mod_support_lowest_mc"
+                    "mod_support_lowest_mc",
+                    "mod_support_highest_mc"
             ].collectEntries {
                 [it, project.properties[it]]
             }
@@ -106,6 +107,7 @@ dependencies {
     // <editor-fold desc="Extra Sounds modules">
     compileOnly include(project(path: 'logics'))
     compileOnly include(project(path: 'versioned:es26.1'))
+    compileOnly include(project(path: 'versioned:es26.2'))
     // </editor-fold>
 
     // Sound Categories modules

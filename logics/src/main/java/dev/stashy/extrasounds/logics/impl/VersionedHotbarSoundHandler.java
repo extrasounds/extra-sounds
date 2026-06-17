@@ -11,13 +11,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public abstract class VersionedHotbarSoundHandler {
     public static final int FORCE_HOTBAR_CHANGE = -1;
+    public static final int INVALID_HOTBAR_SLOT = -9999;
 
-    private static final Item ITEM_EMPTY = Items.AIR;
-
-    private Item pickingItem = ITEM_EMPTY;
+    @Nullable
+    private Item pickingItem;
 
     public abstract int getPlayerInventorySlot(Player player);
 
@@ -32,9 +35,9 @@ public abstract class VersionedHotbarSoundHandler {
     }
 
     public void onSwap(ItemStack mainHand, ItemStack offHand) {
-        if (offHand.getItem() != ITEM_EMPTY) {
+        if (!offHand.isEmpty()) {
             ExtraSounds.MANAGER.playSound2D(offHand, SoundType.HOTBAR);
-        } else if (mainHand.getItem() != ITEM_EMPTY) {
+        } else if (!mainHand.isEmpty()) {
             ExtraSounds.MANAGER.playSound2D(mainHand, SoundType.HOTBAR);
         }
     }
@@ -49,13 +52,8 @@ public abstract class VersionedHotbarSoundHandler {
             return;
         }
 
-        final int selectedSlot = this.getPlayerInventorySlot(player);
-
-        if (newSlot == FORCE_HOTBAR_CHANGE) {
-            ExtraSounds.MANAGER.hotbar(selectedSlot);
-        } else if (newSlot != selectedSlot) {
-            ExtraSounds.MANAGER.hotbar(newSlot);
-        }
+        final int target = (newSlot == FORCE_HOTBAR_CHANGE) ? this.getPlayerInventorySlot(player) : newSlot;
+        ExtraSounds.MANAGER.hotbar(target);
     }
 
     public void spectatorHotbar() {
@@ -68,7 +66,11 @@ public abstract class VersionedHotbarSoundHandler {
     }
 
     public void storePickingItem(Item item) {
-        this.setPickingItem(item);
+        if (item != Items.AIR) {
+            this.pickingItem = item;
+        } else {
+            this.pickingItem = null;
+        }
     }
 
     public void onItemPick() {
@@ -77,20 +79,18 @@ public abstract class VersionedHotbarSoundHandler {
             return;
         }
 
-        final Item item = this.popPickingItem();
-        if (!player.getMainHandItem().is(item) && item != ITEM_EMPTY) {
-            ExtraSounds.MANAGER.playSound2D(item.getDefaultInstance(), SoundType.HOTBAR);
-        }
+        final Optional<Item> pickingItem = this.popPickingItem();
+        pickingItem.ifPresent(item -> {
+            if (!player.getMainHandItem().is(item)) {
+                ExtraSounds.MANAGER.playSound2D(item.getDefaultInstance(), SoundType.HOTBAR);
+            }
+        });
     }
 
-    public void setPickingItem(Item item) {
-        this.pickingItem = item;
-    }
-
-    public Item popPickingItem() {
+    public Optional<Item> popPickingItem() {
         final Item result = this.pickingItem;
-        this.pickingItem = ITEM_EMPTY;
-        return result;
+        this.pickingItem = null;
+        return Optional.ofNullable(result);
     }
 
     public void onThrow(ItemStack itemStack) {

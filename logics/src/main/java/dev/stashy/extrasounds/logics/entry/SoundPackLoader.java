@@ -254,7 +254,7 @@ public final class SoundPackLoader {
                 final BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(stream)));
                 final JsonObject jsonObject = JsonParser.parseString(reader.lines().collect(Collectors.joining())).getAsJsonObject();
                 for (String idStr : jsonObject.keySet()) {
-                    putExternalSoundEvent(Identifier.fromNamespaceAndPath(ExtraSounds.MODID, idStr));
+                    putExternalSoundEvent(ExtraSounds.generateIdentifier(ExtraSounds.MODID, idStr));
                 }
             } catch (Exception ignored) {
             }
@@ -262,7 +262,7 @@ public final class SoundPackLoader {
 
         CUSTOM_SOUND_EVENT.putAll(AUTO_GEN_SOUND_EVENT);
         if (!EXTERNAL_SOUND_EVENT.isEmpty()) {
-            LOGGER.info("External sound pack was found; {} entries.", EXTERNAL_SOUND_EVENT.size());
+            LOGGER.info("External sound packs were found; {} entries.", EXTERNAL_SOUND_EVENT.size());
             CUSTOM_SOUND_EVENT.putAll(EXTERNAL_SOUND_EVENT);
         }
     }
@@ -387,7 +387,7 @@ public final class SoundPackLoader {
          * Writes to the file.
          *
          * @param info The current cache info.
-         * @param map  The cache data that will be converted to json.
+         * @param map  The cache data that will be converted to JSON.
          */
         static void create(CacheInfo info, Map<String, SoundEventRegistration> map) {
             try (BufferedWriter writer = Files.newBufferedWriter(CACHE_PATH)) {

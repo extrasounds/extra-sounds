@@ -22,24 +22,4 @@ public abstract class InputHandlersMixin {
     private static void extrasounds$hotbarScroll_integrateMidnightControls(CallbackInfoReturnable<PressAction> cir) {
         SOUND_HANDLER.onChange();
     }
-
-    @Inject(method = "lambda$handleHotbar$2", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;setSelectedSlot(I)V", shift = At.Shift.AFTER), require = 0)
-    private static void extrasounds$hotbarScroll_integrateMidnightControls1101(CallbackInfoReturnable<PressAction> cir) {
-        SOUND_HANDLER.onChange();
-    }
-
-    @Inject(method = "lambda$handleHotbar$2", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;scrollInHotbar(D)V", shift = At.Shift.AFTER), require = 0)
-    private static void extrasounds$hotbarScroll_integrateMidnightControls1097(CallbackInfoReturnable<PressAction> cir) {
-        SOUND_HANDLER.onChange();
-    }
-
-    @Inject(method = "lambda$handleHotbar$0", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;scrollInHotbar(D)V", shift = At.Shift.AFTER), require = 0)
-    private static void extrasounds$hotbarScroll_integrateMidnightControls1074(CallbackInfoReturnable<PressAction> cir) {
-        SOUND_HANDLER.onChange();
-    }
-
-    @Inject(method = "lambda$handleHotbar$0", at = @At(value = "FIELD", opcode = Opcodes.PUTFIELD, target = "Lnet/minecraft/entity/player/PlayerInventory;selectedSlot:I", shift = At.Shift.AFTER), require = 0)
-    private static void extrasounds$hotbarScroll_integrateMidnightControls1050(CallbackInfoReturnable<PressAction> cir) {
-        SOUND_HANDLER.onChange();
-    }
 }

@@ -24,7 +24,7 @@
   "depends": {
     "fabricloader": ">=0.15",
     "fabric-api": "*",
-    "minecraft": ">=${mod_support_lowest_mc}",
+    "minecraft": ">=${mod_support_lowest_mc} <=${mod_support_highest_mc}",
     "extrasounds-logics": "*",
     "soundcategories": "*"
   }
