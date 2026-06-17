@@ -1607,6 +1607,17 @@
       }
     ]
   },
+  "item.pickup.minecraft.sulfur_cube_bucket": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "minecraft:item.bucket.empty_sulfur_cube",
+        "volume": 0.5,
+        "pitch": 2,
+        "type": "event"
+      }
+    ]
+  },
   "item.pickup.minecraft.prismarine_crystals": {
     "replace": true,
     "sounds": [
