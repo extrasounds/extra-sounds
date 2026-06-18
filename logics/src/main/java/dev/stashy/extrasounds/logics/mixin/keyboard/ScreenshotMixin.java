@@ -14,7 +14,7 @@ public abstract class ScreenshotMixin {
     @Inject(method = "grab(Ljava/io/File;Ljava/lang/String;Lcom/mojang/blaze3d/pipeline/RenderTarget;ILjava/util/function/Consumer;)V", at = @At("HEAD"))
     private static void extrasounds$screenshotSound(CallbackInfo ci) {
         if (!ExtraSounds.MANAGER.isMuted(SoundType.SCREENSHOT)) {
-            ExtraSounds.MANAGER.playSound2D(Sounds.SCREENSHOT, SoundType.SCREENSHOT);
+            ExtraSounds.MANAGER.playSoundUI(Sounds.SCREENSHOT, SoundType.SCREENSHOT);
         }
     }
 }

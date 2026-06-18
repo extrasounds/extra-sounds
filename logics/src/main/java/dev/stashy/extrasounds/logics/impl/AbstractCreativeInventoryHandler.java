@@ -48,12 +48,12 @@ public abstract class AbstractCreativeInventoryHandler {
             // With holding the Shift key; (slotActionType == QUICK_MOVE)
             if (bOnCreativeTab && bOnHotbar && slot.hasItem()) {
                 // Quick move from Hotbar to Creative slots; stack will be deleted.
-                ExtraSounds.MANAGER.playSound2D(Sounds.ITEM_DELETE_PARTIAL, SoundType.DEFAULT);
+                ExtraSounds.MANAGER.playSoundUI(Sounds.ITEM_DELETE_PARTIAL, SoundType.DEFAULT);
                 return;
             }
             if (bMatchDeleteSlot) {
                 // Shift + Click on deleteItemSlot; clearing Inventory.
-                ExtraSounds.MANAGER.playSound2D(Sounds.ITEM_DELETE_ALL, SoundType.DEFAULT);
+                ExtraSounds.MANAGER.playSoundUI(Sounds.ITEM_DELETE_ALL, SoundType.DEFAULT);
                 return;
             }
         }
@@ -61,7 +61,7 @@ public abstract class AbstractCreativeInventoryHandler {
         if (!state.cursorStack.isEmpty()) {
             if (bMatchDeleteSlot) {
                 // Clicked deleteItemSlot.
-                ExtraSounds.MANAGER.playSound2D(Sounds.ITEM_DELETE_PARTIAL, SoundType.DEFAULT);
+                ExtraSounds.MANAGER.playSoundUI(Sounds.ITEM_DELETE_PARTIAL, SoundType.DEFAULT);
                 return;
             }
 
@@ -74,11 +74,11 @@ public abstract class AbstractCreativeInventoryHandler {
             if (bOnCreativeTab && !bOnHotbar) {
                 if (ExtraSounds.MAIN.canItemsCombine(state.getSlotStack(), state.cursorStack) && !state.isRMB) {
                     // Left Mouse Clicked on the same slot in CreativeInventory tab except Hotbar.
-                    ExtraSounds.MANAGER.playSound2D(state.cursorStack, SoundType.DEFAULT);
+                    ExtraSounds.MANAGER.playSoundUI(state.cursorStack, SoundType.DEFAULT);
                     return;
                 } else if (slotId >= 0) {
                     // Clicking on another slot will delete or decrement the cursor stack.
-                    ExtraSounds.MANAGER.playSound2D(Sounds.ITEM_DELETE_PARTIAL, SoundType.DEFAULT);
+                    ExtraSounds.MANAGER.playSoundUI(Sounds.ITEM_DELETE_PARTIAL, SoundType.DEFAULT);
                     return;
                 }
             }

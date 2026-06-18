@@ -91,11 +91,11 @@ public final class TextFieldHandler {
         }
 
         switch (type) {
-            case ERASE -> ExtraSounds.MANAGER.playSound2D(Sounds.KEYBOARD_ERASE, SoundType.TYPING);
-            case CUT -> ExtraSounds.MANAGER.playSound2D(Sounds.KEYBOARD_CUT, SoundType.TYPING);
-            case CURSOR, RETURN -> ExtraSounds.MANAGER.playSound2D(Sounds.KEYBOARD_MOVE, SoundType.TYPING);
-            case INSERT -> ExtraSounds.MANAGER.playSound2D(Sounds.KEYBOARD_TYPE, SoundType.TYPING);
-            case PASTE -> ExtraSounds.MANAGER.playSound2D(Sounds.KEYBOARD_PASTE, SoundType.TYPING);
+            case ERASE -> ExtraSounds.MANAGER.playSoundUI(Sounds.KEYBOARD_ERASE, SoundType.TYPING);
+            case CUT -> ExtraSounds.MANAGER.playSoundUI(Sounds.KEYBOARD_CUT, SoundType.TYPING);
+            case CURSOR, RETURN -> ExtraSounds.MANAGER.playSoundUI(Sounds.KEYBOARD_MOVE, SoundType.TYPING);
+            case INSERT -> ExtraSounds.MANAGER.playSoundUI(Sounds.KEYBOARD_TYPE, SoundType.TYPING);
+            case PASTE -> ExtraSounds.MANAGER.playSoundUI(Sounds.KEYBOARD_PASTE, SoundType.TYPING);
         }
     }
 }

@@ -1,5 +1,7 @@
 package dev.stashy.extrasounds.logics.mixin.typing;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import dev.stashy.extrasounds.logics.impl.TextFieldHandler;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
@@ -40,13 +42,10 @@ public abstract class EditBoxMixin {
     @Shadow
     public abstract String getValue();
 
-    @Inject(method = "deleteText", at = @At("HEAD"))
-    private void extrasounds$eraseStrHead(int offset, boolean shiftDown, CallbackInfo ci) {
+    @WrapMethod(method = "deleteText")
+    private void extrasounds$eraseStrHead(int offset, boolean shiftDown, Operation<Void> original) {
         this.soundHandler.onCharErase(offset, this.getValue().length(), this.cursorPos, this.highlightPos);
-    }
-
-    @Inject(method = "deleteText", at = @At("RETURN"))
-    private void extrasounds$eraseStrReturn(CallbackInfo ci) {
+        original.call(offset, shiftDown);
         this.soundHandler.setCursor(this.highlightPos);
     }
 

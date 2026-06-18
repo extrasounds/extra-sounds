@@ -96,7 +96,7 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
     @Inject(method = "selectTab", at = @At("HEAD"))
     private void extrasounds$tabChange(CreativeModeTab group, CallbackInfo ci) {
         if (this.currentTab != group) {
-            ExtraSounds.MANAGER.playSound2D(group.getIconItem(), SoundType.DEFAULT);
+            ExtraSounds.MANAGER.playSoundUI(group.getIconItem(), SoundType.DEFAULT);
             this.screenScrollHandler.resetScrollPos();
             this.currentTab = group;
         }

@@ -30,7 +30,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
             return;
         }
 
-        ExtraSounds.MANAGER.playSound2D(Sounds.Actions.BOW_PULL, SoundType.ITEM_INTR);
+        ExtraSounds.MANAGER.playSoundUI(Sounds.Actions.BOW_PULL, SoundType.ITEM_INTR);
     }
 
     @Inject(method = "stopUsingItem", at = @At(value = "HEAD"))

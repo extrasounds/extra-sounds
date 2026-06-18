@@ -26,9 +26,9 @@ public abstract class GuiMixin {
     @Inject(at = @At("HEAD"), method = "setScreen")
     private void extrasounds$screenChange(@Nullable Screen target, CallbackInfo ci) {
         if (this.screen != target && target instanceof AbstractContainerScreen && !(target instanceof CreativeModeInventoryScreen)) {
-            ExtraSounds.MANAGER.playSound2D(Sounds.INVENTORY_OPEN, Mixers.SCREENS);
+            ExtraSounds.MANAGER.playSoundUI(Sounds.INVENTORY_OPEN, Mixers.SCREENS);
         } else if (target == null && this.screen instanceof AbstractContainerScreen) {
-            ExtraSounds.MANAGER.playSound2D(Sounds.INVENTORY_CLOSE, Mixers.SCREENS);
+            ExtraSounds.MANAGER.playSoundUI(Sounds.INVENTORY_CLOSE, Mixers.SCREENS);
         }
     }
 }

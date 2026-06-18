@@ -26,7 +26,7 @@ public abstract class AdvancementsScreenMixin {
     @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientAdvancements;setSelectedTab(Lnet/minecraft/advancements/AdvancementHolder;Z)V"))
     private void extrasounds$changeAdvancementsTab(CallbackInfoReturnable<Boolean> cir, @Local AdvancementTab tab) {
         if (currentTab != tab && tab instanceof AdvancementTabAccessor accessor) {
-            ExtraSounds.MANAGER.playSound2D(accessor.getIcon().copy(), SoundType.DEFAULT);
+            ExtraSounds.MANAGER.playSoundUI(accessor.getIcon().copy(), SoundType.DEFAULT);
         }
     }
 

@@ -42,7 +42,7 @@ public final class EntitySoundHandler {
             return;
         }
 
-        ExtraSounds.MANAGER.playSound2D(sound, SoundType.EFFECTS);
+        ExtraSounds.MANAGER.playSoundUI(sound, SoundType.EFFECTS);
     }
 
     public void onDeath(Entity entity, BlockPos blockPos) {
@@ -56,6 +56,6 @@ public final class EntitySoundHandler {
             return;
         }
 
-        ExtraSounds.MANAGER.playSound2D(ExtraSounds.MANAGER.getSoundByItem(item, SoundType.DEFAULT), SoundType.ENTITY);
+        ExtraSounds.MANAGER.playSoundUI(ExtraSounds.MANAGER.getSoundByItem(item, SoundType.DEFAULT), SoundType.ENTITY);
     }
 }

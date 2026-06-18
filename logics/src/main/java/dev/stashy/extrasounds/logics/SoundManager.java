@@ -110,7 +110,7 @@ public final class SoundManager {
         switch (actionType) {
             case PICKUP_ALL -> {
                 if (hasCursor) {
-                    this.playSound2D(Sounds.ITEM_PICK_ALL, SoundType.GRAB);
+                    this.playSoundUI(Sounds.ITEM_PICK_ALL, SoundType.GRAB);
                 }
             }
             case THROW -> {
@@ -134,9 +134,9 @@ public final class SoundManager {
                  *  --> PICKUP
                  */
                 if (!hasSlot || hasCursor && ExtraSounds.MAIN.canItemsCombine(slotStack, cursorStack)) {
-                    this.playSound2D(cursorStack, SoundType.PLACE);
+                    this.playSoundUI(cursorStack, SoundType.PLACE);
                 } else {
-                    this.playSound2D(slotStack, SoundType.GRAB);
+                    this.playSoundUI(slotStack, SoundType.GRAB);
                 }
             }
         }
@@ -155,9 +155,9 @@ public final class SoundManager {
 
         ItemStack stack = player.getInventory().getItem(i).copy();
         if (stack.isEmpty()) {
-            this.playSound2D(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
+            this.playSoundUI(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
         } else {
-            this.playSound2D(stack, SoundType.HOTBAR);
+            this.playSoundUI(stack, SoundType.HOTBAR);
         }
     }
 
@@ -170,12 +170,12 @@ public final class SoundManager {
         this.blockInteract(this.getSoundByItem(item.getDefaultInstance(), SoundType.DEFAULT), position);
     }
 
-    public void playSound2D(VersionedSoundEventWrapper snd, SoundType type) {
-        this.playSound2D(snd, type.category, type.pitch);
+    public void playSoundUI(VersionedSoundEventWrapper snd, SoundType type) {
+        this.playSoundUI(snd, type.category, type.pitch);
     }
 
-    public void playSound2D(ItemStack item, SoundType type) {
-        this.playSound2D(this.getSoundByItem(item, type), type.category, type.pitch);
+    public void playSoundUI(ItemStack item, SoundType type) {
+        this.playSoundUI(this.getSoundByItem(item, type), type.category, type.pitch);
     }
 
     /**
@@ -192,17 +192,17 @@ public final class SoundManager {
         }
         long now = System.currentTimeMillis();
         if (now - this.lastPlayed > 10 || item != this.quickMovingItem) {
-            this.playSound2D(itemStack, SoundType.GRAB);
+            this.playSoundUI(itemStack, SoundType.GRAB);
             this.lastPlayed = now;
             this.quickMovingItem = item;
         }
     }
 
-    public void playSound2D(VersionedSoundEventWrapper snd, SoundSource category) {
-        this.playSound2D(snd, category, 1);
+    public void playSoundUI(VersionedSoundEventWrapper snd, SoundSource category) {
+        this.playSoundUI(snd, category, 1);
     }
 
-    public void playSound2D(VersionedSoundEventWrapper snd, SoundSource category, float pitch, SoundSource... optionalVolumes) {
+    public void playSoundUI(VersionedSoundEventWrapper snd, SoundSource category, float pitch, SoundSource... optionalVolumes) {
         float volume = 1;
         if (optionalVolumes != null) {
             for (SoundSource cat : optionalVolumes) {
@@ -289,7 +289,7 @@ public final class SoundManager {
         final float maxPitch = 2f;
         final float pitch = (!itemStack.isStackable()) ? maxPitch :
                 Mth.lerp((itemStack.getCount() - 1f) / (itemStack.getItem().getDefaultMaxStackSize() - 1f), maxPitch, 1.5f);
-        this.playSound2D(Sounds.ITEM_DROP, category, pitch, Mixers.ITEM_DROP);
+        this.playSoundUI(Sounds.ITEM_DROP, category, pitch, Mixers.ITEM_DROP);
     }
 
     public void stopSound(VersionedSoundEventWrapper e, SoundType type) {

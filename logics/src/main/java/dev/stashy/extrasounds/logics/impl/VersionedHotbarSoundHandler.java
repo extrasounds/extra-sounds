@@ -36,9 +36,9 @@ public abstract class VersionedHotbarSoundHandler {
 
     public void onSwap(ItemStack mainHand, ItemStack offHand) {
         if (!offHand.isEmpty()) {
-            ExtraSounds.MANAGER.playSound2D(offHand, SoundType.HOTBAR);
+            ExtraSounds.MANAGER.playSoundUI(offHand, SoundType.HOTBAR);
         } else if (!mainHand.isEmpty()) {
-            ExtraSounds.MANAGER.playSound2D(mainHand, SoundType.HOTBAR);
+            ExtraSounds.MANAGER.playSoundUI(mainHand, SoundType.HOTBAR);
         }
     }
 
@@ -57,7 +57,7 @@ public abstract class VersionedHotbarSoundHandler {
     }
 
     public void spectatorHotbar() {
-        ExtraSounds.MANAGER.playSound2D(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
+        ExtraSounds.MANAGER.playSoundUI(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
     }
 
     public void doItemPick(Item item) {
@@ -82,7 +82,7 @@ public abstract class VersionedHotbarSoundHandler {
         final Optional<Item> pickingItem = this.popPickingItem();
         pickingItem.ifPresent(item -> {
             if (!player.getMainHandItem().is(item)) {
-                ExtraSounds.MANAGER.playSound2D(item.getDefaultInstance(), SoundType.HOTBAR);
+                ExtraSounds.MANAGER.playSoundUI(item.getDefaultInstance(), SoundType.HOTBAR);
             }
         });
     }

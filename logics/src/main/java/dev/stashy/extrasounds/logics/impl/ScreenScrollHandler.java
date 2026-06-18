@@ -47,7 +47,7 @@ public final class ScreenScrollHandler {
         final long now = System.currentTimeMillis();
         final long timeDiff = now - this.lastScrollTime;
         if (timeDiff > 20 && (this.lastScrollPosX != x || this.lastScrollPosY != y)) {
-            ExtraSounds.MANAGER.playSound2D(
+            ExtraSounds.MANAGER.playSoundUI(
                     Sounds.SCREEN_SCROLL,
                     Mixers.SCREENS,
                     (1f - 0.1f + 0.1f * Math.min(1, 50f / timeDiff))
