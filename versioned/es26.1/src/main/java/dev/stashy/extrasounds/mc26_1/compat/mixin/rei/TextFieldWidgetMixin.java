@@ -1,5 +1,7 @@
 package dev.stashy.extrasounds.mc26_1.compat.mixin.rei;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import dev.stashy.extrasounds.logics.impl.TextFieldHandler;
 import me.shedaniel.rei.api.client.gui.widgets.TextField;
 import me.shedaniel.rei.impl.client.gui.widget.basewidgets.TextFieldWidget;
@@ -10,7 +12,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Pseudo
@@ -22,13 +23,10 @@ public abstract class TextFieldWidgetMixin implements TextField {
     @Shadow
     protected int cursorPos;
 
-    @Inject(method = "erase", at = @At("HEAD"))
-    private void extrasounds$eraseStrHead(int offset, CallbackInfo ci) {
+    @WrapMethod(method = "erase")
+    private void extrasounds$eraseStrHead(int offset, Operation<Void> original) {
         this.soundHandler.onCharErase(offset, this.getText().length(), this.cursorPos, this.cursorPos);
-    }
-
-    @Inject(method = "erase", at = @At("RETURN"))
-    private void extrasounds$eraseStrReturn(CallbackInfo ci) {
+        original.call(offset);
         this.soundHandler.setCursor(this.cursorPos);
     }
 
@@ -47,17 +45,13 @@ public abstract class TextFieldWidgetMixin implements TextField {
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/KeyboardHandler;setClipboard(Ljava/lang/String;)V",
                     shift = At.Shift.AFTER
-            ), require = 0
+            )
     )
     private void extrasounds$cutAction(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
-        try {
-            if (!input.isCut() || this.getSelectedText().isEmpty()) {
-                return;
-            }
-            this.soundHandler.onKey(TextFieldHandler.KeyType.CUT);
-            this.soundHandler.setCursor(this.cursorPos);
-        } catch (Exception ignored) {
+        if (!input.isCut() || this.getSelectedText().isEmpty()) {
+            return;
         }
+        this.soundHandler.onKey(TextFieldHandler.KeyType.CUT);
     }
 
     @Inject(
@@ -66,17 +60,18 @@ public abstract class TextFieldWidgetMixin implements TextField {
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/KeyboardHandler;getClipboard()Ljava/lang/String;",
                     shift = At.Shift.AFTER
-            ), require = 0
+            )
     )
     private void extrasounds$pasteAction(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
-        try {
-            if (!input.isPaste() || !this.soundHandler.isPosUpdated(this.cursorPos, this.cursorPos)) {
-                return;
-            }
-            this.soundHandler.onKey(TextFieldHandler.KeyType.PASTE);
-            this.soundHandler.setCursor(this.cursorPos);
-        } catch (Exception ignored) {
+        if (!input.isPaste() || !this.soundHandler.isPosUpdated(this.cursorPos, this.cursorPos)) {
+            return;
         }
+        this.soundHandler.onKey(TextFieldHandler.KeyType.PASTE);
+    }
+
+    @Inject(method = "keyPressed", at = @At("RETURN"))
+    private void extrasounds$storeCursorPos(CallbackInfoReturnable<Boolean> cir) {
+        this.soundHandler.setCursor(this.cursorPos);
     }
 
     @Inject(method = "keyPressed",

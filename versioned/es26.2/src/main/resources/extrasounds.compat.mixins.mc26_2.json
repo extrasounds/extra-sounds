@@ -5,6 +5,7 @@
   "plugin": "dev.stashy.extrasounds.mc26_2.compat.VersionedCompatMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "rei.TextFieldWidgetMixin"
   ],
   "injectors": {
     "defaultRequire": 1
