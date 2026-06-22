@@ -7,6 +7,7 @@ import dev.stashy.extrasounds.logics.debug.DebugUtils;
 import dev.stashy.extrasounds.logics.json.SoundEntrySerializer;
 import dev.stashy.extrasounds.logics.json.VersionedSoundSerializer;
 import dev.stashy.extrasounds.logics.runtime.VersionedClientResource;
+import dev.stashy.extrasounds.logics.runtime.VersionedPositionedSoundInstanceWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundWrapper;
 import dev.stashy.extrasounds.mapping.SoundDefinition;
@@ -19,6 +20,7 @@ import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
+import net.minecraft.client.sounds.Weighted;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -81,14 +83,14 @@ public final class SoundPackLoader {
             try {
                 namespace = container.getProvider().getMetadata().getId();
                 if (namespace == null || namespace.isBlank()) {
-                    throw new Exception("namespace is invalid: null or blank");
+                    throw new Exception("Namespace is invalid: null or blank");
                 }
             } catch (Exception ex) {
                 LOGGER.error("Failed to read mod metadata, ignoring.", ex);
                 return;
             }
             if (DebugUtils.DEBUG) {
-                LOGGER.info("registering generator with namespace '{}'", namespace);
+                LOGGER.info("Registering generator with namespace '{}'", namespace);
             }
             soundGenMappers.put(namespace, generator);
             generatorVer.add(CacheInfo.getModVersion(container.getProvider()));
@@ -157,14 +159,14 @@ public final class SoundPackLoader {
         final SoundEventRegistration fallbackSoundEntry = Sounds.aliased(SoundManager.FALLBACK_SOUND_EVENT);
         final Set<String> inSoundsJsonIds = new HashSet<>();
         final String fallbackSoundJson = GSON.toJson(fallbackSoundEntry);
+        boolean bUnregisteredFound = false;
         if (DebugUtils.SEARCH_UNDEF_SOUND) {
             try (InputStream stream = SoundPackLoader.class.getClassLoader().getResourceAsStream("assets/%s/%s".formatted(ExtraSounds.MODID, SOUNDS_JSON_ID.getPath()))) {
-                Objects.requireNonNull(stream);
-                final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                final BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(stream)));
                 final JsonObject jsonObject = JsonParser.parseString(reader.lines().collect(Collectors.joining())).getAsJsonObject();
                 inSoundsJsonIds.addAll(jsonObject.keySet());
             } catch (Exception ex) {
-                LOGGER.warn("cannot open ExtraSounds' {}.", SOUNDS_JSON_ID.getPath(), ex);
+                LOGGER.warn("Cannot open ExtraSounds' {}.", SOUNDS_JSON_ID.getPath(), ex);
             }
         }
 
@@ -197,9 +199,13 @@ public final class SoundPackLoader {
                 final boolean isFallbackSoundEntry = Objects.equals(GSON.toJson(definition.pickup), fallbackSoundJson);
                 final boolean notIncludeSoundsJson = !inSoundsJsonIds.contains(grabId.getPath());
                 if (isFallbackSoundEntry && notIncludeSoundsJson) {
-                    LOGGER.warn("unregistered sound was found: '{}'", itemId);
+                    LOGGER.warn("Unregistered sound was found: '{}'", itemId);
+                    bUnregisteredFound = true;
                 }
             }
+        }
+        if (DebugUtils.DEBUG && !bUnregisteredFound) {
+            LOGGER.info("Unregistered sounds were not found.");
         }
     }
 
@@ -264,6 +270,25 @@ public final class SoundPackLoader {
         if (!EXTERNAL_SOUND_EVENT.isEmpty()) {
             LOGGER.info("External sound packs were found; {} entries.", EXTERNAL_SOUND_EVENT.size());
             CUSTOM_SOUND_EVENT.putAll(EXTERNAL_SOUND_EVENT);
+        } else if (DebugUtils.DEBUG) {
+            LOGGER.info("External sound packs were not found.");
+        }
+    }
+
+    public static void checkSoundPlayable() {
+        if (DebugUtils.SEARCH_UNPLAYABLE_SOUND) {
+            boolean bFound = false;
+            for (Identifier id : CUSTOM_SOUND_EVENT.keySet()) {
+                VersionedPositionedSoundInstanceWrapper instance = VersionedPositionedSoundInstanceWrapper.createDummy(id);
+                Weighted<?> resolved = instance.resolve(Minecraft.getInstance().getSoundManager());
+                if (resolved == null) {
+                    LOGGER.warn("Unplayable sound was found: {}", id);
+                    bFound = true;
+                }
+            }
+            if (DebugUtils.DEBUG && !bFound) {
+                LOGGER.info("Unplayable sound was not found.");
+            }
         }
     }
 

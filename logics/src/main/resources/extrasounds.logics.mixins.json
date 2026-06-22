@@ -15,6 +15,7 @@
     "action.entity.MultiPlayerGameModeMixin",
     "action.item.LocalPlayerMixin",
     "chat.ChatComponentMixin",
+    "debug.SoundEngineMixin",
     "effect.ExtendLivingEntityMixin",
     "effect.LocalPlayerMixin",
     "hotbar.ClientPacketListenerMixin",

@@ -15,6 +15,7 @@ public class DebugUtils {
     public static final String DEBUG_PATH_VAR = "extrasounds.debug.path";
     public static final String NO_CACHE_VAR = "extrasounds.nocache";
     private static final String JVM_ARG_SEARCH_UNDEF_SND = "extrasounds.searchundef";
+    private static final String JVM_ARG_CHECK_PLAYABLE = "extrasounds.checkplayable";
 
     public static final boolean DEBUG = System.getProperties().containsKey(DEBUG_VAR)
             && System.getProperty(DEBUG_VAR).equals("true");
@@ -31,6 +32,13 @@ public class DebugUtils {
      */
     public static final boolean SEARCH_UNDEF_SOUND = System.getProperties().containsKey(JVM_ARG_SEARCH_UNDEF_SND)
             && System.getProperties().get(JVM_ARG_SEARCH_UNDEF_SND).equals("true");
+    /**
+     * For debugging.<br>
+     * When run with the JVM argument {@link DebugUtils#JVM_ARG_CHECK_PLAYABLE}, the log shows an ID that cannot play
+     * the {@link net.minecraft.sounds.SoundEvent}.
+     */
+    public static final boolean SEARCH_UNPLAYABLE_SOUND = System.getProperties().containsKey(JVM_ARG_CHECK_PLAYABLE)
+            && System.getProperties().get(JVM_ARG_CHECK_PLAYABLE).equals("true");
 
     public static void init() {
         if (!DEBUG) return;

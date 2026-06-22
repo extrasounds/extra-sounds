@@ -1,6 +1,7 @@
 package dev.stashy.extrasounds.logics.runtime;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
+import dev.stashy.extrasounds.logics.Mixers;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.resources.Identifier;
@@ -11,6 +12,10 @@ import java.util.Objects;
 
 public interface VersionedPositionedSoundInstanceWrapper extends SoundInstance {
     String METHOD_KEY_INIT = VersionedPositionedSoundInstanceWrapper.class.getCanonicalName() + "#init";
+
+    static VersionedPositionedSoundInstanceWrapper createDummy(Identifier id) {
+        return newInstance(id, Mixers.MASTER, 1, 1, false, 0, Attenuation.NONE, 0, 0, 0, true);
+    }
 
     static VersionedPositionedSoundInstanceWrapper newInstance(Identifier id, SoundSource category, float volume, float pitch, boolean repeat, int repeatDelay, SoundInstance.Attenuation attenuationType, double x, double y, double z, boolean relative) {
         Method init = ExtraSounds.CACHED_METHOD_MAP.getOrDefault(METHOD_KEY_INIT, null);
