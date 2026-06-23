@@ -9,6 +9,7 @@
     "access.LockableSlotAccessor",
 
     "action.item.ClientPlayerEntityMixin",
+    "debug.SoundEngineMixin",
     "hotbar.MinecraftClientMixin",
     "screens.AdvancementsScreenMixin",
     "screens.AdvancementTabMixin",

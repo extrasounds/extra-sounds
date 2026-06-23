@@ -31,7 +31,7 @@ public abstract class ReloadableResourceManagerImplMixin {
             return arg3;
         }
 
-        ExtraSounds.LOGGER.info("registering Runtime ResPack");
+        ExtraSounds.LOGGER.info("Registering Runtime ResPack");
         List<ResourcePack> modifiable = new LinkedList<>(arg3);
         modifiable.add(0, (ResourcePack) SoundPackLoader.EXTRA_SOUNDS_RESOURCE);
         return modifiable;
