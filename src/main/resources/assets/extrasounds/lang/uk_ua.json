@@ -1,0 +1,10 @@
+{
+  "soundCategory.extrasounds_master": "ExtraSounds",
+  "soundCategory.inventory": "Інвентар",
+  "soundCategory.action": "Дії предметів",
+  "soundCategory.chat": "Повідомлення в чаті",
+  "soundCategory.chat_mention": "Згадка в чаті",
+  "soundCategory.effects": "Ефекти/Зілля",
+  "soundCategory.scroll": "Прокручування",
+  "soundCategory.typing": "Введення тексту"
+}
