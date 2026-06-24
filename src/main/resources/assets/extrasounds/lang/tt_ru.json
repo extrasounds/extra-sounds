@@ -1,0 +1,12 @@
+{
+  "modmenu.summaryTranslation.extrasounds": "Күбрәк Minecraft интерфейсының тавышларын өсти.",
+  "modmenu.descriptionTranslation.extrasounds": "Күбрәк Minecraft интерфейсының тавышларын өсти.",
+  "soundCategory.extrasounds_master": "ExtraSounds",
+  "soundCategory.inventory": "Инвентарь",
+  "soundCategory.action": "Предмет белән эш итү",
+  "soundCategory.chat": "Чаи хәбәрләре",
+  "soundCategory.chat_mention": "Чаттагы исемне телгә алу",
+  "soundCategory.effects": "Тәэсирләр/Эчемлекләр",
+  "soundCategory.scroll": "Әйләнү",
+  "soundCategory.typing": "Басу"
+}
