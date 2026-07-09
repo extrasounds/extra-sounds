@@ -2,20 +2,25 @@ package dev.stashy.extrasounds.logics.entry;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.SoundManager;
+import dev.stashy.extrasounds.logics.mixin.access.MobBucketItemAccessor;
+import dev.stashy.extrasounds.logics.mixin.access.SolidBucketItemAccessor;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.mapping.SoundDefinition;
 import dev.stashy.extrasounds.mapping.SoundGenerator;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
+import net.minecraft.client.resources.sounds.Sound;
+import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import static dev.stashy.extrasounds.sounds.Categories.*;
-import static dev.stashy.extrasounds.sounds.Sounds.aliased;
-import static dev.stashy.extrasounds.sounds.Sounds.event;
+import static dev.stashy.extrasounds.sounds.Sounds.*;
+import static dev.stashy.extrasounds.sounds.Sounds.single;
 
 public abstract class BaseVanillaGenerator {
     private static final SoundDefinition DEFAULT_SOUND = SoundDefinition.of(aliased(SoundManager.FALLBACK_SOUND_EVENT));
@@ -40,7 +45,7 @@ public abstract class BaseVanillaGenerator {
 
     private boolean isBrickItem(Item item) {
         final String idPath = this.getItemIdPath(item);
-        return item == Items.BRICK || idPath.endsWith("pottery_sherd") || idPath.startsWith("pottery_shard");
+        return item == Items.BRICK || idPath.endsWith("_pottery_sherd");
     }
 
     private boolean isGearGoldenItem(Item item) {
@@ -70,6 +75,18 @@ public abstract class BaseVanillaGenerator {
                 item == Items.BEETROOT_SOUP || item == Items.MUSHROOM_STEW;
     }
 
+    private boolean isPotionItem(Item item) {
+        return item instanceof PotionItem || item instanceof ExperienceBottleItem || item == Items.OMINOUS_BOTTLE;
+    }
+
+    private boolean hasMaterial(Item item) {
+        final String path = this.getItemIdPath(item);
+        return path.endsWith("_sword") || path.endsWith("_pickaxe") || path.endsWith("_spear") ||
+                path.endsWith("_helmet") || path.endsWith("_chestplate") || path.endsWith("_leggings") || path.endsWith("_boots") ||
+                path.endsWith("_horse_armor") || path.endsWith("_nautilus_armor") || path.equals("wolf_armor") ||
+                path.endsWith("_axe") || path.endsWith("_hoe") || path.endsWith("_shovel");
+    }
+
     protected SoundDefinition generateFromBlock(Block block) {
         final BlockState blockState = block.defaultBlockState();
         final Identifier blockSoundId = Objects.requireNonNull(VersionedSoundEventWrapper.fromBlockState(blockState)).getId();
@@ -91,8 +108,44 @@ public abstract class BaseVanillaGenerator {
         return SoundDefinition.of(event(blockSoundId, 1.3f));
     }
 
+    protected SoundDefinition generateWithMatString(String str) {
+        if (str.contains("wooden_")) {
+            return SoundDefinition.of(aliased(Gear.WOOD));
+        } else if (str.contains("stone_")) {
+            return SoundDefinition.of(aliased(Gear.STONE));
+        } else if (str.contains("leather_")) {
+            return SoundDefinition.of(aliased(Gear.LEATHER));
+        } else if (str.contains("copper_")) {
+            return SoundDefinition.of(aliased(Gear.COPPER));
+        } else if (str.contains("iron_")) {
+            return SoundDefinition.of(aliased(Gear.IRON));
+        } else if (str.contains("chainmail_")) {
+            return SoundDefinition.of(aliased(Gear.CHAIN));
+        } else if (str.contains("golden_")) {
+            return SoundDefinition.of(aliased(Gear.GOLDEN));
+        } else if (str.contains("diamond_")) {
+            return SoundDefinition.of(aliased(Gear.DIAMOND));
+        } else if (str.contains("netherite_")) {
+            return SoundDefinition.of(aliased(Gear.NETHERITE));
+        } else if (str.contains("turtle_")) {
+            return SoundDefinition.of(aliased(Gear.TURTLE));
+        } else if (str.contains("wolf_")) {
+            return SoundDefinition.of(aliased(Gear.ARMADILLO));
+        }
+        return SoundDefinition.of(aliased(Gear.GENERIC));
+    }
+
     protected SoundDefinition generalSounds(Item item) {
-        if (item instanceof BoatItem) {
+        if (item instanceof BlockItem blockItem) {
+            final Block block = blockItem.getBlock();
+            final Identifier blockSoundId = block.defaultBlockState().getSoundType().getPlaceSound().location();
+            if (block instanceof RotatedPillarBlock pillarBlock && pillarBlock.defaultBlockState().getSoundType().equals(SoundType.FROGLIGHT)) {
+                return SoundDefinition.of(event(blockSoundId, 0.75f));
+            } else if (blockItem instanceof SolidBucketItemAccessor bucketItem) {
+                return SoundDefinition.of(event(bucketItem.extrasounds$access_getPlaceSound().location(), 1.3f));
+            }
+            return this.generateFromBlock(block);
+        } else if (item instanceof BoatItem) {
             return SoundDefinition.of(aliased(BOAT));
         } else if (item instanceof MinecartItem) {
             return SoundDefinition.of(aliased(MINECART));
@@ -122,8 +175,30 @@ public abstract class BaseVanillaGenerator {
             return SoundDefinition.of(aliased(BUNDLES));
         } else if (item instanceof EggItem) {
             return SoundDefinition.of(aliased(EGG));
+        } else if (item instanceof final BucketItem bucketItem) {
+            final SoundEventRegistration soundEntry = bucketItem.getContent().getPickupSound()
+                    .map(sound -> event(sound.location()))
+                    .or(() -> {
+                        if (bucketItem instanceof MobBucketItemAccessor accessor) {
+                            return Optional.of(event(accessor.extrasounds$access_getEmptySound().location(), 0.5f));
+                        } else {
+                            return Optional.empty();
+                        }
+                    })
+                    .orElse(aliased(METAL));
+            return SoundDefinition.of(soundEntry);
+        } else if (this.isPotionItem(item)) {
+            return SoundDefinition.of(aliased(POTION));
+        } else if (item instanceof InstrumentItem) {
+            return SoundDefinition.of(single(LOOSE_METAL.getId(), 0.6f, 0.9f, Sound.Type.SOUND_EVENT));
+        } else if (item instanceof SmithingTemplateItem) {
+            return SoundDefinition.of(aliased(LOOSE_METAL));
+        } else if (item instanceof DiscFragmentItem) {
+            return SoundDefinition.of(single(METAL_BITS.getId(), 0.7f, 0.85f, Sound.Type.SOUND_EVENT));
         } else if (item instanceof SpyglassItem) {
-            return SoundDefinition.of(aliased(Gear.IRON));
+            return SoundDefinition.of(aliased(Gear.COPPER));
+        } else if (this.hasMaterial(item)) {
+            return generateWithMatString(getItemIdPath(item));
         }
 
         return DEFAULT_SOUND;

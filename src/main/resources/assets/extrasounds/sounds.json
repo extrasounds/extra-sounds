@@ -1596,28 +1596,6 @@
       }
     ]
   },
-  "item.pickup.minecraft.powder_snow_bucket": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "minecraft:item.bucket.empty_powder_snow",
-        "pitch": 1.7,
-        "type": "event",
-        "volume": 2
-      }
-    ]
-  },
-  "item.pickup.minecraft.sulfur_cube_bucket": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "minecraft:item.bucket.empty_sulfur_cube",
-        "volume": 0.5,
-        "pitch": 2,
-        "type": "event"
-      }
-    ]
-  },
   "item.pickup.minecraft.prismarine_crystals": {
     "replace": true,
     "sounds": [

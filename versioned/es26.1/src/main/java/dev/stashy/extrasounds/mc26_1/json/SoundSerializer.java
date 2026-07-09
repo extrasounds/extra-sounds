@@ -6,19 +6,29 @@ import com.google.gson.JsonSerializationContext;
 import dev.stashy.extrasounds.logics.json.VersionedSoundSerializer;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundWrapper;
 import net.minecraft.client.resources.sounds.Sound;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.SampledFloat;
 
 import java.lang.reflect.Type;
 
 public class SoundSerializer extends VersionedSoundSerializer {
+    private static final RandomSource MC_RANDOM = RandomSource.create();
+
     @Override
     public JsonElement serialize(VersionedSoundWrapper src, Type type, JsonSerializationContext jsonSerializationContext) {
         JsonObject obj = new JsonObject();
         obj.addProperty("name", src.getIdentifierImpl().toString());
-        if (src.getVolumeImpl() instanceof Float value && value != 1) {
-            obj.addProperty("volume", value);
+        if (src.getVolumeImpl() instanceof SampledFloat value) {
+            final float sampled = value.sample(MC_RANDOM);
+            if (sampled != 1) {
+                obj.addProperty("volume", sampled);
+            }
         }
-        if (src.getPitchImpl() instanceof Float value && value != 1) {
-            obj.addProperty("pitch", value);
+        if (src.getPitchImpl() instanceof SampledFloat value) {
+            final float sampled = value.sample(MC_RANDOM);
+            if (sampled != 1) {
+                obj.addProperty("pitch", sampled);
+            }
         }
         if (src.getWeightImpl() != 1) {
             obj.addProperty("weight", src.getWeightImpl());

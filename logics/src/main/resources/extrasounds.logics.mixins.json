@@ -9,6 +9,8 @@
     "access.CustomCreativeSlotAccessor",
     "access.FlowerPotBlockAccessor",
     "access.ItemPickerMenuAccessor",
+    "access.MobBucketItemAccessor",
+    "access.SolidBucketItemAccessor",
 
     "action.block.MultiPlayerGameModeMixin",
     "action.entity.LivingEntityMixin",
