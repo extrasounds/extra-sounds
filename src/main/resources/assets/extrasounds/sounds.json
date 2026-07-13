@@ -699,6 +699,26 @@
       }
     ]
   },
+  "action.jukebox.eject": {
+    "sounds": [
+      {
+        "name": "minecraft:random/pop",
+        "pitch": 0.3
+      },
+      {
+        "name": "minecraft:random/pop",
+        "pitch": 0.4
+      },
+      {
+        "name": "minecraft:random/pop",
+        "pitch": 0.45
+      },
+      {
+        "name": "minecraft:random/pop",
+        "pitch": 0.5
+      }
+    ]
+  },
   "item.clone": {
     "sounds": [
       {
