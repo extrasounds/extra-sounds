@@ -109,6 +109,10 @@ public abstract class AbstractInteractionHandler {
                 // Place into pot
                 ExtraSounds.MANAGER.blockInteract(this.currentHandStack.getItem(), blockPos);
             }
+        } else if (this.block == Blocks.JUKEBOX && this.blockState.hasProperty(JukeboxBlock.HAS_RECORD) && bCanInteract) {
+            if (this.blockState.getValue(JukeboxBlock.HAS_RECORD)) {
+                ExtraSounds.MANAGER.blockInteract(Sounds.Actions.JUKEBOX_EJECT, blockPos);
+            }
         }
     }
 
