@@ -72,6 +72,7 @@ When you find a bug or compatibility problem, [you can raise an issue](https://g
   - Daylight detector
   - Redstone Ores
   - Armor stand
+  - Jukebox
 * Mod integrations
   - [RoughlyEnoughItems](https://modrinth.com/mod/rei)
   - [MidnightControls](https://modrinth.com/mod/midnightcontrols)
