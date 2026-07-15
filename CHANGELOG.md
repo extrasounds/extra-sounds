@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.0.1-legacy+1.21.11+1.14-build.3] - 2026-07-15
+### ✨ Added
+
+* New sounds:
+  - Ejecting Music Disc from Jukebox
+
+### 🔧 Fixed
+
+* Outdated Mod metadata.
+
+### 👷 Technical
+
+* New Debug option: `-Dextrasounds.checkplayable`
+  - To search unplayable sounds.
+    Saves you the trouble of clicking through ItemStacks one by one to check.
+
 ## [3.0.0-legacy+1.21.11+1.14-build.2] - 2026-06-17
 ### ↻ Updated
 
