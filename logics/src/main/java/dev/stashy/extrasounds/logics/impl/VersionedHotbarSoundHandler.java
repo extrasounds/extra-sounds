@@ -52,8 +52,13 @@ public abstract class VersionedHotbarSoundHandler {
             return;
         }
 
-        final int target = (newSlot == FORCE_HOTBAR_CHANGE) ? this.getPlayerInventorySlot(player) : newSlot;
-        ExtraSounds.MANAGER.hotbar(target);
+        final int selectedSlot = this.getPlayerInventorySlot(player);
+
+        if (newSlot == FORCE_HOTBAR_CHANGE) {
+            ExtraSounds.MANAGER.hotbar(selectedSlot);
+        } else if (newSlot != selectedSlot) {
+            ExtraSounds.MANAGER.hotbar(newSlot);
+        }
     }
 
     public void spectatorHotbar() {
