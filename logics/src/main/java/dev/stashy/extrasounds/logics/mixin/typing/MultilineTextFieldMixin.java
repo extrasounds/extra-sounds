@@ -1,5 +1,7 @@
 package dev.stashy.extrasounds.logics.mixin.typing;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import dev.stashy.extrasounds.logics.impl.TextFieldHandler;
 import net.minecraft.client.gui.components.MultilineTextField;
 import net.minecraft.client.input.KeyEvent;
@@ -34,8 +36,8 @@ public abstract class MultilineTextFieldMixin {
         this.soundHandler.onCharErase(offset, this.value.length(), this.cursor, this.selectCursor);
     }
 
-    @Inject(method = "insertText(Ljava/lang/String;)V", at = @At("HEAD"))
-    private void extrasounds$replaceSelection(String replacement, CallbackInfo ci) {
+    @WrapMethod(method = "insertText(Ljava/lang/String;)V")
+    private void extrasounds$replaceSelection(String replacement, Operation<Void> original) {
         if (!replacement.isEmpty()) {
             if (this.bPasteAction) {
                 this.soundHandler.onKey(TextFieldHandler.KeyType.PASTE);
@@ -49,7 +51,10 @@ public abstract class MultilineTextFieldMixin {
             this.soundHandler.onKey(TextFieldHandler.KeyType.CUT);
             this.bCutAction = false;
         }
-        this.soundHandler.setCursor(this.selectCursor);
+
+        original.call(replacement);
+
+        this.soundHandler.setCursor(this.cursor);
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"))
