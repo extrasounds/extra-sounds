@@ -6,8 +6,8 @@
 
 [![Requires Fabric API]][Fabric API]
 
-[![Latest build on GitHub]](https://github.com/extrasounds/extra-sounds/releases)
-[![Legacy build on GitHub]](https://github.com/extrasounds/extra-sounds/releases)
+[![Latest build on GitHub]](https://github.com/extrasounds/extra-sounds/releases?q=v3)
+[![Legacy build on GitHub]](https://github.com/extrasounds/extra-sounds/releases?q=legacy)
 
 **[Modrinth](https://modrinth.com/mod/extrasounds)**
 
@@ -23,6 +23,7 @@ Works with the following Minecraft versions:
 
 * Minecraft 26 family:
   - 26.1 - 26.1.2
+  - 26.2
 
 When you find a bug or compatibility problem, [you can raise an issue](https://github.com/extrasounds/extra-sounds/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml).
 
@@ -54,9 +55,10 @@ Support for Minecraft 1.x is available on [the legacy branch](https://github.com
   - Daylight detector
   - Redstone Ores
   - Armor stand
+  - Jukebox
 * Mod integrations
+  - [RoughlyEnoughItems](https://modrinth.com/mod/rei)
   - [MidnightControls](https://modrinth.com/mod/midnightcontrols)
-<!--  - [RoughlyEnoughItems](https://modrinth.com/mod/rei) -->
 * [Mod API for developers](https://github.com/extrasounds/extra-sounds/wiki/Custom-sounds-for-mod-developers)
 * [Every sound is configurable/registerable via resource packs](https://github.com/extrasounds/extra-sounds/wiki/Custom-sounds-for-resource-pack-creators)
 

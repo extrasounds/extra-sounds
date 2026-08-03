@@ -1,5 +1,34 @@
 # Changelog
 
+## [3.0.1-26.2-build.1] - 2026-08-03
+### ✨ Added
+
+* New sounds:
+  - Sulfur spikes/blocks
+  - Cinnabar blocks
+  - Bucket of Sulfur Cube
+  - Ejecting Music Disc from Jukebox
+
+### 🔧 Fixed
+
+* Outdated Mod metadata.
+* The sound JSON serializer
+  — it was using an old serializer designed for versions lower than MC1.19 (ノ_<)
+* Typing sound
+* Hotbar slot sound
+
+### 👷 Technical
+
+* New Debug option: `-Dextrasounds.checkplayable`
+  - To search unplayable sounds.
+    Saves you the trouble of clicking through ItemStacks one by one to check.
+
+### ↻ Updated
+
+* Mod integrations:
+  - [RoughlyEnoughItems](https://modrinth.com/mod/rei)
+  - [MidnightControls](https://modrinth.com/mod/midnightcontrols)
+
 ## [3.0.0+26.1.2-build.1] - 2026-06-14
 Bumped to v3 officially🎉
 
