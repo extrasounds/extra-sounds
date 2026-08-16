@@ -20,7 +20,6 @@ import java.util.Optional;
 
 import static dev.stashy.extrasounds.sounds.Categories.*;
 import static dev.stashy.extrasounds.sounds.Sounds.*;
-import static dev.stashy.extrasounds.sounds.Sounds.single;
 
 public abstract class BaseVanillaGenerator {
     private static final SoundDefinition DEFAULT_SOUND = SoundDefinition.of(aliased(SoundManager.FALLBACK_SOUND_EVENT));

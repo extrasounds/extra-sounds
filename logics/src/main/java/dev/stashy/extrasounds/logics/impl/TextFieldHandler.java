@@ -1,8 +1,12 @@
 package dev.stashy.extrasounds.logics.impl;
 
 import dev.stashy.extrasounds.logics.ExtraSounds;
+import dev.stashy.extrasounds.logics.debug.DebugUtils;
 import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
+import me.lonefelidae16.groominglib.api.PrefixableMessageFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Helper class for managing {@link net.minecraft.client.gui.components.EditBox} and its inherited class.
@@ -16,6 +20,11 @@ public final class TextFieldHandler {
         RETURN,
         CURSOR
     }
+
+    private static final Logger LOGGER = LogManager.getLogger(
+            TextFieldHandler.class,
+            new PrefixableMessageFactory("%s/%s".formatted(ExtraSounds.class.getSimpleName(), TextFieldHandler.class.getSimpleName()))
+    );
 
     /**
      * The start position in the text.
@@ -88,6 +97,18 @@ public final class TextFieldHandler {
                     new IllegalArgumentException("'type' must be non-null.")
             );
             return;
+        }
+
+        if (DebugUtils.DEBUG) {
+            StackWalker.getInstance().walk(frames -> {
+                frames.dropWhile(frame -> frame.getClassName().equals(TextFieldHandler.class.getCanonicalName())).findFirst()
+                        .ifPresentOrElse(frame -> {
+                            LOGGER.info("Caller class: {}, keyType: {}", frame.getClassName(), type.name());
+                        }, () -> {
+                            LOGGER.info("Caller class: <UNKNOWN>, keyType: {}", type.name());
+                        });
+                return null;
+            });
         }
 
         switch (type) {

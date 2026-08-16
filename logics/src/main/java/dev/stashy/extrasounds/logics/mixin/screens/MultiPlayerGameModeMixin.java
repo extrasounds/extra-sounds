@@ -34,7 +34,7 @@ public abstract class MultiPlayerGameModeMixin {
             case THROW -> SlotActionType.THROW;
             case PICKUP_ALL -> SlotActionType.PICKUP_ALL;
             case CLONE -> SlotActionType.CLONE;
-            case QUICK_CRAFT ->  SlotActionType.QUICK_CRAFT;
+            case QUICK_CRAFT -> SlotActionType.QUICK_CRAFT;
         };
         ExtraSounds.MANAGER.handleInventorySlot(player, new InventoryClickState(slot, slotIndex, screenHandler.getCarried(), actionType, button, InventoryTabType.SURVIVAL));
     }

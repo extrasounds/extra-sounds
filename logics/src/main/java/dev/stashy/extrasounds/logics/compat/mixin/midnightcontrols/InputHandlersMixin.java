@@ -4,7 +4,6 @@ import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.impl.VersionedHotbarSoundHandler;
 import eu.midnightdust.midnightcontrols.client.controller.InputHandlers;
 import eu.midnightdust.midnightcontrols.client.controller.PressAction;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;

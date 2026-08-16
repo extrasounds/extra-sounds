@@ -217,7 +217,7 @@ public final class SoundManager {
         if (volume == 0 || this.isMuted(category)) {
             // skip reflection when volume is zero.
             if (DebugUtils.DEBUG) {
-                this.logZeroVolume(snd);
+                LOGGER.warn("Sound '{}' was suppressed: zero volume.", snd.getId());
             }
             return;
         }
@@ -242,10 +242,6 @@ public final class SoundManager {
 
     private boolean isMuted(SoundSource category) {
         return ExtraSounds.MAIN.getSoundVolume(category) == 0;
-    }
-
-    private void logZeroVolume(VersionedSoundEventWrapper snd) {
-        LOGGER.warn("Sound '{}' was suppressed: zero volume.", snd.getId());
     }
 
     private void playSound(SoundInstance instance) {
@@ -312,8 +308,7 @@ public final class SoundManager {
 
     private void logMissingSoundIds(Identifier... ids) {
         for (Identifier id : ids) {
-            if (!this.missingSoundId.contains(id)) {
-                this.missingSoundId.add(id);
+            if (this.missingSoundId.add(id)) {
                 LOGGER.error("Sound '{}' cannot be found in packs.", id);
             }
         }

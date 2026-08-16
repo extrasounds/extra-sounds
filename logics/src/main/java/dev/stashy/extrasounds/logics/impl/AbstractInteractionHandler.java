@@ -119,18 +119,22 @@ public abstract class AbstractInteractionHandler {
     public final void onInteractEntityAt(ItemStack stackInHand, Entity entity, EntityHitResult hitResult, Vec3 target) {
         final ItemStack currentStack = stackInHand.copy();
         if (entity instanceof ArmorStand armorStandEntity) {
-            final EquipmentSlot slotFromPosition = this.getSlotFromPosition(armorStandEntity, target);
-            final EquipmentSlot slotPreferred = this.getPreferredSlot(armorStandEntity, currentStack);
-            if (!armorStandEntity.hasItemInSlot(slotFromPosition) && !armorStandEntity.hasItemInSlot(slotPreferred)) {
-                return;
-            }
+            try {
+                final EquipmentSlot slotFromPosition = this.getSlotFromPosition(armorStandEntity, target);
+                final EquipmentSlot slotPreferred = this.getPreferredSlot(armorStandEntity, currentStack);
+                if (!armorStandEntity.hasItemInSlot(slotFromPosition) && !armorStandEntity.hasItemInSlot(slotPreferred)) {
+                    return;
+                }
 
-            final ItemStack equipped = armorStandEntity.getItemBySlot(slotFromPosition).copy();
-            final ItemStack preferred = armorStandEntity.getItemBySlot(slotPreferred).copy();
-            if (this.shouldSoundArmorStandEquipped(currentStack, equipped)) {
-                ExtraSounds.MANAGER.blockInteract(equipped.getItem(), this.getBlockPos(hitResult.getLocation()));
-            } else if (this.shouldSoundArmorStandPreferred(currentStack, preferred)) {
-                ExtraSounds.MANAGER.blockInteract(preferred.getItem(), this.getBlockPos(hitResult.getLocation()));
+                final ItemStack equipped = armorStandEntity.getItemBySlot(slotFromPosition).copy();
+                final ItemStack preferred = armorStandEntity.getItemBySlot(slotPreferred).copy();
+                if (this.shouldSoundArmorStandEquipped(currentStack, equipped)) {
+                    ExtraSounds.MANAGER.blockInteract(equipped.getItem(), this.getBlockPos(hitResult.getLocation()));
+                } else if (this.shouldSoundArmorStandPreferred(currentStack, preferred)) {
+                    ExtraSounds.MANAGER.blockInteract(preferred.getItem(), this.getBlockPos(hitResult.getLocation()));
+                }
+            } catch (Exception ex) {
+                ExtraSounds.LOGGER.error("Failed to interact entity.", ex);
             }
         }
     }

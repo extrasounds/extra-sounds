@@ -28,6 +28,7 @@ public abstract class MultilineTextFieldMixin {
     private int selectCursor;
     @Shadow
     private String value;
+
     @Shadow
     public abstract boolean hasSelection();
 

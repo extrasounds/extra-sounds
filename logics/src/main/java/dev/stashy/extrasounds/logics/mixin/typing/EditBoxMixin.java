@@ -2,6 +2,7 @@ package dev.stashy.extrasounds.logics.mixin.typing;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.stashy.extrasounds.logics.impl.TextFieldHandler;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
@@ -43,7 +44,7 @@ public abstract class EditBoxMixin {
     public abstract String getValue();
 
     @WrapMethod(method = "deleteText")
-    private void extrasounds$eraseStrHead(int offset, boolean shiftDown, Operation<Void> original) {
+    private void extrasounds$eraseStr(int offset, boolean shiftDown, Operation<Void> original) {
         this.soundHandler.onCharErase(offset, this.getValue().length(), this.cursorPos, this.highlightPos);
         original.call(offset, shiftDown);
         this.soundHandler.setCursor(this.highlightPos);
@@ -74,19 +75,18 @@ public abstract class EditBoxMixin {
         this.soundHandler.setCursor(this.highlightPos);
     }
 
-    @Inject(
+    @WrapOperation(
             method = "keyPressed",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/KeyboardHandler;getClipboard()Ljava/lang/String;",
-                    shift = At.Shift.AFTER
+                    target = "Lnet/minecraft/client/gui/components/EditBox;insertText(Ljava/lang/String;)V"
             )
     )
-    private void extrasounds$pasteAction(KeyEvent keyInput, CallbackInfoReturnable<Boolean> cir) {
-        if (!keyInput.isPaste() || !this.soundHandler.isPosUpdated(this.cursorPos, this.highlightPos)) {
-            return;
+    private void extrasounds$pasteAction(EditBox instance, String clipboard, Operation<Void> original, KeyEvent keyInput) {
+        original.call(instance, clipboard);
+        if (keyInput.isPaste() && !clipboard.isEmpty()) {
+            this.soundHandler.onKey(TextFieldHandler.KeyType.PASTE);
         }
-        this.soundHandler.onKey(TextFieldHandler.KeyType.PASTE);
         this.soundHandler.setCursor(this.highlightPos);
     }
 
