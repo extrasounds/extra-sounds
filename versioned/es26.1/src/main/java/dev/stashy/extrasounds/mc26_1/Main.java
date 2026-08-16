@@ -2,6 +2,7 @@ package dev.stashy.extrasounds.mc26_1;
 
 import dev.stashy.extrasounds.logics.VersionedMain;
 import dev.stashy.extrasounds.logics.impl.state.InventoryClickState;
+import dev.stashy.extrasounds.logics.impl.state.SlotActionType;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.sounds.SoundType;
 import net.minecraft.client.Minecraft;
@@ -45,17 +46,18 @@ public final class Main extends VersionedMain {
     @Override
     public boolean shouldIgnoreItemSound(Item cursorItem, Item slotItem, InventoryClickState state) {
         if (cursorItem instanceof BundleItem) {
-            if ((!state.isRMB && slotItem != Items.AIR) || (state.isRMB && slotItem == Items.AIR)) {
-                return true;
-            }
+            return switch (state.actionType) {
+                case PICKUP -> (!state.isRMB && slotItem != Items.AIR) || (state.isRMB && slotItem == Items.AIR);
+                case QUICK_CRAFT -> state.isRMB;
+                default -> false;
+            };
         }
-        if (slotItem instanceof BundleItem) {
+        if (slotItem instanceof BundleItem && state.actionType == SlotActionType.PICKUP) {
             if (state.isCreativeSlot()) {
                 return false;
             }
             return (state.isRMB && cursorItem == Items.AIR) || (!state.isRMB && cursorItem != Items.AIR);
         }
-
         return false;
     }
 

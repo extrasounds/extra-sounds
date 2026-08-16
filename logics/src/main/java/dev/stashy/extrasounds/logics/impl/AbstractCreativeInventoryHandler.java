@@ -76,7 +76,7 @@ public abstract class AbstractCreativeInventoryHandler {
                     // Left Mouse Clicked on the same slot in CreativeInventory tab except Hotbar.
                     ExtraSounds.MANAGER.playSoundUI(state.cursorStack, SoundType.DEFAULT);
                     return;
-                } else if (slotId >= 0) {
+                } else if (slotId >= 0 && actionType != SlotActionType.CLONE) {
                     // Clicking on another slot will delete or decrement the cursor stack.
                     ExtraSounds.MANAGER.playSoundUI(Sounds.ITEM_DELETE_PARTIAL, SoundType.DEFAULT);
                     return;
