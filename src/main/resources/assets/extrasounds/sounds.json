@@ -58,6 +58,16 @@
       "extrasounds:item/arrow/pickup6"
     ]
   },
+  "action.cake.bite": {
+    "sounds": [
+      "extrasounds:entity/generic/bite1",
+      "extrasounds:entity/generic/bite2",
+      "extrasounds:entity/generic/bite3",
+      "extrasounds:entity/generic/bite4",
+      "extrasounds:entity/generic/bite5",
+      "extrasounds:entity/generic/bite6"
+    ]
+  },
   "item.pickup.minecraft.air": {
     "replace": true,
     "sounds": [

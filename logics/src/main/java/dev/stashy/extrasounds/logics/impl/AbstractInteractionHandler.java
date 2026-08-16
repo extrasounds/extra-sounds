@@ -6,12 +6,14 @@ import dev.stashy.extrasounds.logics.mixin.access.FlowerPotBlockAccessor;
 import dev.stashy.extrasounds.sounds.Sounds;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
@@ -22,6 +24,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Optional;
 
 public abstract class AbstractInteractionHandler {
+    protected Level world;
     protected BlockState blockState;
     protected BlockEntity blockEntity;
     protected Block block;
@@ -51,7 +54,8 @@ public abstract class AbstractInteractionHandler {
         return !player.isCrouching() || (player.isCrouching() && this.mainHandStack.isEmpty() && this.offHandStack.isEmpty());
     }
 
-    public final void setInteractionState(BlockState blockState, BlockEntity blockEntity, ItemStack stackInHand, ItemStack mainHandStack, ItemStack offHandStack) {
+    public final void setInteractionState(Level world, BlockState blockState, BlockEntity blockEntity, ItemStack stackInHand, ItemStack mainHandStack, ItemStack offHandStack) {
+        this.world = world;
         this.blockState = blockState;
         this.blockEntity = blockEntity;
         this.block = blockState.getBlock();
@@ -110,8 +114,29 @@ public abstract class AbstractInteractionHandler {
                 ExtraSounds.MANAGER.blockInteract(this.currentHandStack.getItem(), blockPos);
             }
         } else if (this.block == Blocks.JUKEBOX && this.blockState.hasProperty(JukeboxBlock.HAS_RECORD) && bCanInteract) {
+            // Jukebox
             if (this.blockState.getValue(JukeboxBlock.HAS_RECORD)) {
                 ExtraSounds.MANAGER.blockInteract(Sounds.Actions.JUKEBOX_EJECT, blockPos);
+            }
+        } else if (this.block == Blocks.CAKE && this.blockState.hasProperty(CakeBlock.BITES) && bCanInteract) {
+            // Cake
+            final int bites = this.blockState.getValue(CakeBlock.BITES);
+            final BlockState afterState = this.world.getBlockState(blockPos);
+            final int afterBites;
+            if (afterState.is(BlockTags.CANDLE_CAKES)) {
+                afterBites = 0;
+            } else if (afterState.hasProperty(CakeBlock.BITES)) {
+                afterBites = afterState.getValue(CakeBlock.BITES);
+            } else {
+                afterBites = CakeBlock.MAX_BITES + 1;
+            }
+            if (bites < afterBites) {
+                ExtraSounds.MANAGER.blockInteract(Sounds.Actions.CAKE_BITE, blockPos);
+            }
+        } else if (this.blockState.is(BlockTags.CANDLE_CAKES) && bCanInteract) {
+            // Candle Cake
+            if (this.world.getBlockState(blockPos).getBlock() == Blocks.CAKE) {
+                ExtraSounds.MANAGER.blockInteract(Sounds.Actions.CAKE_BITE, blockPos);
             }
         }
     }

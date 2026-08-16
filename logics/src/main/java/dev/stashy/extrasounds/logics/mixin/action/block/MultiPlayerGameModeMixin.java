@@ -112,7 +112,7 @@ public abstract class MultiPlayerGameModeMixin {
 
         final BlockPos blockPos = hitResult.getBlockPos();
         this.soundHandler.setInteractionState(
-                world.getBlockState(blockPos), world.getBlockEntity(blockPos),
+                world, world.getBlockState(blockPos), world.getBlockEntity(blockPos),
                 player.getItemInHand(hand), player.getMainHandItem(), player.getOffhandItem()
         );
     }

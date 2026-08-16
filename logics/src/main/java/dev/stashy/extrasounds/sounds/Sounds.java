@@ -50,6 +50,7 @@ public final class Sounds {
         public static final VersionedSoundEventWrapper REDSTONE_COMPONENT_OFF = ExtraSounds.createEvent("action.redstone_component.off");
         public static final VersionedSoundEventWrapper REDSTONE_WIRE_CHANGE = ExtraSounds.createEvent("action.redstone_wire.change");
         public static final VersionedSoundEventWrapper JUKEBOX_EJECT = ExtraSounds.createEvent("action.jukebox.eject");
+        public static final VersionedSoundEventWrapper CAKE_BITE = ExtraSounds.createEvent("action.cake.bite");
     }
 
     public static final class Entities {
