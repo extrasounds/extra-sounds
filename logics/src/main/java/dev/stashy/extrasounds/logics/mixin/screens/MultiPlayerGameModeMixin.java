@@ -14,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
+
 /**
  * For Inventory screen sounds.
  */
@@ -26,7 +28,8 @@ public abstract class MultiPlayerGameModeMixin {
         }
         AbstractContainerMenu screenHandler = player.containerMenu;
 
-        Slot slot = (slotIndex >= 0) ? screenHandler.slots.get(slotIndex) : null;
+        List<Slot> slots = screenHandler.slots;
+        Slot slot = (slotIndex >= 0 && slotIndex < slots.size()) ? slots.get(slotIndex) : null;
         SlotActionType actionType = switch (input) {
             case PICKUP -> SlotActionType.PICKUP;
             case QUICK_MOVE -> SlotActionType.QUICK_MOVE;
