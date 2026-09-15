@@ -213,6 +213,11 @@ public final class SoundManager {
     }
 
     public void playSound(VersionedSoundEventWrapper snd, SoundSource category, float volume, float pitch, @Nullable BlockPos position) {
+        if (snd == null) {
+            SoundManager.LOGGER.error("Passed a null argument of SoundEvent!", new IllegalArgumentException());
+            return;
+        }
+
         volume *= ExtraSounds.MAIN.getSoundVolume(Mixers.MASTER);
         if (volume == 0 || this.isMuted(category)) {
             // skip reflection when volume is zero.

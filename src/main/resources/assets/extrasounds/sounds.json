@@ -527,6 +527,25 @@
       }
     ]
   },
+  "action.shield_block.start": {
+    "sounds": [
+      {
+        "name": "extrasounds:item.pickup.minecraft.shield",
+        "pitch": 1.3,
+        "type": "event"
+      }
+    ]
+  },
+  "action.shield_block.stop": {
+    "sounds": [
+      {
+        "name": "extrasounds:item.pickup.minecraft.shield",
+        "volume": 0.8,
+        "pitch": 0.5,
+        "type": "event"
+      }
+    ]
+  },
   "action.repeater.add": {
     "sounds": [
       {

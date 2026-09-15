@@ -44,6 +44,8 @@ public final class Sounds {
         }
 
         public static final VersionedSoundEventWrapper BOW_PULL = ExtraSounds.createEvent("action.bow");
+        public static final VersionedSoundEventWrapper SHIELD_BLOCK_START = ExtraSounds.createEvent("action.shield_block.start");
+        public static final VersionedSoundEventWrapper SHIELD_BLOCK_STOP = ExtraSounds.createEvent("action.shield_block.stop");
         public static final VersionedSoundEventWrapper REPEATER_ADD = ExtraSounds.createEvent("action.repeater.add");
         public static final VersionedSoundEventWrapper REPEATER_RESET = ExtraSounds.createEvent("action.repeater.reset");
         public static final VersionedSoundEventWrapper REDSTONE_COMPONENT_ON = ExtraSounds.createEvent("action.redstone_component.on");

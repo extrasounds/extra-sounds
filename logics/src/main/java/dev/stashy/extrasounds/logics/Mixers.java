@@ -40,7 +40,11 @@ public final class Mixers implements CategoryLoader {
     @Register(preview = ExtraSounds.MODID + ":keyboard.type")
     public static SoundSource TYPING;
 
-    @Register(preview = ExtraSounds.MODID + ":action.bow")
+    @Register(preview = {
+            ExtraSounds.MODID + ":action.bow",
+            ExtraSounds.MODID + ":action.shield_block.start",
+            ExtraSounds.MODID + ":action.shield_block.stop"
+    })
     public static SoundSource ITEM_INTR;
 
     @Register(preview = {
