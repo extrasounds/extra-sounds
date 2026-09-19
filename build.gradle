@@ -1,3 +1,4 @@
+import com.google.gson.JsonArray
 import com.google.gson.JsonParser
 import com.google.gson.JsonPrimitive
 
@@ -54,6 +55,7 @@ allprojects {
     project.ext['moduleId'] = 'unnamed'
     project.ext['moduleName'] = ''
     project.ext['mod_license'] = project.mod_license
+    project.ext['moduleMixins'] = []
     project.ext['moduleAccessWidener'] = ''
 
     tasks.withType(ProcessResources).configureEach {
@@ -66,14 +68,20 @@ allprojects {
                     "mod_support_lowest_mc",
                     "mod_support_highest_mc"
             ].collectEntries {
-                [it, project.properties[it]]
+                [it, project.property(it)]
+            }
+
+            var mixins = new JsonArray()
+            project.ext['moduleMixins'].forEach {
+                mixins.add(it)
             }
 
             props.putAll([
-                    'moduleId'   : project.ext['moduleId'],
-                    'moduleName' : project.ext['moduleName'],
-                    'mod_license': project.ext['mod_license'],
-                    'version'    : project.version
+                    'moduleId'    : project.ext['moduleId'],
+                    'moduleName'  : project.ext['moduleName'],
+                    'moduleMixins': mixins.toString(),
+                    'mod_license' : project.ext['mod_license'],
+                    'version'     : project.version
             ])
 
             filesMatching("fabric.mod.json") {
@@ -108,6 +116,7 @@ dependencies {
     compileOnly include(project(path: 'logics'))
     compileOnly include(project(path: 'versioned:es26.1'))
     compileOnly include(project(path: 'versioned:es26.2'))
+    compileOnly include(project(path: 'versioned:es26.3'))
     // </editor-fold>
 
     // Sound Categories modules

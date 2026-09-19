@@ -21,8 +21,8 @@ public abstract class MouseHandlerMixin {
     @WrapOperation(
             method = "onScroll",
             at = {
-                    @At(value = "INVOKE",target = "Lnet/minecraft/world/entity/player/Inventory;setSelectedSlot(I)V"),   // <=MC26.1.2
-                    @At(value = "INVOKE",target = "Lnet/minecraft/world/entity/player/Inventory;setSelectedSlotDeferred(I)V")
+                    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;setSelectedSlot(I)V"),   // <=MC26.1.2
+                    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;setSelectedSlotDeferred(I)V")
             },
             require = 1
     )

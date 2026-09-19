@@ -11,7 +11,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -87,8 +86,7 @@ public abstract class AbstractInteractionHandler {
             // Redstone Wire
             ExtraSounds.MANAGER.blockInteract(Sounds.Actions.REDSTONE_WIRE_CHANGE, blockPos);
         } else if (this.isRedstoneOreBlocks() &&
-                this.blockState.hasProperty(RedStoneOreBlock.LIT) &&
-                bCanInteract && !(this.mainHandStack.getItem() instanceof BlockItem)
+                this.blockState.hasProperty(RedStoneOreBlock.LIT) && bCanInteract
         ) {
             // Redstone Ores
             ExtraSounds.MANAGER.blockInteract(this.block.asItem(), blockPos);

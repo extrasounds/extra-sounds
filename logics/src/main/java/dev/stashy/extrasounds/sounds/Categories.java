@@ -33,6 +33,7 @@ public final class Categories {
     public static final VersionedSoundEventWrapper KEYS = ExtraSounds.createEvent("item.category.keys");
     public static final VersionedSoundEventWrapper BUNDLES = ExtraSounds.createEvent("item.category.bundles");
     public static final VersionedSoundEventWrapper EGG = ExtraSounds.createEvent("item.category.egg");
+    public static final VersionedSoundEventWrapper CUSHION = ExtraSounds.createEvent("item.category.cushion");
 
     public static final class Gear {
         private Gear() {

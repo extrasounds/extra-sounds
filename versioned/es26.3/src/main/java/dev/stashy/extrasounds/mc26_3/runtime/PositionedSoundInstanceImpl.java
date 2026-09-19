@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc26_1.runtime;
+package dev.stashy.extrasounds.mc26_3.runtime;
 
 import dev.stashy.extrasounds.logics.runtime.VersionedPositionedSoundInstanceWrapper;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -21,6 +21,6 @@ public class PositionedSoundInstanceImpl extends SimpleSoundInstance implements 
 
     @Override
     public Weighted<?> getSoundSetImpl(SoundManager soundManager) {
-        return this.resolve(soundManager);
+        return this.getOrResolve(soundManager);
     }
 }

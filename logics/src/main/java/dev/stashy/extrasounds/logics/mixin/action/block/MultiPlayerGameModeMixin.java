@@ -133,17 +133,20 @@ public abstract class MultiPlayerGameModeMixin {
         final BlockPos blockPos = hitResult.getBlockPos();
         final InteractionResult actionResult = mutableObject.get();
         final ActionResultState wrapper;
-        if (actionResult == InteractionResult.SUCCESS || actionResult == InteractionResult.SUCCESS_SERVER) {
-            wrapper = ActionResultState.SUCCESS;
-        } else if (actionResult == InteractionResult.CONSUME) {
-            wrapper = ActionResultState.CONSUME;
-        } else if (actionResult == InteractionResult.PASS || actionResult == InteractionResult.TRY_WITH_EMPTY_HAND) {
-            wrapper = ActionResultState.PASS;
-        } else if (actionResult == InteractionResult.FAIL) {
-            wrapper = ActionResultState.FAIL;
-        } else {
-            ExtraSounds.LOGGER.error("Unknown state of ActionResult: {}", actionResult, new RuntimeException());
-            return;
+        switch (actionResult) {
+            case InteractionResult.Success success -> {
+                if (success.swingSource() != InteractionResult.SwingSource.NONE) {
+                    wrapper = ActionResultState.SUCCESS;
+                } else {
+                    wrapper = ActionResultState.CONSUME;
+                }
+            }
+            case InteractionResult.Pass _ -> wrapper = ActionResultState.PASS;
+            case InteractionResult.Fail _ -> wrapper = ActionResultState.FAIL;
+            case null, default -> {
+                ExtraSounds.LOGGER.error("Unknown state of ActionResult: {}", actionResult, new RuntimeException());
+                return;
+            }
         }
         this.soundHandler.onUse(player, blockPos, wrapper);
     }

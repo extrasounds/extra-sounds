@@ -20,4 +20,5 @@ dependencies {
 
     // Integrations
     compileOnly "maven.modrinth:midnightcontrols:${extraSounds.mn_ctrls_version}"
+    compileOnly "maven.modrinth:rei:${extraSounds.rei_version}+fabric"
 }

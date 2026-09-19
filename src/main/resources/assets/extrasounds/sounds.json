@@ -517,6 +517,16 @@
       }
     ]
   },
+  "item.category.cushion": {
+    "sounds": [
+      {
+        "name": "minecraft:block.wool.place",
+        "pitch": 1.6,
+        "type": "event",
+        "volume": 0.65
+      }
+    ]
+  },
   "action.bow": {
     "sounds": [
       {

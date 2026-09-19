@@ -17,8 +17,5 @@
   "environment": "client",
   "entrypoints": {
   },
-  "mixins": [
-    "extrasounds.mixins.${moduleId}.json",
-    "extrasounds.compat.mixins.${moduleId}.json"
-  ]
+  "mixins": ${moduleMixins}
 }

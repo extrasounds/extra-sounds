@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.mc26_1.compat.mixin.rei;
+package dev.stashy.extrasounds.logics.compat.mixin.rei;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -20,6 +20,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class TextFieldWidgetMixin implements TextField {
     @Unique
     private final TextFieldHandler soundHandler = new TextFieldHandler();
+
+    // #region method signatures
+    // <editor-fold desc="method signatures">
+    @Unique
+    private static final String METHOD_SIGN_SET_CURSOR = "Lme/shedaniel/rei/impl/client/gui/widget/basewidgets/TextFieldWidget;moveCursor(I)V";
+    @Unique
+    private static final String METHOD_SIGN_MOVE_CURSOR = "Lme/shedaniel/rei/impl/client/gui/widget/basewidgets/TextFieldWidget;moveCursorTo(I)V";
+    @Unique
+    private static final String METHOD_SIGN_CURSOR_TO_START = "Lme/shedaniel/rei/impl/client/gui/widget/basewidgets/TextFieldWidget;moveCursorToStart()V";
+    @Unique
+    private static final String METHOD_SIGN_CURSOR_TO_END = "Lme/shedaniel/rei/impl/client/gui/widget/basewidgets/TextFieldWidget;moveCursorToEnd()V";
+    // </editor-fold>
+    // #endregion
 
     @Shadow
     protected int cursorPos;
@@ -75,17 +88,17 @@ public abstract class TextFieldWidgetMixin implements TextField {
 
     @Inject(method = "keyPressed",
             at = {
-                    @At(value = "INVOKE", target = "Lme/shedaniel/rei/impl/client/gui/widget/basewidgets/TextFieldWidget;moveCursor(I)V", shift = At.Shift.AFTER),
-                    @At(value = "INVOKE", target = "Lme/shedaniel/rei/impl/client/gui/widget/basewidgets/TextFieldWidget;moveCursorTo(I)V", shift = At.Shift.AFTER),
-                    @At(value = "INVOKE", target = "Lme/shedaniel/rei/impl/client/gui/widget/basewidgets/TextFieldWidget;moveCursorToStart()V", shift = At.Shift.AFTER),
-                    @At(value = "INVOKE", target = "Lme/shedaniel/rei/impl/client/gui/widget/basewidgets/TextFieldWidget;moveCursorToEnd()V", shift = At.Shift.AFTER)
+                    @At(value = "INVOKE", target = METHOD_SIGN_SET_CURSOR, shift = At.Shift.AFTER),
+                    @At(value = "INVOKE", target = METHOD_SIGN_MOVE_CURSOR, shift = At.Shift.AFTER),
+                    @At(value = "INVOKE", target = METHOD_SIGN_CURSOR_TO_START, shift = At.Shift.AFTER),
+                    @At(value = "INVOKE", target = METHOD_SIGN_CURSOR_TO_END, shift = At.Shift.AFTER)
             }
     )
     private void extrasounds$cursorMoveKeyTyped(CallbackInfoReturnable<Boolean> cir) {
         this.soundHandler.onCursorChanged(this.cursorPos, this.highlightPos);
     }
 
-    @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lme/shedaniel/rei/impl/client/gui/widget/basewidgets/TextFieldWidget;moveCursorTo(I)V", shift = At.Shift.AFTER))
+    @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = METHOD_SIGN_MOVE_CURSOR, shift = At.Shift.AFTER))
     private void extrasounds$clickEvent(CallbackInfoReturnable<Boolean> cir) {
         this.soundHandler.onCursorChanged(this.cursorPos, this.highlightPos);
     }

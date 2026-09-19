@@ -280,7 +280,7 @@ public final class SoundPackLoader {
             boolean bFound = false;
             for (Identifier id : CUSTOM_SOUND_EVENT.keySet()) {
                 VersionedPositionedSoundInstanceWrapper instance = VersionedPositionedSoundInstanceWrapper.createDummy(id);
-                Weighted<?> resolved = instance.resolve(Minecraft.getInstance().getSoundManager());
+                Weighted<?> resolved = instance.getSoundSetImpl(Minecraft.getInstance().getSoundManager());
                 if (resolved == null) {
                     LOGGER.warn("Unplayable sound was found: {}", id);
                     bFound = true;
