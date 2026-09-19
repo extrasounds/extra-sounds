@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.logics.mixin.hotbar;
+package dev.stashy.extrasounds.mc26_2.mixin.hotbar;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.stashy.extrasounds.logics.ExtraSounds;

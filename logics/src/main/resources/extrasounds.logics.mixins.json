@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "dev.stashy.extrasounds.logics.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_25",
   "client": [
     "access.ArmorStandAccessor",
     "access.AdvancementTabAccessor",
@@ -22,7 +22,6 @@
     "effect.LocalPlayerMixin",
     "hotbar.ClientPacketListenerMixin",
     "hotbar.ConnectionMixin",
-    "hotbar.LocalPlayerMixin",
     "hotbar.MinecraftMixin",
     "hotbar.MouseHandlerMixin",
     "hotbar.MultiPlayerGameModeMixin",

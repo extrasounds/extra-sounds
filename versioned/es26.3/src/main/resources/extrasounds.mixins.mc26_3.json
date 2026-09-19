@@ -1,11 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "dev.stashy.extrasounds.mc26_2.mixin",
-  "plugin": "dev.stashy.extrasounds.mc26_2.VersionedMixinPlugin",
+  "package": "dev.stashy.extrasounds.mc26_3.mixin",
+  "plugin": "dev.stashy.extrasounds.mc26_3.VersionedMixinPlugin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "hotbar.LocalPlayerMixin",
+    "hotbar.MultiPlayerGameModeMixin",
     "screens.GuiMixin"
   ],
   "injectors": {

@@ -3,10 +3,11 @@
   "minVersion": "0.8",
   "package": "dev.stashy.extrasounds.logics.compat.mixin",
   "plugin": "dev.stashy.extrasounds.logics.compat.CompatibilityMixinPlugin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_25",
   "client": [
     "midnightcontrols.InputHandlersMixin",
-    "midnightcontrols.MouseMixin"
+    "midnightcontrols.MouseMixin",
+    "rei.TextFieldWidgetMixin"
   ],
   "injectors": {
     "defaultRequire": 1

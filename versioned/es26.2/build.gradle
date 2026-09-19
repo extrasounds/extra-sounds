@@ -24,4 +24,5 @@ dependencies {
 tasks.withType(ProcessResources).configureEach {
     project.ext['moduleId'] = 'mc26_2'
     project.ext['moduleName'] = '26.2 module'
+    project.ext['moduleMixins'] = [ 'extrasounds.mixins.mc26_2.json' ]
 }
