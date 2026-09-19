@@ -2,6 +2,23 @@ name: Feature request
 description: Suggest an idea for this project
 labels: [enhancement]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        **Please read if you wish to raise a version compatibility issue**
+        * **Ongoing Updates:** This project is constantly being updated for new Minecraft versions, including snapshots.
+        * **Testing Builds:** You can often find early support builds (Alpha, Beta, or RC builds) via GitHub Actions.
+          Please note that these snapshot/experimental builds do not undergo complete integration tests and may occasionally crash.
+        * **Where to find them:** If you would like to try an early version before the official release, **please check the `port/*` branches** on GitHub Actions:
+          [👉 GitHub Actions - extra-sounds](https://github.com/extrasounds/extra-sounds/actions)
+
+        **Before submitting an issue:**
+        * **We are already aware:** The author is continuously working on supporting new Minecraft versions as soon as they release.
+          There is no need to open new issues or leave comments asking _“Add support for a new version”_ or _“New version when?”_.
+        * **No acceleration:** Repetitive reminder comments or premature issues do not speed up the release process; rather, they consume valuable maintenance time.
+
+        Thank you for your patience and understanding!
+
   - type: textarea
     attributes:
       label: Describe your suggestion
