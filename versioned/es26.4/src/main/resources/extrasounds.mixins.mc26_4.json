@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.stashy.extrasounds.mc26_4.mixin",
+  "plugin": "dev.stashy.extrasounds.mc26_4.VersionedMixinPlugin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "hotbar.MultiPlayerGameModeMixin",
+    "screens.GuiMixin",
+    "typing.AbstractSignEditScreenMixin",
+    "typing.ExtendScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "access.SolidBucketItemAccessor"
+  ]
+}

@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Mixin(ReloadableResourceManager.class)
 public abstract class ReloadableResourceManagerMixin {
@@ -36,6 +37,6 @@ public abstract class ReloadableResourceManagerMixin {
 
     @Inject(method = "createReload", at = @At("RETURN"))
     private void extrasounds$afterReload(CallbackInfoReturnable<ReloadInstance> cir) {
-        SoundPackLoader.reloadExternalSoundEvent();
+        CompletableFuture.runAsync(SoundPackLoader::reloadExternalSoundEvent);
     }
 }

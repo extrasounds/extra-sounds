@@ -4,9 +4,11 @@ import dev.stashy.extrasounds.logics.ExtraSounds;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.util.Objects;
+import java.util.Optional;
 
 public abstract class VersionedSoundEventWrapper {
     private static final Constructor<VersionedSoundEventWrapper> CTOR_WITH_ID;
@@ -30,7 +32,7 @@ public abstract class VersionedSoundEventWrapper {
         try {
             return CTOR_WITH_ID.newInstance(id);
         } catch (Exception ex) {
-            ExtraSounds.LOGGER.error("Cannot initialize 'SoundEvent' with class IdentifierWrapper.", ex);
+            ExtraSounds.LOGGER.error("Cannot initialize 'SoundEvent' with class Identifier.", ex);
         }
         return null;
     }
@@ -44,7 +46,13 @@ public abstract class VersionedSoundEventWrapper {
         return null;
     }
 
-    public abstract Object getInstance();
+    public abstract @Nullable Object getInstance();
 
-    public abstract Identifier getId();
+    public abstract @Nullable Identifier getId();
+
+    @Override
+    public String toString() {
+        String idStr = Optional.ofNullable(this.getId()).map(Identifier::toString).orElse("<NULL>");
+        return "{id: %s}".formatted(idStr);
+    }
 }

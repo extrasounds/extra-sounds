@@ -5,7 +5,6 @@ import dev.stashy.extrasounds.logics.Mixers;
 import me.lonefelidae16.groominglib.api.McVersionInterchange;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.client.sounds.Weighted;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 
@@ -41,5 +40,5 @@ public interface VersionedPositionedSoundInstanceWrapper extends SoundInstance {
         return null;
     }
 
-    Weighted<?> getSoundSetImpl(SoundManager soundManager);
+    boolean resolveSoundsImpl(SoundManager soundManager);
 }

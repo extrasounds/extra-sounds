@@ -1,7 +1,6 @@
 package dev.stashy.extrasounds.logics;
 
 import dev.stashy.extrasounds.logics.debug.DebugUtils;
-import dev.stashy.extrasounds.logics.entry.SoundPackLoader;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.sounds.SoundType;
 import dev.stashy.extrasounds.sounds.Sounds;
@@ -29,7 +28,6 @@ public final class ExtraSounds {
 
     public static void init() {
         DebugUtils.init();
-        SoundPackLoader.init();
     }
 
     public static Identifier getClickId(Identifier id, SoundType type) {

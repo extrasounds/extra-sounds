@@ -1873,6 +1873,17 @@
       }
     ]
   },
+  "item.pickup.minecraft.ice_ball": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "minecraft:entity.ice_ball.break",
+        "pitch": 2,
+        "type": "event",
+        "volume": 0.5
+      }
+    ]
+  },
   "item.pickup.minecraft.spider_eye": {
     "replace": true,
     "sounds": [

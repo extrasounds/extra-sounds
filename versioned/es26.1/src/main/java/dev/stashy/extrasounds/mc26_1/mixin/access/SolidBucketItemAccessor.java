@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.logics.mixin.access;
+package dev.stashy.extrasounds.mc26_1.mixin.access;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.SolidBucketItem;

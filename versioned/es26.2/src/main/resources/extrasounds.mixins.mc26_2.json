@@ -6,9 +6,14 @@
   "compatibilityLevel": "JAVA_25",
   "client": [
     "hotbar.LocalPlayerMixin",
-    "screens.GuiMixin"
+    "screens.GuiMixin",
+    "typing.AbstractSignEditScreenMixin",
+    "typing.TextFieldHelperMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "access.SolidBucketItemAccessor"
+  ]
 }

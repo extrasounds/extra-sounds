@@ -4,7 +4,7 @@ import com.google.gson.*;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.SoundManager;
 import dev.stashy.extrasounds.logics.debug.DebugUtils;
-import dev.stashy.extrasounds.logics.json.SoundEntrySerializer;
+import dev.stashy.extrasounds.logics.json.VersionedSoundEntrySerializer;
 import dev.stashy.extrasounds.logics.json.VersionedSoundSerializer;
 import dev.stashy.extrasounds.logics.runtime.VersionedClientResource;
 import dev.stashy.extrasounds.logics.runtime.VersionedPositionedSoundInstanceWrapper;
@@ -20,7 +20,6 @@ import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
-import net.minecraft.client.sounds.Weighted;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -33,6 +32,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public final class SoundPackLoader {
@@ -41,9 +42,10 @@ public final class SoundPackLoader {
     private static final String CACHE_FNAME = ExtraSounds.MODID + ".cache";
     private static final Path CACHE_PATH = Path.of(System.getProperty("java.io.tmpdir"), ".minecraft_fabric", CACHE_FNAME);
 
-    private static final Map<Identifier, VersionedSoundEventWrapper> AUTO_GEN_SOUND_EVENT = new HashMap<>();
-    private static final Map<Identifier, VersionedSoundEventWrapper> EXTERNAL_SOUND_EVENT = new HashMap<>();
-    private static final Map<Identifier, VersionedSoundEventWrapper> CUSTOM_SOUND_EVENT = new HashMap<>();
+    private static final Map<Identifier, VersionedSoundEventWrapper> AUTO_GEN_SOUND_EVENT = new ConcurrentHashMap<>();
+    private static final Map<Identifier, VersionedSoundEventWrapper> EXTERNAL_SOUND_EVENT = new ConcurrentHashMap<>();
+    private static final Map<Identifier, VersionedSoundEventWrapper> CUSTOM_SOUND_EVENT = new ConcurrentHashMap<>();
+
     public static final VersionedClientResource EXTRA_SOUNDS_RESOURCE = Objects.requireNonNull(
             VersionedClientResource.newInstance(ExtraSounds.MODID, "%s Runtime Resources".formatted(ExtraSounds.class.getSimpleName()))
     );
@@ -56,9 +58,15 @@ public final class SoundPackLoader {
     );
 
     public static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(SoundEventRegistration.class, new SoundEntrySerializer())
+            .registerTypeAdapter(SoundEventRegistration.class, Objects.requireNonNull(VersionedSoundEntrySerializer.newInstance()))
             .registerTypeHierarchyAdapter(VersionedSoundWrapper.class, Objects.requireNonNull(VersionedSoundSerializer.newInstance()))
             .create();
+
+    public enum PackStatus {
+        NONE,
+        FROM_CACHE,
+        REGENERATED,
+    }
 
     /**
      * Initialization of customized sound events.<br>
@@ -66,85 +74,98 @@ public final class SoundPackLoader {
      * If it is absent or invalid, the file will be regenerated.<br>
      * If the regeneration time is over 1000 milliseconds, it may be needed to refactor.
      */
-    public static void init() {
-        final long start = System.currentTimeMillis();
-        final Map<String, SoundGenerator> soundGenMappers = new HashMap<>();
-        final List<String> generatorVer = new ArrayList<>();
+    public static CompletableFuture<PackStatus> init() {
+        return CompletableFuture.supplyAsync(() -> {
+            final long start = System.currentTimeMillis();
+            final Map<String, SoundGenerator> soundGenMappers = new HashMap<>();
+            final List<String> generatorVer = new ArrayList<>();
 
-        // Collect entry points from mods.
-        final var containers = FabricLoader.getInstance().getEntrypointContainers(ExtraSounds.MODID, SoundGenerator.class);
-        containers.forEach(container -> {
-            final SoundGenerator generator = container.getEntrypoint();
-            if (generator == null || generator.itemSoundGenerator == null) {
-                return;
-            }
+            PackStatus result;
 
-            final String namespace;
-            try {
-                namespace = container.getProvider().getMetadata().getId();
-                if (namespace == null || namespace.isBlank()) {
-                    throw new Exception("Namespace is invalid: null or blank");
+            // Collect entry points from mods.
+            final var containers = FabricLoader.getInstance().getEntrypointContainers(ExtraSounds.MODID, SoundGenerator.class);
+            containers.forEach(container -> {
+                final SoundGenerator generator = container.getEntrypoint();
+                if (generator == null || generator.itemSoundGenerator == null) {
+                    return;
                 }
+
+                final String namespace;
+                try {
+                    namespace = container.getProvider().getMetadata().getId();
+                    if (namespace == null || namespace.isBlank()) {
+                        throw new Exception("Namespace is invalid: null or blank");
+                    }
+                } catch (Exception ex) {
+                    LOGGER.error("Failed to read mod metadata, ignoring.", ex);
+                    return;
+                }
+                if (DebugUtils.DEBUG) {
+                    LOGGER.info("Registering generator with namespace '{}'", namespace);
+                }
+                soundGenMappers.put(namespace, generator);
+                generatorVer.add(CacheInfo.getModVersion(container.getProvider()));
+            });
+
+            // Register the vanilla generator.
+            soundGenMappers.put(Identifier.DEFAULT_NAMESPACE, BaseVanillaGenerator.GENERATOR);
+            generatorVer.add(CacheInfo.getModVersion(FabricLoader.getInstance().getModContainer(Identifier.DEFAULT_NAMESPACE).orElseThrow()));
+
+            final CacheInfo currentCacheInfo = CacheInfo.of(generatorVer.toArray(String[]::new));
+
+            // Read from cache.
+            // FIXME: Is the cache really necessary?
+            //        As of 26.4-snapshot-3, `BlockSoundType` has been replaced by `BlockSoundSet`,
+            //        which utilizes a data-driven system based on datapacks.
+            //        Even within the same game and the same world, regeneration is required if the datapacks differ.
+            //        Caching all sounds makes no sense; it is more practical to regenerate them every time.
+            try {
+                Files.createDirectories(CACHE_PATH.getParent());
+
+                if (!Files.exists(CACHE_PATH)) {
+                    throw new FileNotFoundException("Cache does not exist.");
+                }
+
+                if (DebugUtils.NO_CACHE) {
+                    throw new RuntimeException("JVM arg '%s' is detected.".formatted(DebugUtils.NO_CACHE_VAR));
+                }
+
+                final CacheData cacheData = CacheData.read();
+                if (!cacheData.info.equals(currentCacheInfo)) {
+                    throw new InvalidObjectException("Incorrect cache info.");
+                }
+
+                final JsonObject jsonObject = cacheData.asJsonObject();
+                jsonObject.keySet().forEach(key -> putSoundEvent(ExtraSounds.generateIdentifier(ExtraSounds.MODID, key)));
+                result = PackStatus.FROM_CACHE;
             } catch (Exception ex) {
-                LOGGER.error("Failed to read mod metadata, ignoring.", ex);
-                return;
+                // If there is an exception, regenerate and write the cache.
+                if (DebugUtils.DEBUG) {
+                    LOGGER.info("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
+                }
+                LOGGER.info("Regenerating cache...");
+                final Map<String, SoundEventRegistration> resourceMapper = new HashMap<>();
+                processSounds(soundGenMappers, resourceMapper);
+                CacheData.create(currentCacheInfo, resourceMapper);
+                result = PackStatus.REGENERATED;
             }
+
             if (DebugUtils.DEBUG) {
-                LOGGER.info("Registering generator with namespace '{}'", namespace);
+                DebugUtils.exportSoundsJson(CacheData.read().asJsonBytes());
+                DebugUtils.exportGenerators(soundGenMappers);
             }
-            soundGenMappers.put(namespace, generator);
-            generatorVer.add(CacheInfo.getModVersion(container.getProvider()));
+
+            EXTRA_SOUNDS_RESOURCE.addResourceAsync(SOUNDS_JSON_ID, identifier -> CacheData.read().asJsonBytes());
+            final long tookMillis = System.currentTimeMillis() - start;
+            if (tookMillis >= 1000) {
+                LOGGER.warn("init took too long; {}ms.", tookMillis);
+            } else if (DebugUtils.DEBUG) {
+                LOGGER.info("init finished; took {}ms.", tookMillis);
+            }
+            LOGGER.info("Generated sound pack was successfully loaded; {} entries.", AUTO_GEN_SOUND_EVENT.size());
+
+            return result;
         });
-
-        // Register the vanilla generator.
-        soundGenMappers.put(Identifier.DEFAULT_NAMESPACE, BaseVanillaGenerator.GENERATOR);
-        generatorVer.add(CacheInfo.getModVersion(FabricLoader.getInstance().getModContainer(Identifier.DEFAULT_NAMESPACE).orElseThrow()));
-
-        final CacheInfo currentCacheInfo = CacheInfo.of(generatorVer.toArray(new String[0]));
-
-        // Read from cache.
-        try {
-            Files.createDirectories(CACHE_PATH.getParent());
-
-            if (!Files.exists(CACHE_PATH)) {
-                throw new FileNotFoundException("Cache does not exist.");
-            }
-
-            if (DebugUtils.NO_CACHE) {
-                throw new RuntimeException("JVM arg '%s' is detected.".formatted(DebugUtils.NO_CACHE_VAR));
-            }
-
-            final CacheData cacheData = CacheData.read();
-            if (!cacheData.info.equals(currentCacheInfo)) {
-                throw new InvalidObjectException("Incorrect cache info.");
-            }
-
-            final JsonObject jsonObject = cacheData.asJsonObject();
-            jsonObject.keySet().forEach(key -> putSoundEvent(ExtraSounds.generateIdentifier(ExtraSounds.MODID, key)));
-        } catch (Exception ex) {
-            // If there is an exception, regenerate and write the cache.
-            if (DebugUtils.DEBUG) {
-                LOGGER.info("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
-            }
-            LOGGER.info("Regenerating cache...");
-            final Map<String, SoundEventRegistration> resourceMapper = new HashMap<>();
-            processSounds(soundGenMappers, resourceMapper);
-            CacheData.create(currentCacheInfo, resourceMapper);
-        }
-
-        if (DebugUtils.DEBUG) {
-            DebugUtils.exportSoundsJson(CacheData.read().asJsonBytes());
-            DebugUtils.exportGenerators(soundGenMappers);
-        }
-
-        EXTRA_SOUNDS_RESOURCE.addResourceAsync(SOUNDS_JSON_ID, identifier -> CacheData.read().asJsonBytes());
-        final long tookMillis = System.currentTimeMillis() - start;
-        if (tookMillis >= 1000) {
-            LOGGER.warn("init took too long; {}ms.", tookMillis);
-        } else if (DebugUtils.DEBUG) {
-            LOGGER.info("init finished; took {}ms.", tookMillis);
-        }
-        LOGGER.info("Generated sound pack successfully loaded; {} entries.", AUTO_GEN_SOUND_EVENT.size());
     }
 
     /**
@@ -280,14 +301,14 @@ public final class SoundPackLoader {
             boolean bFound = false;
             for (Identifier id : CUSTOM_SOUND_EVENT.keySet()) {
                 VersionedPositionedSoundInstanceWrapper instance = VersionedPositionedSoundInstanceWrapper.createDummy(id);
-                Weighted<?> resolved = instance.getSoundSetImpl(Minecraft.getInstance().getSoundManager());
-                if (resolved == null) {
+                boolean bResolved = instance.resolveSoundsImpl(Minecraft.getInstance().getSoundManager());
+                if (!bResolved) {
                     LOGGER.warn("Unplayable sound was found: {}", id);
                     bFound = true;
                 }
             }
             if (DebugUtils.DEBUG && !bFound) {
-                LOGGER.info("Unplayable sound was not found.");
+                LOGGER.info("Unplayable sounds were not found.");
             }
         }
     }

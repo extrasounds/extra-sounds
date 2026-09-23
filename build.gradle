@@ -108,7 +108,8 @@ var sourcesPaths = '**/*-sources.jar'
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    runtimeOnly "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
     implementation include("me.lonefelidae16:groominglib:${project.groom_version}")
 
@@ -117,6 +118,7 @@ dependencies {
     compileOnly include(project(path: 'versioned:es26.1'))
     compileOnly include(project(path: 'versioned:es26.2'))
     compileOnly include(project(path: 'versioned:es26.3'))
+    compileOnly include(project(path: 'versioned:es26.4'))
     // </editor-fold>
 
     // Sound Categories modules

@@ -3,7 +3,6 @@ package dev.stashy.extrasounds.mc26_3.runtime;
 import dev.stashy.extrasounds.logics.runtime.VersionedPositionedSoundInstanceWrapper;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.client.sounds.Weighted;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -20,7 +19,7 @@ public class PositionedSoundInstanceImpl extends SimpleSoundInstance implements 
     }
 
     @Override
-    public Weighted<?> getSoundSetImpl(SoundManager soundManager) {
-        return this.getOrResolve(soundManager);
+    public boolean resolveSoundsImpl(SoundManager soundManager) {
+        return this.getOrResolve(soundManager) != null;
     }
 }

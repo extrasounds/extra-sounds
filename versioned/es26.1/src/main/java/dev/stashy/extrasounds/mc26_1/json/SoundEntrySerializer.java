@@ -1,13 +1,17 @@
-package dev.stashy.extrasounds.logics.json;
+package dev.stashy.extrasounds.mc26_1.json;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import dev.stashy.extrasounds.logics.json.VersionedSoundEntrySerializer;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 
 import java.lang.reflect.Type;
 import java.util.Objects;
 
-public class SoundEntrySerializer implements JsonSerializer<SoundEventRegistration> {
+public class SoundEntrySerializer extends VersionedSoundEntrySerializer {
     @Override
     public JsonElement serialize(SoundEventRegistration src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject element = new JsonObject();

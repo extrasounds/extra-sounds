@@ -3,7 +3,6 @@ package dev.stashy.extrasounds.logics.entry;
 import dev.stashy.extrasounds.logics.ExtraSounds;
 import dev.stashy.extrasounds.logics.SoundManager;
 import dev.stashy.extrasounds.logics.mixin.access.MobBucketItemAccessor;
-import dev.stashy.extrasounds.logics.mixin.access.SolidBucketItemAccessor;
 import dev.stashy.extrasounds.logics.runtime.VersionedSoundEventWrapper;
 import dev.stashy.extrasounds.mapping.SoundDefinition;
 import dev.stashy.extrasounds.mapping.SoundGenerator;
@@ -22,7 +21,7 @@ import static dev.stashy.extrasounds.sounds.Categories.*;
 import static dev.stashy.extrasounds.sounds.Sounds.*;
 
 public abstract class BaseVanillaGenerator {
-    private static final SoundDefinition DEFAULT_SOUND = SoundDefinition.of(aliased(SoundManager.FALLBACK_SOUND_EVENT));
+    protected static final SoundDefinition DEFAULT_SOUND = SoundDefinition.of(aliased(SoundManager.FALLBACK_SOUND_EVENT));
     public static final SoundGenerator GENERATOR;
 
     static {
@@ -135,16 +134,7 @@ public abstract class BaseVanillaGenerator {
     }
 
     protected SoundDefinition generalSounds(Item item) {
-        if (item instanceof BlockItem blockItem) {
-            final Block block = blockItem.getBlock();
-            final Identifier blockSoundId = block.defaultBlockState().getSoundType().getPlaceSound().location();
-            if (block instanceof RotatedPillarBlock pillarBlock && pillarBlock.defaultBlockState().getSoundType().equals(SoundType.FROGLIGHT)) {
-                return SoundDefinition.of(event(blockSoundId, 0.75f));
-            } else if (blockItem instanceof SolidBucketItemAccessor bucketItem) {
-                return SoundDefinition.of(event(bucketItem.extrasounds$access_getPlaceSound().location(), 1.3f));
-            }
-            return this.generateFromBlock(block);
-        } else if (item instanceof BoatItem) {
+        if (item instanceof BoatItem) {
             return SoundDefinition.of(aliased(BOAT));
         } else if (item instanceof MinecartItem) {
             return SoundDefinition.of(aliased(MINECART));

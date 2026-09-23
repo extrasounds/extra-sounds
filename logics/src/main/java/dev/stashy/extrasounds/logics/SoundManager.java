@@ -218,6 +218,11 @@ public final class SoundManager {
             return;
         }
 
+        if (snd.getId() == null) {
+            SoundManager.LOGGER.error("Passed a null ID of SoundEvent!", new NullPointerException(snd.toString()));
+            return;
+        }
+
         volume *= ExtraSounds.MAIN.getSoundVolume(Mixers.MASTER);
         if (volume == 0 || this.isMuted(category)) {
             // skip reflection when volume is zero.

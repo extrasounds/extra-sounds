@@ -25,6 +25,9 @@ public class SoundEventImpl extends VersionedSoundEventWrapper {
 
     @Override
     public Identifier getId() {
+        if (this.instance == null) {
+            return null;
+        }
         return this.instance.location();
     }
 }

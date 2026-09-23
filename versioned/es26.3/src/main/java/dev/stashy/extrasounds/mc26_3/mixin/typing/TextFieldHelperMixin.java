@@ -1,4 +1,4 @@
-package dev.stashy.extrasounds.logics.mixin.typing;
+package dev.stashy.extrasounds.mc26_3.mixin.typing;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
